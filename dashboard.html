@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Báo Cáo & Ứng Dụng</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f4f6f9; padding: 40px 20px; text-align: center; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: #333; margin-bottom: 25px; }
+        .link-card { display: block; padding: 15px 20px; margin-bottom: 15px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 16px; transition: 0.2s; text-align: left; }
+        .sheet-link { background-color: #e6f4ea; color: #137333; border: 1px solid #ceead6; }
+        .sheet-link:hover { background-color: #ceead6; }
+        .appsheet-link { background-color: #e8f0fe; color: #1a73e8; border: 1px solid #d2e3fc; }
+        .appsheet-link:hover { background-color: #d2e3fc; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>DANH SÁCH BÁO CÁO & ỨNG DỤNG</h2>
+
+        <!-- Danh sách đường dẫn Google Sheet -->
+        <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_1" target="_blank" class="link-card sheet-link">
+            📊 Google Sheet: Báo cáo QA Daily
+        </a>
+
+        <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_2" target="_blank" class="link-card sheet-link">
+            📊 Google Sheet: Báo cáo Inline
+        </a>
+
+        <!-- Danh sách đường dẫn AppSheet -->
+        <a href="https://www.appsheet.com/start/YOUR_APP_1" target="_blank" class="link-card appsheet-link">
+            📱 AppSheet: Quản lý Kiểm hàng
+        </a>
+
+        <a href="https://www.appsheet.com/start/YOUR_APP_2" target="_blank" class="link-card appsheet-link">
+            📱 AppSheet: Hệ thống QA/QC
+        </a>
+    </div>
+
+</body>
+</html>
