@@ -84,16 +84,16 @@
     
     <!-- Khối báo lỗi -->
     <div class="error-msg" id="errorBlock" style="display: none;">
-        <span class="icon">!</span> <span id="errorText">사용자 정보가 올바르지 않습니다.</span>
+        <span class="icon">!</span> <span id="errorText">Thông tin đăng nhập không chính xác.</span>
     </div>
 
     <form id="loginForm" onsubmit="return handleLogin(event)">
         <input type="text" id="username" placeholder="Mã người dùng" required>
         <input type="password" id="password" placeholder="Mật khẩu" required>
-        <button type="submit" class="btn-login">로그인</button>
+        <button type="submit" class="btn-login">Đăng nhập</button>
         <div class="remember-me">
             <input type="checkbox" id="remember">
-            <label for="remember">계정 저장</label>
+            <label for="remember">Ghi nhớ tài khoản</label>
         </div>
     </form>
 </div>
