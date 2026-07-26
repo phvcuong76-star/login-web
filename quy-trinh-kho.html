@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quy Trình Bộ Phận Kho</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f6f9;
+            padding: 30px 20px;
+            margin: 0;
+            top: 0 !important;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .btn-back {
+            text-decoration: none;
+            color: #1a73e8;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background-color: #e8f0fe;
+            transition: all 0.2s;
+        }
+        .btn-back:hover {
+            background-color: #d2e3fc;
+        }
+        h2 {
+            color: #222;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 22px;
+        }
+        .doc-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+        }
+        .doc-item:hover {
+            border-color: #1a73e8;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.1);
+            transform: translateY(-1px);
+        }
+        .doc-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+        .doc-desc {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+        .btn-open {
+            background-color: #1a73e8;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .btn-open:hover {
+            background-color: #1557b0;
+        }
+
+        /* Thanh ngôn ngữ Capsule */
+        .lang-switch {
+            display: inline-flex;
+            background-color: #e9ecef;
+            padding: 4px;
+            border-radius: 20px;
+            gap: 4px;
+        }
+        .lang-btn {
+            border: none;
+            background: transparent;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c757d;
+            border-radius: 16px;
+            cursor: pointer;
+        }
+        .lang-btn.active {
+            background-color: #1a73e8;
+            color: #ffffff;
+        }
+        #google_translate_element, .goog-te-banner-frame, .goog-te-gadget {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Thanh điều hướng trên -->
+        <div class="header-bar">
+            <a href="index.html" class="btn-back">← Quay lại trang chủ</a>
+            
+            <div class="lang-switch notranslate" translate="no">
+                <button class="lang-btn" onclick="translatePage('ko', this)">KR</button>
+                <button class="lang-btn" onclick="translatePage('en', this)">EN</button>
+                <button class="lang-btn active" onclick="translatePage('vi', this)">VN</button>
+            </div>
+        </div>
+
+        <h2>📦 Danh Sách Quy Trình - Bộ Phận Kho</h2>
+
+        <!-- Danh sách các file/tài liệu của bộ phận Kho -->
+        <div class="doc-list">
+            
+            <div class="doc-item">
+                <div>
+                    <div class="doc-title">📄 1. Quy trình Nhập kho Nguyên Phụ liệu</div>
+                    <div class="doc-desc">Hướng dẫn chi tiết các bước kiểm đếm và lưu kho NPL</div>
+                </div>
+                <a href="LINK_FILE_PDF_HOAC_DOCS_1" target="_blank" class="btn-open">Mở tài liệu ↗</a>
+            </div>
+
+            <div class="doc-item">
+                <div>
+                    <div class="doc-title">📄 2. Quy trình Xuất hàng cho Chuyền sản xuất</div>
+                    <div class="doc-desc">Quy định về phiếu xuất kho và bàn giao vật tư</div>
+                </div>
+                <a href="LINK_FILE_PDF_HOAC_DOCS_2" target="_blank" class="btn-open">Mở tài liệu ↗</a>
+            </div>
+
+            <div class="doc-item">
+                <div>
+                    <div class="doc-title">📄 3. Quy trình Kiểm kê Kho định kỳ</div>
+                    <div class="doc-desc">Mẫu biểu và thao tác chốt số lượng hàng tháng</div>
+                </div>
+                <a href="LINK_FILE_PDF_HOAC_DOCS_3" target="_blank" class="btn-open">Mở tài liệu ↗</a>
+            </div>
+
+            <div class="doc-item">
+                <div>
+                    <div class="doc-title">📄 4. Hướng dẫn Quản lý Kho Thành phẩm</div>
+                    <div class="doc-desc">Tiêu chuẩn chất xếp và bảo quản thùng thành phẩm</div>
+                </div>
+                <a href="LINK_FILE_PDF_HOAC_DOCS_4" target="_blank" class="btn-open">Mở tài liệu ↗</a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bộ dịch Google Translate -->
+    <div id="google_translate_element"></div>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'vi',
+                includedLanguages: 'en,ko,vi',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        function translatePage(langCode, btn) {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            var selectObj = document.querySelector('.goog-te-combo');
+            if (selectObj) {
+                selectObj.value = langCode;
+                selectObj.dispatchEvent(new Event('change'));
+            }
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>
