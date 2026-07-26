@@ -5,273 +5,250 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh Sách Báo Cáo</title>
     <style>
-    * { 
-        box-sizing: border-box; 
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    }
-    body { 
-        background-color: #f4f6f9; 
-        padding: 30px 20px; 
-        margin: 0;
-    }
-    /* Mở rộng khung chứa chính */
-    .container { 
-        max-width: 1200px; /* Tăng chiều rộng toàn trang */
-        margin: 0 auto; 
-        background: white; 
-        padding: 35px; 
-        border-radius: 12px; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
-    }
-    
-    h2 { 
-        color: #222; 
-        margin-bottom: 30px; 
-        text-align: center;
-        font-size: 24px;
-        letter-spacing: 1px;
-    }
-/* Thanh chuyển đổi ngôn ngữ dạng Capsule */
-.lang-switch-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
-}
-
-.lang-switch {
-    display: inline-flex;
-    background-color: #f1f3f5;
-    padding: 4px;
-    border-radius: 20px;
-    gap: 4px;
-}
-
-.lang-btn {
-    border: none;
-    background: transparent;
-    padding: 5px 12px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #6c757d;
-    border-radius: 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.lang-btn:hover {
-    color: #333;
-}
-
-.lang-btn.active {
-    background-color: #1a73e8;
-    color: #ffffff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-        
-    /* Bố trí layout 2 cột bằng Grid */
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr; /* Chia đều 2 cột */
-        gap: 30px; /* Khoảng cách giữa 2 cột */
-    }
-
-    @media (max-width: 768px) {
-        .dashboard-grid {
-            grid-template-columns: 1fr; /* Tự động xếp dọc khi xem trên điện thoại */
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-    }
+        body {
+            background-color: #f4f6f9;
+            padding: 30px 20px;
+            margin: 0;
+            top: 0 !important; /* Xóa khoảng trắng thừa do Google Translate tạo ra */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        h2 {
+            color: #222;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            text-align: left;
+        }
+        .link-card {
+            display: block;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        .sheet-link {
+            background-color: #e6f4ea;
+            color: #137333;
+            border: 1px solid #ceead6;
+        }
+        .sheet-link:hover {
+            background-color: #ceead6;
+        }
+        .appsheet-link {
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            border: 1px solid #d2e3fc;
+        }
 
-    /* Định dạng nút thẻ báo cáo */
-    .link-card { 
-        display: block; 
-        padding: 14px 18px; 
-        margin-bottom: 12px; 
-        border-radius: 8px; 
-        text-decoration: none; 
-        font-weight: 600; 
-        font-size: 15px; 
-        transition: all 0.2s ease; 
-        text-align: left; 
-    }
-    .sheet-link { 
-        background-color: #e8f5e9; 
-        color: #2e7d32; 
-        border: 1px solid #c8e6c9; 
-    }
-    .sheet-link:hover { 
-        background-color: #c8e6c9; 
-        transform: translateY(-2px);
-    }
-    .appsheet-link { 
-        background-color: #e8f0fe; 
-        color: #1a73e8; 
-        border: 1px solid #d2e3fc; 
-    }
-    .appsheet-link:hover { 
-        background-color: #d2e3fc; 
-        transform: translateY(-2px);
-    }
+        /* Banner 2 bên lề */
+        .side-banner {
+            position: fixed;
+            top: 100px;
+            width: 150px;
+            z-index: 10;
+        }
+        .banner-left { left: 20px; }
+        .banner-right { right: 20px; }
 
-    /* Banner trang trí 2 bên lề ngoài màn hình */
-.side-banner {
-    position: fixed;
-    top: 100px;
-    width: 160px;
-    height: auto;
-    z-index: 10;
-}
-.banner-left {
-    left: 20px;
-}
-.banner-right {
-    right: 20px;
-}
+        @media (max-width: 1400px) {
+            .side-banner { display: none; }
+        }
 
-/* Ẩn banner trên điện thoại/màn hình nhỏ để không đè lên nội dung */
-@media (max-width: 1400px) {
-    .side-banner {
-        display: none;
-    }
-}
-    
+        /* Thanh ngôn ngữ Capsule đẹp mắt */
+        .lang-switch-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+        .lang-switch {
+            display: inline-flex;
+            background-color: #f1f3f5;
+            padding: 4px;
+            border-radius: 20px;
+            gap: 4px;
+        }
+        .lang-btn {
+            border: none;
+            background: transparent;
+            padding: 5px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6c757d;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .lang-btn.active {
+            background-color: #1a73e8;
+            color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Ẩn thanh chọn Google Translate mặc định */
+        #google_translate_element, .goog-te-banner-frame {
+            display: none !important;
+        }
+        .goog-te-gadget {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    
-<!-- Bộ dịch tự động Google Translate -->
-<div id="google_translate_element" style="text-align: right; margin-bottom: 15px;"></div>
-<script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'vi',
-    includedLanguages: 'en,ko,vi',
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-  }, 'google_translate_element');
-}
-</script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- Banner 2 bên lề -->
+    <div class="side-banner banner-left">
+        <img src="images nha may.jpg" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    </div>
+    <div class="side-banner banner-right">
+        <img src="images nha may.jpg" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
     </div>
 
-    <h2 id="txt-title">DANH SÁCH BÁO CÁO & TÀI LIỆU</h2>
-
-    <!-- Khung chia 2 cột song song -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; text-align: left;">
-
-        <!-- CỘT BÊN TRÁI: DANH SÁCH BÁO CÁO -->
-        <div>
-            <h3 style="margin-top: 0; margin-bottom: 15px; color: #333;">📊 Danh Sách Báo Cáo</h3>
-
-            <a href="https://docs.google.com/spreadsheets/d/1gfFYZTz1SIm0CVrydI4UY934wJ5fvghQ7hi5MhSB1pE/edit?gid=653998014#gid=653998014" target="_blank" class="link-card sheet-link">
-                📊 Báo cáo tổng hợp HQC/FQC hàng tuần
-            </a>
-
-            <a href="https://docs.google.com/spreadsheets/d/1of2bFSyYKBswoAnQOCFsJm8JfKAGUS9qmwlvaU1SSBV8/edit?pli=1&gid=1312774476#gid=1312774476" target="_blank" class="link-card sheet-link">
-                📊 Báo cáo tổng hợp Pre-final hàng tuần
-            </a>
-
-            <a href="https://docs.google.com/spreadsheets/d/1F_R7qaZdo9WQLjxJtIz69rEN77JQvRnz_z2ZUA0jxI/edit?gid=616548280#gid=616548280" target="_blank" class="link-card sheet-link">
-                📊 Báo cáo tổng hợp Pre-final Lào hàng tuần
-            </a>
-
-            <a href="https://docs.google.com/spreadsheets/d/1fokM2A81tj-9QW86C__3himjvPMKWjE5k8d1WWzMjKo/edit?gid=1316557202#gid=1316557202" target="_blank" class="link-card sheet-link">
-                📊 Báo cáo kiểm hàng UNIQLO
-            </a>
-
-            <a href="https://docs.google.com/spreadsheets/d/1hw-4JHQdBQFa7by5pyYWCSfGFS3ymvZrW1YsNMaLcNE/edit?gid=1057145470#gid=1057145470" target="_blank" class="link-card sheet-link">
-                📊 Báo cáo Tổng hợp sự cố sản xuất
-            </a>
-
-            <a href="https://docs.google.com/spreadsheets/d/1RkAIOUVqutgVptWn3R9OxshLUs-R8La1oPsgt3NFECGU/edit?gid=1435937454#gid=1435937454" target="_blank" class="link-card sheet-link">
-                📊 Báo cáo Tổng hợp sự cố sản xuất Nhà máy LAOS
-            </a>
-
-            <a href="" class="link-card appsheet-link">
-                📱 AppSheet: Chưa cập nhật
-            </a>
-        </div>
-
-        <!-- CỘT BÊN PHẢI: BẢNG TÀI LIỆU & HƯỚNG DẪN -->
-        <div>
-            <h3 style="margin-top: 0; margin-bottom: 15px; color: #333;">📂 Tài Liệu & Hướng Dẫn</h3>
-
-            <table style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 20px;">
-                <thead>
-                    <tr style="background-color: #f2f2f2; border-bottom: 2px solid #ccc;">
-                        <th style="padding: 10px; font-size: 14px;">Tên Tài Liệu</th>
-                        <th style="padding: 10px; font-size: 14px;">Ghi chú</th>
-                        <th style="padding: 10px; font-size: 14px; text-align: center;">Liên kết</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Tiêu đề mục chính -->
-                    <tr style="background-color: #f9f9f9;">
-                        <td style="padding: 10px; font-weight: bold; font-size: 14px; color: #1a73e8;" colspan="3">
-                            📂 Sổ tay Quy trình công việc
-                        </td>
-                    </tr>
-
-                    <!-- Các quy trình con -->
-                    <tr style="border-bottom: 1px solid #eee;">
-                        <td style="padding: 8px 10px 8px 25px; font-size: 13px;">└─ Quy trình bộ phận Kho</td>
-                        <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
-                        <td style="padding: 8px 10px; text-align: center;">
-                            <a href="LINK_KHO" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
-                        </td>
-                    </tr>
-
-                    <tr style="border-bottom: 1px solid #eee;">
-                        <td style="padding: 8px 10px 8px 25px; font-size: 13px;">└─ Quy trình bộ phận Cắt</td>
-                        <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
-                        <td style="padding: 8px 10px; text-align: center;">
-                            <a href="LINK_CAT" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
-                        </td>
-                    </tr>
-
-                    <tr style="border-bottom: 1px solid #eee;">
-                        <td style="padding: 8px 10px 8px 25px; font-size: 13px;">└─ Quy trình Chuyền may</td>
-                        <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
-                        <td style="padding: 8px 10px; text-align: center;">
-                            <a href="LINK_MAY" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
-                        </td>
-                    </tr>
-
-                    <!-- Mục tài liệu khác -->
-                    <tr style="border-bottom: 1px solid #eee;">
-                        <td style="padding: 10px; font-weight: bold; font-size: 13px;">Hướng dẫn kiểm hàng</td>
-                        <td style="padding: 10px; font-size: 13px; color: #666;">Tài liệu khách hàng</td>
-                        <td style="padding: 10px; text-align: center;">
-                            <a href="LINK_TAI_LIEU_2" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-<!-- THÊM ẢNH BÊN PHẢI (Sau Bảng Tài liệu) -->
-            <div style="margin-top: 25px; text-align: center;">
-                <img src="images nha may.jpg" alt="Hình minh họa" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 8px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+    <!-- Khung nội dung chính -->
+    <div class="container">
+        
+        <!-- Thanh nút chọn ngôn ngữ -->
+        <div class="lang-switch-container">
+            <div class="lang-switch">
+                <button class="lang-btn" onclick="translatePage('ko', this)">KR</button>
+                <button class="lang-btn" onclick="translatePage('en', this)">EN</button>
+                <button class="lang-btn active" onclick="translatePage('vi', this)">VN</button>
             </div>
-           
         </div>
 
-    </div> <!-- Kết thúc chia 2 cột -->
-</div>
-    
+        <h2>DANH SÁCH BÁO CÁO & TÀI LIỆU</h2>
+
+        <div class="dashboard-grid">
+            <!-- Cột trái: Báo cáo -->
+            <div>
+                <h3 style="margin-top: 0; margin-bottom: 15px; color: #333;">📊 Danh Sách Báo Cáo</h3>
+
+                <a href="https://docs.google.com/spreadsheets/d/1gfFYZTz1SIm0CVrydI4UY934wJ5fvghQ7hi5MhSB1pE/edit?gid=653998014#gid=653998014" target="_blank" class="link-card sheet-link">
+                    📊 Báo cáo tổng hợp HQC/FQC hàng tuần
+                </a>
+                <a href="https://docs.google.com/spreadsheets/d/1of2bFSyYKBswoAnQOCFsJm8JfKAGUS9qmwlvaU1SSBV8/edit?pli=1&gid=1312774476#gid=1312774476" target="_blank" class="link-card sheet-link">
+                    📊 Báo cáo tổng hợp Pre-final hàng tuần
+                </a>
+                <a href="https://docs.google.com/spreadsheets/d/1F_R7qaZdo9WQLjxJtIz69rEN77JQvRnz_z2ZUA0jxI/edit?gid=616548280#gid=616548280" target="_blank" class="link-card sheet-link">
+                    📊 Báo cáo tổng hợp Pre-final Lào hàng tuần
+                </a>
+                <a href="https://docs.google.com/spreadsheets/d/1fokM2A81tj-9QW86C__3himjvPMKWjE5k8d1WWzMjKo/edit?gid=1316557202#gid=1316557202" target="_blank" class="link-card sheet-link">
+                    📊 Báo cáo kiểm hàng UNIQLO
+                </a>
+                <a href="https://docs.google.com/spreadsheets/d/1hw-4JHQdBQFa7by5pyYWCSfGFS3ymvZrW1YsNMaLcNE/edit?gid=1057145470#gid=1057145470" target="_blank" class="link-card sheet-link">
+                    📊 Báo cáo Tổng hợp sự cố sản xuất
+                </a>
+                <a href="https://docs.google.com/spreadsheets/d/1RkAIOUVqutgVptWn3R9OxshLUs-R8La1oPsgt3NFECGU/edit?gid=1435937454#gid=1435937454" target="_blank" class="link-card sheet-link">
+                    📊 Báo cáo Tổng hợp sự cố sản xuất Nhà máy LAOS
+                </a>
+                <a href="" class="link-card appsheet-link">
+                    📱 AppSheet: Chưa cập nhật
+                </a>
+            </div>
+
+            <!-- Cột phải: Tài liệu -->
+            <div>
+                <h3 style="margin-top: 0; margin-bottom: 15px; color: #333;">📂 Tài Liệu & Hướng Dẫn</h3>
+
+                <table style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 20px;">
+                    <thead>
+                        <tr style="background-color: #f2f2f2; border-bottom: 2px solid #ccc;">
+                            <th style="padding: 10px; font-size: 14px;">Tên Tài Liệu</th>
+                            <th style="padding: 10px; font-size: 14px;">Ghi chú</th>
+                            <th style="padding: 10px; font-size: 14px; text-align: center;">Liên kết</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background-color: #f9f9f9;">
+                            <td style="padding: 10px; font-weight: bold; font-size: 14px; color: #1a73e8;" colspan="3">
+                                📂 Sổ tay Quy trình công việc
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 8px 10px 8px 25px; font-size: 13px;">└─ Quy trình bộ phận Kho</td>
+                            <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
+                            <td style="padding: 8px 10px; text-align: center;">
+                                <a href="LINK_KHO" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 8px 10px 8px 25px; font-size: 13px;">└─ Quy trình bộ phận Cắt</td>
+                            <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
+                            <td style="padding: 8px 10px; text-align: center;">
+                                <a href="LINK_CAT" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 8px 10px 8px 25px; font-size: 13px;">└─ Quy trình Chuyền may</td>
+                            <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
+                            <td style="padding: 8px 10px; text-align: center;">
+                                <a href="LINK_MAY" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 10px; font-weight: bold; font-size: 13px;">Hướng dẫn kiểm hàng</td>
+                            <td style="padding: 10px; font-size: 13px; color: #666;">Tài liệu khách hàng</td>
+                            <td style="padding: 10px; text-align: center;">
+                                <a href="LINK_TAI_LIEU_2" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Ảnh tòa nhà dưới bảng tài liệu -->
+                <div style="margin-top: 25px; text-align: center;">
+                    <img src="images nha may.jpg" alt="Hình minh họa" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 8px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bộ dịch ngầm Google Translate -->
+    <div id="google_translate_element"></div>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'vi',
+                includedLanguages: 'en,ko,vi',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        // Hàm kích hoạt dịch khi bấm nút KR / EN / VN
+        function translatePage(langCode, btn) {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            var selectObj = document.querySelector('.goog-te-combo');
+            if (selectObj) {
+                selectObj.value = langCode;
+                selectObj.dispatchEvent(new Event('change'));
+            }
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
-
-<body>
-
-<!-- Banner Bên Trái -->
-<div class="side-banner banner-left">
-    <img src="images nha may.jpg" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-</div>
-
-<!-- Banner Bên Phải -->
-<div class="side-banner banner-right">
-    <img src="images nha may.jpg" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-</div>
-
-<div class="container">
-    ...
