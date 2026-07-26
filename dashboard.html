@@ -79,6 +79,7 @@
             padding: 25px;
             border-radius: 16px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
         }
 
         .link-card {
@@ -189,7 +190,7 @@
         <div class="dashboard-grid">
             
             <!-- KHỐI 1: BÁO CÁO (BÊN TRÁI) -->
-            <div class="card-box">
+            <div class="card-box" style="margin-bottom: 0;">
                 <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📊 Danh Sách Báo Cáo</h3>
 
                 <a href="https://docs.google.com/spreadsheets/d/1gfFYZTz1SIm0CVrydI4UY934wJ5fvghQ7hi5MhSB1pE/edit?gid=653998014#gid=653998014" target="_blank" class="link-card sheet-link">
@@ -215,54 +216,94 @@
                 </a>
             </div>
 
-            <!-- KHỐI 2: TÀI LIỆU (BÊN PHẢI) -->
-            <div class="card-box">
-                <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📂 Tài Liệu & HƯỚNG DẪN</h3>
+            <!-- CỘT BÊN PHẢI (CHỨA BẢNG TÀI LIỆU VÀ BẢNG QA TEAM) -->
+            <div>
+                <!-- KHỐI 2: TÀI LIỆU (Ở TRÊN) -->
+                <div class="card-box">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📂 Tài Liệu & HƯỚNG DẪN</h3>
 
-                <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                    <thead>
-                        <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
-                            <th style="padding: 10px; font-size: 13px; border-radius: 6px 0 0 6px;">Tên Tài Liệu</th>
-                            <th style="padding: 10px; font-size: 13px;">Ghi chú</th>
-                            <th style="padding: 10px; font-size: 13px; text-align: center; border-radius: 0 6px 6px 0;">Liên kết</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="background-color: #f1f3f5;">
-                            <td style="padding: 10px; font-weight: bold; font-size: 13px; color: #1a73e8;" colspan="3">
-                                📖 Sổ tay Quy trình công việc
-                            </td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #f1f3f5;">
-                            <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Quy trình bộ phận Kho</td>
-                            <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
-                            <td style="padding: 8px 10px; text-align: center;">
-                                <a href="quy-trinh-kho.html" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
-                            </td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #f1f3f5;">
-                            <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Quy trình bộ phận Cắt</td>
-                            <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
-                            <td style="padding: 8px 10px; text-align: center;">
-                                <a href="quy-trinh-cat.html" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
-                            </td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #f1f3f5;">
-                            <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Quy trình Chuyền may</td>
-                            <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
-                            <td style="padding: 8px 10px; text-align: center;">
-                                <a href="quy-trinh-may.html" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 10px; font-weight: bold; font-size: 13px;">Hướng dẫn kiểm hàng</td>
-                            <td style="padding: 10px; font-size: 13px; color: #666;">Tài liệu khách hàng</td>
-                            <td style="padding: 10px; text-align: center;">
-                                <a href="LINK_TAI_LIEU_2" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
+                                <th style="padding: 10px; font-size: 13px; border-radius: 6px 0 0 6px;">Tên Tài Liệu</th>
+                                <th style="padding: 10px; font-size: 13px;">Ghi chú</th>
+                                <th style="padding: 10px; font-size: 13px; text-align: center; border-radius: 0 6px 6px 0;">Liên kết</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background-color: #f1f3f5;">
+                                <td style="padding: 10px; font-weight: bold; font-size: 13px; color: #1a73e8;" colspan="3">
+                                    📖 Sổ tay Quy trình công việc
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #f1f3f5;">
+                                <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Quy trình bộ phận Kho</td>
+                                <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
+                                <td style="padding: 8px 10px; text-align: center;">
+                                    <a href="quy-trinh-kho.html" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #f1f3f5;">
+                                <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Quy trình bộ phận Cắt</td>
+                                <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
+                                <td style="padding: 8px 10px; text-align: center;">
+                                    <a href="quy-trinh-cat.html" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #f1f3f5;">
+                                <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Quy trình Chuyền may</td>
+                                <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
+                                <td style="padding: 8px 10px; text-align: center;">
+                                    <a href="quy-trinh-may.html" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; font-weight: bold; font-size: 13px;">Hướng dẫn kiểm hàng</td>
+                                <td style="padding: 10px; font-size: 13px; color: #666;">Tài liệu khách hàng</td>
+                                <td style="padding: 10px; text-align: center;">
+                                    <a href="LINK_TAI_LIEU_2" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- KHỐI 3: THÔNG TIN QA TEAM (Ở DƯỚI) -->
+                <div class="card-box" style="margin-bottom: 0;">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông Tin QA Team</h3>
+
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
+                                <th style="padding: 10px; font-size: 13px; border-radius: 6px 0 0 6px;">Họ và Tên</th>
+                                <th style="padding: 10px; font-size: 13px;">Vị trí / Phụ trách</th>
+                                <th style="padding: 10px; font-size: 13px; text-align: center; border-radius: 0 6px 6px 0;">Liên hệ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #f1f3f5;">
+                                <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b;">Nguyễn Văn A</td>
+                                <td style="padding: 10px; font-size: 13px; color: #666;">Trưởng phòng QA</td>
+                                <td style="padding: 10px; font-size: 13px; text-align: center; color: #1a73e8; font-weight: bold;">0901 234 567</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #f1f3f5;">
+                                <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b;">Trần Thị B</td>
+                                <td style="padding: 10px; font-size: 13px; color: #666;">Giám sát QA Chuyền May</td>
+                                <td style="padding: 10px; font-size: 13px; text-align: center; color: #1a73e8; font-weight: bold;">0902 345 678</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #f1f3f5;">
+                                <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b;">Lê Văn C</td>
+                                <td style="padding: 10px; font-size: 13px; color: #666;">QA Phụ trách Khách hàng Uniqlo</td>
+                                <td style="padding: 10px; font-size: 13px; text-align: center; color: #1a73e8; font-weight: bold;">0903 456 789</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b;">Phạm Thị D</td>
+                                <td style="padding: 10px; font-size: 13px; color: #666;">QA Kiểm kho & Cắt</td>
+                                <td style="padding: 10px; font-size: 13px; text-align: center; color: #1a73e8; font-weight: bold;">0904 567 890</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
