@@ -504,7 +504,7 @@
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
-        // --- HÀM TẠO DÒNG NHẬP LIỆU CHUNG (DÙNG CHO BẢNG QUY TRÌNH) ---
+        // --- HÀM TẠO DÒNG NHẬP LIỆU CHUNG ---
         function addDocModalRow(containerId, name = '', note = '', link = '') {
             const container = document.getElementById(containerId);
             const rowDiv = document.createElement('div');
@@ -561,10 +561,8 @@
         function openReportEditModal() {
             const container = document.getElementById('modalReportContainer');
             container.innerHTML = '';
-            
             const saved = localStorage.getItem('hv_reports_data');
             const data = saved ? JSON.parse(saved) : defaultReports;
-            
             data.forEach(item => addReportModalRow(item.title, item.link));
             document.getElementById('reportModal').style.display = 'flex';
         }
@@ -618,10 +616,8 @@
         function openProcEditModal() {
             const container = document.getElementById('modalProcContainer');
             container.innerHTML = '';
-            
             const saved = localStorage.getItem('hv_proc_data');
             const data = saved ? JSON.parse(saved) : defaultProc;
-
             data.forEach(item => addDocModalRow('modalProcContainer', item.name, item.note, item.link));
             document.getElementById('procModal').style.display = 'flex';
         }
@@ -693,6 +689,12 @@
                     alert('Vui lòng chọn tệp định dạng .PDF!');
                     return;
                 }
+                // Giới hạn dung lượng file trực tiếp (Dưới 2MB để tránh tràn bộ nhớ localStorage)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('File PDF vượt quá 2MB! Vui lòng tải file lên Google Drive và dán Link vào đây để tránh bị lỗi bộ nhớ.');
+                    return;
+                }
+
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     fileInput.parentElement.querySelector('.link-input').value = e.target.result;
@@ -704,10 +706,8 @@
         function openInspEditModal() {
             const container = document.getElementById('modalInspContainer');
             container.innerHTML = '';
-            
             const saved = localStorage.getItem('hv_insp_data');
             const data = saved ? JSON.parse(saved) : defaultInsp;
-
             data.forEach(item => addInspModalRow(item.name, item.note, item.link));
             document.getElementById('inspModal').style.display = 'flex';
         }
@@ -729,9 +729,13 @@
                 if (name) newData.push({ name, note, link });
             });
 
-            localStorage.setItem('hv_insp_data', JSON.stringify(newData));
-            loadInsp();
-            closeInspEditModal();
+            try {
+                localStorage.setItem('hv_insp_data', JSON.stringify(newData));
+                loadInsp();
+                closeInspEditModal();
+            } catch (e) {
+                alert("Dung lượng File PDF quá lớn không thể lưu vào trình duyệt! Hãy upload file lên Google Drive và dán đường link vào ô Link.");
+            }
         }
 
         // ================= 3. LỊCH AUDIT =================
@@ -769,10 +773,8 @@
         function openEditModal() {
             const container = document.getElementById('modalRowContainer');
             container.innerHTML = '';
-            
             const saved = localStorage.getItem('hv_audit_data');
             const data = saved ? JSON.parse(saved) : defaultAudit;
-
             data.forEach(item => addModalRow(item.customer, item.date, item.type, item.factory));
             document.getElementById('editModal').style.display = 'flex';
         }
