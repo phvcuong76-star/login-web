@@ -33,7 +33,6 @@
             object-fit: contain;
         }
 
-        /* Tiêu đề chính kiểu capsule xanh chữ trắng */
         .main-title-box {
             background: linear-gradient(135deg, #1a73e8, #1557b0);
             max-width: 580px;
@@ -106,7 +105,6 @@
             border: 1px solid #d2e3fc;
         }
 
-        /* Nút cập nhật chung */
         .btn-update {
             display: inline-flex;
             align-items: center;
@@ -141,7 +139,7 @@
         .modal-content {
             background: white;
             width: 100%;
-            max-width: 700px;
+            max-width: 750px;
             border-radius: 12px;
             padding: 24px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -176,6 +174,16 @@
             margin-bottom: 10px;
             align-items: center;
         }
+
+        /* Dòng cấu trúc mới cho Hướng dẫn Kiểm hàng (Có Nút PDF) */
+        .edit-row-insp {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr 2fr auto 40px;
+            gap: 8px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
         .edit-row-report {
             display: grid;
             grid-template-columns: 2.5fr 3fr 40px;
@@ -190,12 +198,29 @@
             margin-bottom: 10px;
             align-items: center;
         }
-        .edit-row input, .edit-row-report input, .edit-row-audit input {
+        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input {
             padding: 8px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             font-size: 13px;
             width: 100%;
+        }
+        .btn-pdf-upload {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-pdf-upload:hover {
+            background: #dbeafe;
         }
         .btn-delete-row {
             background: #fee2e2;
@@ -374,17 +399,17 @@
                             <tr style="border-bottom: 1px solid #f1f3f5;">
                                 <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Quy trình bộ phận Kho</td>
                                 <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
-                                <td style="padding: 8px 10px; text-align: center;"><a href="quy-trinh-kho.html" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
+                                <td style="padding: 8px 10px; text-align: center;"><a href="quy-trinh-kho.html" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
                             </tr>
                             <tr style="border-bottom: 1px solid #f1f3f5;">
                                 <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Quy trình bộ phận Cắt</td>
                                 <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
-                                <td style="padding: 8px 10px; text-align: center;"><a href="quy-trinh-cat.html" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
+                                <td style="padding: 8px 10px; text-align: center;"><a href="quy-trinh-cat.html" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
                             </tr>
                             <tr style="border-bottom: 1px solid #f1f3f5;">
                                 <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Quy trình Chuyền may</td>
                                 <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
-                                <td style="padding: 8px 10px; text-align: center;"><a href="quy-trinh-may.html" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
+                                <td style="padding: 8px 10px; text-align: center;"><a href="quy-trinh-may.html" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -393,7 +418,7 @@
                         ✏️ Cập nhật
                     </button>
 
-                    <!-- BẢNG 2: HƯỚNG DẪN KIỂM HÀNG (CẤP BẬC TƯƠNG ĐƯƠNG) -->
+                    <!-- BẢNG 2: HƯỚNG DẪN KIỂM HÀNG -->
                     <table style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 10px;" id="inspTable">
                         <thead>
                             <tr class="doc-section-title">
@@ -508,7 +533,7 @@
         </div>
     </div>
 
-    <!-- MODAL 2: CẬP NHẬT HƯỚNG DẪN KIỂM HÀNG -->
+    <!-- MODAL 2: CẬP NHẬT HƯỚNG DẪN KIỂM HÀNG (CÓ NÚT UPLOAD PDF) -->
     <div class="modal-overlay" id="inspModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -518,7 +543,7 @@
             
             <div id="modalInspContainer"></div>
 
-            <button class="btn-add-row" onclick="addDocModalRow('modalInspContainer')">+ Thêm hướng dẫn mới</button>
+            <button class="btn-add-row" onclick="addInspModalRow()">+ Thêm hướng dẫn mới</button>
 
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeInspEditModal()">Hủy</button>
@@ -549,7 +574,7 @@
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
-        // --- HÀM TẠO DÒNG NHẬP LIỆU CHUNG CHO CÁC MODAL TÀI LIỆU ---
+        // --- HÀM TẠO DÒNG NHẬP LIỆU CHUNG (DÙNG CHO BẢNG QUY TRÌNH) ---
         function addDocModalRow(containerId, name = '', note = '', link = '') {
             const container = document.getElementById(containerId);
             const rowDiv = document.createElement('div');
@@ -610,7 +635,6 @@
                     a.href = link;
                     a.target = '_blank';
                     
-                    // Phân biệt màu dựa trên từ khóa AppSheet hoặc Google Sheet
                     if (title.toLowerCase().includes('appsheet')) {
                         a.className = 'link-card appsheet-link';
                     } else {
@@ -668,7 +692,7 @@
                     tr.innerHTML = `
                         <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${name}</td>
                         <td style="padding: 8px 10px; font-size: 13px; color: #666;">${note}</td>
-                        <td style="padding: 8px 10px; text-align: center;"><a href="${link}" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
+                        <td style="padding: 8px 10px; text-align: center;"><a href="${link}" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
                     `;
                     tbody.appendChild(tr);
                 }
@@ -677,7 +701,37 @@
             closeProcEditModal();
         }
 
-        // ================= 2. CẬP NHẬT HƯỚNG DẪN KIỂM HÀNG =================
+        // ================= 2. CẬP NHẬT HƯỚNG DẪN KIỂM HÀNG (CÓ CHỨC NĂNG UPLOAD PDF) =================
+        function addInspModalRow(name = '', note = '', link = '') {
+            const container = document.getElementById('modalInspContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-insp';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Tên Hướng Dẫn" value="${name}">
+                <input type="text" placeholder="Ghi chú" value="${note}">
+                <input type="text" class="link-input" placeholder="Link hoặc chọn PDF" value="${link}">
+                <input type="file" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
+                <button type="button" class="btn-pdf-upload" onclick="this.previousElementSibling.click()">
+                    📄 Tải PDF
+                </button>
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function handlePdfUpload(fileInput) {
+            const file = fileInput.files[0];
+            if (file) {
+                if (file.type !== 'application/pdf') {
+                    alert('Vui lòng chọn tệp định dạng .PDF!');
+                    return;
+                }
+                const url = URL.createObjectURL(file);
+                const linkInput = fileInput.parentElement.querySelector('.link-input');
+                linkInput.value = url;
+            }
+        }
+
         function openInspEditModal() {
             const container = document.getElementById('modalInspContainer');
             container.innerHTML = '';
@@ -688,7 +742,7 @@
                 let name = cols[0].innerText.replace('└─ ', '').trim();
                 let note = cols[1].innerText.trim();
                 let link = cols[2].querySelector('a') ? cols[2].querySelector('a').getAttribute('href') : '';
-                addDocModalRow('modalInspContainer', name, note, link);
+                addInspModalRow(name, note, link);
             });
 
             document.getElementById('inspModal').style.display = 'flex';
@@ -700,7 +754,7 @@
 
         function saveInspTable() {
             const container = document.getElementById('modalInspContainer');
-            const editRows = container.querySelectorAll('.edit-row');
+            const editRows = container.querySelectorAll('.edit-row-insp');
             const tbody = document.querySelector('#inspTable tbody');
             tbody.innerHTML = '';
 
