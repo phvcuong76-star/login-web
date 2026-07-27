@@ -153,7 +153,7 @@
         .modal-content {
             background: white;
             width: 100%;
-            max-width: 700px;
+            max-width: 800px;
             border-radius: 16px;
             padding: 24px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -183,7 +183,7 @@
 
         .edit-row {
             display: grid;
-            grid-template-columns: 2fr 2fr 2fr 36px;
+            grid-template-columns: 2fr 2fr 2fr 100px 36px;
             gap: 8px;
             margin-bottom: 12px;
             align-items: center;
@@ -192,13 +192,40 @@
             border-radius: 8px;
             border: 1px solid #e2e8f0;
         }
-        .edit-row input {
+        .edit-row input[type="text"] {
             padding: 8px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             font-size: 13px;
             width: 100%;
         }
+        
+        /* Upload Button Styling */
+        .file-upload-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e2e8f0;
+            color: #334155;
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #cbd5e1;
+            text-align: center;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .file-upload-btn:hover {
+            background-color: #cbd5e1;
+        }
+        .file-upload-btn.has-file {
+            background-color: #dcfce7;
+            color: #166534;
+            border-color: #86efac;
+        }
+
         .btn-delete-row {
             background: #fee2e2;
             color: #dc2626;
@@ -389,13 +416,58 @@
             const container = document.getElementById('modalRowContainer');
             const rowDiv = document.createElement('div');
             rowDiv.className = 'edit-row';
+            
+            const rowId = 'file_input_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            const isBase64OrFile = url.startsWith('data:application/pdf');
+
             rowDiv.innerHTML = `
                 <input type="text" placeholder="Tên tài liệu" value="${title}">
                 <input type="text" placeholder="Mô tả ngắn" value="${desc}">
-                <input type="text" placeholder="Đường dẫn (URL/Link)" value="${url}">
+                <input type="text" class="url-input" placeholder="Đường dẫn (URL/Link)" value="${isBase64OrFile ? '[File PDF đã chọn]' : url}">
+                
+                <label for="${rowId}" class="file-upload-btn ${isBase64OrFile ? 'has-file' : ''}">
+                    ${isBase64OrFile ? '✓ Đã chọn' : '📁 Tải PDF'}
+                </label>
+                <input type="file" id="${rowId}" accept="application/pdf" style="display:none;" onchange="handleFileUpload(this)">
+                
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
             `;
+            
+            if (isBase64OrFile) {
+                rowDiv.dataset.pdfData = url;
+            }
+
             container.appendChild(rowDiv);
+        }
+
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            if (file.type !== 'application/pdf') {
+                alert('Vui lòng chỉ chọn file có định dạng PDF!');
+                return;
+            }
+
+            // Giới hạn kích thước file (tối đa 10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Dung lượng file vượt quá 10MB. Hãy chọn file nhỏ hơn hoặc dùng đường dẫn URL.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const rowDiv = input.parentElement;
+                const urlInput = rowDiv.querySelector('.url-input');
+                const label = rowDiv.querySelector('.file-upload-btn');
+
+                rowDiv.dataset.pdfData = e.target.result; // Lưu dữ liệu dạng Base64
+                urlInput.value = `[Tệp PDF: ${file.name}]`;
+                
+                label.innerText = '✓ Đã chọn';
+                label.classList.add('has-file');
+            };
+            reader.readAsDataURL(file);
         }
 
         function saveDocList() {
@@ -405,10 +477,17 @@
             docContainer.innerHTML = '';
 
             editRows.forEach((row) => {
-                const inputs = row.querySelectorAll('input');
+                const inputs = row.querySelectorAll('input[type="text"]');
                 const title = inputs[0].value.trim();
                 const desc = inputs[1].value.trim();
-                const url = inputs[2].value.trim() || '#';
+                let url = inputs[2].value.trim();
+
+                // Kiểm tra xem có file PDF được upload dạng Base64 hay không
+                if (row.dataset.pdfData) {
+                    url = row.dataset.pdfData;
+                } else if (!url || url.startsWith('[Tệp PDF:') || url === '[File PDF đã chọn]') {
+                    url = '#';
+                }
 
                 if (title) {
                     const itemDiv = document.createElement('div');
