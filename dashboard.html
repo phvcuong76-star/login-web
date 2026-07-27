@@ -563,7 +563,7 @@
         // --- HÀM MỞ FILE CHUNG (SỬA LỖI TAB TRẮNG CHROME/EDGE) ---
         function openDocument(url) {
             if (!url || url === '#') return;
-            
+            // Nếu là dữ liệu Base64 từ file PDF tải lên
             if (url.startsWith('data:application/pdf')) {
                 try {
                     const arr = url.split(',');
@@ -576,12 +576,14 @@
                     }
                     const blob = new Blob([u8arr], { type: mime });
                     const blobUrl = URL.createObjectURL(blob);
-                    window.open(blobUrl, '_blank');
+             // Sửa '_blank' thành '_self' để mở ngay tại tab hiện tại       
+                    window.open(blobUrl, '_self');
                 } catch (e) {
                     alert("Không thể mở file PDF này. File có thể bị hỏng!");
                 }
             } else {
-                window.open(url, '_blank');
+               // Mở đường dẫn Drive/Link web ngay tại tab hiện tại
+        window.location.href = url; // hoặc window.open(url, '_self');
             }
         }
 
