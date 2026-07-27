@@ -20,7 +20,7 @@
         .doc-item:hover { border-color: #cbd5e1; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .doc-title { font-weight: 700; color: #1e293b; margin-bottom: 4px; font-size: 15px; }
         .doc-desc { color: #64748b; font-size: 13px; margin: 0; }
-        .btn-view { background: #1a73e8; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+        .btn-view { background: #1a73e8; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; border: none; }
         .btn-update { background: #1a73e8; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 25px; float: right; display: flex; align-items: center; gap: 6px; }
 
         /* Modal Styles */
@@ -61,7 +61,7 @@
     <!-- MODAL EDIT -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-content">
-            <h3 style="margin-top:0;">✏️ Cập Nhật Danh Sách Tài Liệu Cắt</h3>
+            <h3 style="margin-top:0;">✏️ Cập Nhật Danh Sách Tài Liệu Kho</h3>
             <div id="modalRowContainer"></div>
             <button class="btn-add" onclick="addModalRow()">+ Thêm tài liệu mới</button>
             <div class="modal-footer">
@@ -72,7 +72,34 @@
     </div>
 
     <script>
-        // 1. Dữ liệu mặc định khi chưa từng chỉnh sửa
+        // Hàm mở file PDF hoặc Link web an toàn
+        function openDocument(url) {
+            if (!url || url === '#') return;
+            
+            // Nếu là dữ liệu Base64 từ file PDF tải lên
+            if (url.startsWith('data:application/pdf')) {
+                try {
+                    const arr = url.split(',');
+                    const mime = arr[0].match(/:(.*?);/)[1];
+                    const bstr = atob(arr[1]);
+                    let n = bstr.length;
+                    const u8arr = new Uint8Array(n);
+                    while (n--) {
+                        u8arr[n] = bstr.charCodeAt(n);
+                    }
+                    const blob = new Blob([u8arr], { type: mime });
+                    const blobUrl = URL.createObjectURL(blob);
+                    window.open(blobUrl, '_blank');
+                } catch (e) {
+                    alert("Không thể mở file PDF! Vui lòng thử lại.");
+                }
+            } else {
+                // Link Google Drive / Website thông thường
+                window.open(url, '_blank');
+            }
+        }
+
+        // 1. Dữ liệu mặc định
         const defaultData = [
             { title: "1. Quy trình Nhập kho Nguyên Phụ liệu", desc: "Hướng dẫn chi tiết các bước kiểm đếm và lưu kho NPL", link: "https://drive.google.com/file/d/xxx/view" },
             { title: "2. Quy trình Xuất hàng cho Chuyền sản xuất", desc: "Quy định về phiếu xuất kho và bàn giao vật tư", link: "#" },
@@ -80,7 +107,7 @@
             { title: "4. Hướng dẫn Quản lý Kho Thành phẩm", desc: "Tiêu chuẩn chất xếp và bảo quản thùng thành phẩm", link: "#" }
         ];
 
-        // 2. Lấy dữ liệu từ localStorage (nếu có) hoặc dùng dữ liệu mặc định
+        // 2. Lấy dữ liệu từ localStorage
         function loadData() {
             const savedData = localStorage.getItem('warehouse_docs_data');
             return savedData ? JSON.parse(savedData) : defaultData;
@@ -95,12 +122,16 @@
             data.forEach(item => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'doc-item';
+                
+                // Tránh lỗi dấu ngoặc đơn khi truyền link
+                const safeLink = item.link.replace(/'/g, "\\'");
+                
                 itemDiv.innerHTML = `
                     <div>
                         <div class="doc-title">${item.title}</div>
                         <div class="doc-desc">${item.desc}</div>
                     </div>
-                    <a href="${item.link}" target="_blank" class="btn-view">Mở tài liệu ↗</a>
+                    <button class="btn-view" onclick="openDocument('${safeLink}')">Mở tài liệu ↗</button>
                 `;
                 container.appendChild(itemDiv);
             });
@@ -138,15 +169,20 @@
         function uploadPdf(fileInput) {
             const file = fileInput.files[0];
             if (file) {
+                if (file.size > 3 * 1024 * 1024) {
+                    alert('File PDF lớn hơn 3MB! Vui lòng dùng đường link Google Drive để tránh làm đầy bộ nhớ trình duyệt.');
+                    return;
+                }
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     fileInput.parentElement.querySelector('.link-input').value = e.target.result;
+                    alert("Tải file PDF thành công! Nhớ bấm 'Lưu thay đổi'.");
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        // 5. Lưu dữ liệu vào localStorage
+        // 5. Lưu dữ liệu
         function saveData() {
             const rows = document.querySelectorAll('#modalRowContainer .edit-row');
             const newData = [];
@@ -162,16 +198,17 @@
                 }
             });
 
-            // Lưu mảng JSON vào bộ nhớ trình duyệt
-            localStorage.setItem('warehouse_docs_data', JSON.stringify(newData));
-            
-            renderList();
-            closeModal();
+            try {
+                localStorage.setItem('warehouse_docs_data', JSON.stringify(newData));
+                renderList();
+                closeModal();
+            } catch (e) {
+                alert("Dung lượng PDF quá lớn vượt quá bộ nhớ Trình duyệt! Hãy dán link Google Drive.");
+            }
         }
 
-        // Tải danh sách lần đầu khi mở trang
+        // Lần đầu tải trang
         renderList();
     </script>
 </body>
 </html>
-
