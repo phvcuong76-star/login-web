@@ -176,6 +176,13 @@
             margin-bottom: 10px;
             align-items: center;
         }
+        .edit-row-report {
+            display: grid;
+            grid-template-columns: 2.5fr 3fr 40px;
+            gap: 8px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
         .edit-row-audit {
             display: grid;
             grid-template-columns: 2fr 1.5fr 2fr 1.5fr 40px;
@@ -183,7 +190,7 @@
             margin-bottom: 10px;
             align-items: center;
         }
-        .edit-row input, .edit-row-audit input {
+        .edit-row input, .edit-row-report input, .edit-row-audit input {
             padding: 8px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
@@ -321,27 +328,33 @@
             <div class="card-box" style="margin-bottom: 0;">
                 <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📊 Danh Sách Báo Cáo</h3>
 
-                <a href="https://docs.google.com/spreadsheets/d/1gfFYZTz1SIm0CVrydI4UY934wJ5fvghQ7hi5MhSB1pE/edit?gid=653998014#gid=653998014" target="_blank" class="link-card sheet-link">
-                    📊 Báo cáo tổng hợp HQC/FQC hàng tuần
-                </a>
-                <a href="https://docs.google.com/spreadsheets/d/1of2bFSyYKBswoAnQOCFsJm8JfKAGUS9qmwlvaU1SSBV8/edit?pli=1&gid=1312774476#gid=1312774476" target="_blank" class="link-card sheet-link">
-                    📊 Báo cáo tổng hợp Pre-final hàng tuần
-                </a>
-                <a href="https://docs.google.com/spreadsheets/d/1F_R7qaZdo9WQLjxJtIz69rEN77JQvRnz_z2ZUA0jxI/edit?gid=616548280#gid=616548280" target="_blank" class="link-card sheet-link">
-                    📊 Báo cáo tổng hợp Pre-final Lào hàng tuần
-                </a>
-                <a href="https://docs.google.com/spreadsheets/d/1fokM2A81tj-9QW86C__3himjvPMKWjE5k8d1WWzMjKo/edit?gid=1316557202#gid=1316557202" target="_blank" class="link-card sheet-link">
-                    📊 Báo cáo kiểm hàng UNIQLO
-                </a>
-                <a href="https://docs.google.com/spreadsheets/d/1hw-4JHQdBQFa7by5pyYWCSfGFS3ymvZrW1YsNMaLcNE/edit?gid=1057145470#gid=1057145470" target="_blank" class="link-card sheet-link">
-                    📊 Báo cáo Tổng hợp sự cố sản xuất
-                </a>
-                <a href="https://docs.google.com/spreadsheets/d/1RkAIOUVqutgVptWn3R9OxshLUs-R8La1oPsgt3NFECGU/edit?gid=1435937454#gid=1435937454" target="_blank" class="link-card sheet-link">
-                    📊 Báo cáo Tổng hợp sự cố sản xuất Nhà máy LAOS
-                </a>
-                <a href="" class="link-card appsheet-link" style="margin-bottom: 0;">
-                    📱 AppSheet: Chưa cập nhật
-                </a>
+                <div id="reportListContainer">
+                    <a href="https://docs.google.com/spreadsheets/d/1gfFYZTz1SIm0CVrydI4UY934wJ5fvghQ7hi5MhSB1pE/edit?gid=653998014#gid=653998014" target="_blank" class="link-card sheet-link">
+                        📊 Báo cáo tổng hợp HQC/FQC hàng tuần
+                    </a>
+                    <a href="https://docs.google.com/spreadsheets/d/1of2bFSyYKBswoAnQOCFsJm8JfKAGUS9qmwlvaU1SSBV8/edit?pli=1&gid=1312774476#gid=1312774476" target="_blank" class="link-card sheet-link">
+                        📊 Báo cáo tổng hợp Pre-final hàng tuần
+                    </a>
+                    <a href="https://docs.google.com/spreadsheets/d/1F_R7qaZdo9WQLjxJtIz69rEN77JQvRnz_z2ZUA0jxI/edit?gid=616548280#gid=616548280" target="_blank" class="link-card sheet-link">
+                        📊 Báo cáo tổng hợp Pre-final Lào hàng tuần
+                    </a>
+                    <a href="https://docs.google.com/spreadsheets/d/1fokM2A81tj-9QW86C__3himjvPMKWjE5k8d1WWzMjKo/edit?gid=1316557202#gid=1316557202" target="_blank" class="link-card sheet-link">
+                        📊 Báo cáo kiểm hàng UNIQLO
+                    </a>
+                    <a href="https://docs.google.com/spreadsheets/d/1hw-4JHQdBQFa7by5pyYWCSfGFS3ymvZrW1YsNMaLcNE/edit?gid=1057145470#gid=1057145470" target="_blank" class="link-card sheet-link">
+                        📊 Báo cáo Tổng hợp sự cố sản xuất
+                    </a>
+                    <a href="https://docs.google.com/spreadsheets/d/1RkAIOUVqutgVptWn3R9OxshLUs-R8La1oPsgt3NFECGU/edit?gid=1435937454#gid=1435937454" target="_blank" class="link-card sheet-link">
+                        📊 Báo cáo Tổng hợp sự cố sản xuất Nhà máy LAOS
+                    </a>
+                    <a href="#" class="link-card appsheet-link" style="margin-bottom: 0;">
+                        📱 AppSheet: Chưa cập nhật
+                    </a>
+                </div>
+
+                <button class="btn-update" onclick="openReportEditModal()">
+                    ✏️ Cập nhật Báo cáo
+                </button>
             </div>
 
             <!-- CỘT BÊN PHẢI -->
@@ -457,6 +470,25 @@
         </div>
     </div>
 
+    <!-- MODAL 0: CẬP NHẬT DANH SÁCH BÁO CÁO -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Danh Sách Báo Cáo</h3>
+                <button class="close-btn" onclick="closeReportEditModal()">&times;</button>
+            </div>
+            
+            <div id="modalReportContainer"></div>
+
+            <button class="btn-add-row" onclick="addReportModalRow()">+ Thêm báo cáo mới</button>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeReportEditModal()">Hủy</button>
+                <button class="btn-save" onclick="saveReportList()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL 1: CẬP NHẬT QUY TRÌNH CÔNG VIỆC -->
     <div class="modal-overlay" id="procModal">
         <div class="modal-content">
@@ -529,6 +561,72 @@
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
             `;
             container.appendChild(rowDiv);
+        }
+
+        // ================= 0. CẬP NHẬT DANH SÁCH BÁO CÁO =================
+        function addReportModalRow(title = '', link = '') {
+            const container = document.getElementById('modalReportContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-report';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Tên Báo Cáo" value="${title}">
+                <input type="text" placeholder="Link (URL)" value="${link}">
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function openReportEditModal() {
+            const container = document.getElementById('modalReportContainer');
+            container.innerHTML = '';
+            
+            const links = document.querySelectorAll('#reportListContainer a');
+            links.forEach(link => {
+                let title = link.innerText.trim();
+                let url = link.getAttribute('href');
+                addReportModalRow(title, url);
+            });
+
+            document.getElementById('reportModal').style.display = 'flex';
+        }
+
+        function closeReportEditModal() {
+            document.getElementById('reportModal').style.display = 'none';
+        }
+
+        function saveReportList() {
+            const container = document.getElementById('modalReportContainer');
+            const editRows = container.querySelectorAll('.edit-row-report');
+            const reportContainer = document.getElementById('reportListContainer');
+            reportContainer.innerHTML = '';
+
+            editRows.forEach((row, index) => {
+                const inputs = row.querySelectorAll('input');
+                const title = inputs[0].value.trim();
+                const link = inputs[1].value.trim() || '#';
+
+                if (title) {
+                    const a = document.createElement('a');
+                    a.href = link;
+                    a.target = '_blank';
+                    
+                    // Phân biệt màu dựa trên từ khóa AppSheet hoặc Google Sheet
+                    if (title.toLowerCase().includes('appsheet')) {
+                        a.className = 'link-card appsheet-link';
+                    } else {
+                        a.className = 'link-card sheet-link';
+                    }
+
+                    if (index === editRows.length - 1) {
+                        a.style.marginBottom = '0';
+                    }
+
+                    a.innerText = title;
+                    reportContainer.appendChild(a);
+                }
+            });
+
+            closeReportEditModal();
         }
 
         // ================= 1. CẬP NHẬT SỔ TAY QUY TRÌNH =================
