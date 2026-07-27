@@ -317,6 +317,12 @@
             color: #1a73e8;
             padding: 10px;
         }
+        .view-link {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -505,6 +511,33 @@
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
+        // --- HÀM MỞ FILE CHUNG (SỬA LỖI TAB TRẮNG CHROME/EDGE) ---
+        function openDocument(url) {
+            if (!url || url === '#') return;
+            
+            // Nếu là chuỗi dữ liệu PDF Base64
+            if (url.startsWith('data:application/pdf')) {
+                try {
+                    const arr = url.split(',');
+                    const mime = arr[0].match(/:(.*?);/)[1];
+                    const bstr = atob(arr[1]);
+                    let n = bstr.length;
+                    const u8arr = new Uint8Array(n);
+                    while (n--) {
+                        u8arr[n] = bstr.charCodeAt(n);
+                    }
+                    const blob = new Blob([u8arr], { type: mime });
+                    const blobUrl = URL.createObjectURL(blob);
+                    window.open(blobUrl, '_blank');
+                } catch (e) {
+                    alert("Không thể mở file PDF này. File có thể bị hỏng!");
+                }
+            } else {
+                // Đường dẫn URL thông thường
+                window.open(url, '_blank');
+            }
+        }
+
         // --- HÀM TẠO DÒNG NHẬP LIỆU CHUNG ---
         function addDocModalRow(containerId, name = '', note = '', link = '') {
             const container = document.getElementById(containerId);
@@ -621,10 +654,15 @@
             data.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.style.borderBottom = '1px solid #f1f3f5';
+                
+                const linkCell = (item.link && item.link !== '#') 
+                    ? `<span class="view-link" onclick="openDocument('${item.link.replace(/'/g, "\\'")}')">Xem ↗</span>` 
+                    : `<span style="color: #94a3b8;">-</span>`;
+
                 tr.innerHTML = `
                     <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
                     <td style="padding: 8px 10px; font-size: 13px; color: #666;">${item.note}</td>
-                    <td style="padding: 8px 10px; text-align: center;"><a href="${item.link}" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
+                    <td style="padding: 8px 10px; text-align: center;">${linkCell}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -675,10 +713,15 @@
             data.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.style.borderBottom = '1px solid #f1f3f5';
+                
+                const linkCell = (item.link && item.link !== '#') 
+                    ? `<span class="view-link" onclick="openDocument('${item.link.replace(/'/g, "\\'")}')">Xem ↗</span>` 
+                    : `<span style="color: #94a3b8;">-</span>`;
+
                 tr.innerHTML = `
                     <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
                     <td style="padding: 8px 10px; font-size: 13px; color: #666;">${item.note}</td>
-                    <td style="padding: 8px 10px; text-align: center;"><a href="${item.link}" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
+                    <td style="padding: 8px 10px; text-align: center;">${linkCell}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -699,13 +742,11 @@
             container.appendChild(rowDiv);
         }
 
-        // Hàm kích hoạt chọn file chính xác
         function triggerFileInput(btn) {
             const fileInput = btn.parentElement.querySelector('.pdf-file-input');
             if (fileInput) fileInput.click();
         }
 
-        // Hàm xử lý upload PDF an toàn
         function handlePdfUpload(fileInput) {
             const file = fileInput.files[0];
             if (file) {
@@ -788,7 +829,7 @@
                 if (item.type.toLowerCase().includes('pre')) typeColor = '#137333';
 
                 const docCell = (item.docLink && item.docLink !== '#') 
-                    ? `<a href="${item.docLink}" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a>` 
+                    ? `<span class="view-link" onclick="openDocument('${item.docLink.replace(/'/g, "\\'")}')">Xem ↗</span>` 
                     : `<span style="color: #94a3b8;">-</span>`;
 
                 tr.innerHTML = `
