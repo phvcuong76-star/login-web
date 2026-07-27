@@ -190,7 +190,6 @@
             margin-bottom: 10px;
             align-items: center;
         }
-        /* Grid cập nhật cho Modal Audit bao gồm cột PDF */
         .edit-row-audit {
             display: grid;
             grid-template-columns: 1.5fr 1fr 1.5fr 1.2fr 2fr auto 35px;
@@ -693,13 +692,20 @@
                 <input type="text" placeholder="Tên Hướng Dẫn" value="${name}">
                 <input type="text" placeholder="Ghi chú" value="${note}">
                 <input type="text" class="link-input" placeholder="Link hoặc chọn PDF" value="${link}">
-                <input type="file" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
-                <button type="button" class="btn-pdf-upload" onclick="this.previousElementSibling.click()">📄 Tải PDF</button>
+                <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 Tải PDF</button>
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
             `;
             container.appendChild(rowDiv);
         }
 
+        // Hàm kích hoạt chọn file chính xác
+        function triggerFileInput(btn) {
+            const fileInput = btn.parentElement.querySelector('.pdf-file-input');
+            if (fileInput) fileInput.click();
+        }
+
+        // Hàm xử lý upload PDF an toàn
         function handlePdfUpload(fileInput) {
             const file = fileInput.files[0];
             if (file) {
@@ -708,13 +714,17 @@
                     return;
                 }
                 if (file.size > 2 * 1024 * 1024) {
-                    alert('File PDF vượt quá 2MB! Vui lòng tải file lên Google Drive và dán Link vào đây để tránh bị lỗi bộ nhớ.');
+                    alert('File PDF lớn hơn 2MB! Hãy tải file lên Google Drive và dán đường Link vào ô để tránh bị quá tải bộ nhớ trình duyệt.');
                     return;
                 }
 
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    fileInput.parentElement.querySelector('.link-input').value = e.target.result;
+                    const linkInput = fileInput.parentElement.querySelector('.link-input');
+                    if (linkInput) {
+                        linkInput.value = e.target.result;
+                        alert('Đã tải PDF thành công! Hãy nhấn "Lưu thay đổi" để hoàn tất.');
+                    }
                 };
                 reader.readAsDataURL(file);
             }
@@ -751,11 +761,11 @@
                 loadInsp();
                 closeInspEditModal();
             } catch (e) {
-                alert("Dung lượng File PDF quá lớn không thể lưu vào trình duyệt! Hãy upload file lên Google Drive và dán đường link vào ô Link.");
+                alert("Dung lượng File PDF vượt quá bộ nhớ LocalStorage của trình duyệt! Hãy đính kèm bằng đường Link Google Drive.");
             }
         }
 
-        // ================= 3. LỊCH AUDIT (ĐÃ THÊM CỘT TÀI LIỆU PDF) =================
+        // ================= 3. LỊCH AUDIT =================
         const defaultAudit = [
             { customer: "BURTON", date: "27/07/2026", type: "Final Inspection", factory: "GTGL", docLink: "" },
             { customer: "CASTELLI", date: "29/07/2026", type: "Final Inspection", factory: "GTGL", docLink: "" },
@@ -815,8 +825,8 @@
                 <input type="text" placeholder="Loại" value="${type}">
                 <input type="text" placeholder="Nhà máy" value="${factory}">
                 <input type="text" class="link-input" placeholder="Link hoặc upload PDF" value="${docLink}">
-                <input type="file" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
-                <button type="button" class="btn-pdf-upload" onclick="this.previousElementSibling.click()">📄 PDF</button>
+                <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
             `;
             container.appendChild(rowDiv);
@@ -845,7 +855,7 @@
                 loadAudit();
                 closeEditModal();
             } catch (e) {
-                alert("Dung lượng File PDF quá lớn không thể lưu vào trình duyệt! Hãy upload file lên Google Drive và dán đường link vào ô Link.");
+                alert("Dung lượng File PDF vượt quá bộ nhớ LocalStorage của trình duyệt! Hãy đính kèm bằng đường Link Google Drive.");
             }
         }
 
