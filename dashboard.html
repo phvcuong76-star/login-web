@@ -197,7 +197,14 @@
             margin-bottom: 10px;
             align-items: center;
         }
-        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input {
+        .edit-row-sop {
+            display: grid;
+            grid-template-columns: 1.5fr 1.5fr 2fr auto 35px;
+            gap: 6px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input {
             padding: 8px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
@@ -354,15 +361,38 @@
         </div>
 
         <div class="dashboard-grid">
-            <!-- KHỐI 1: BÁO CÁO -->
-            <div class="card-box" style="margin-bottom: 0;">
-                <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📊 Danh Sách Báo Cáo</h3>
+            <!-- CỘT BÊN TRÁI -->
+            <div>
+                <!-- KHỐI 1: BÁO CÁO -->
+                <div class="card-box">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📊 Danh Sách Báo Cáo</h3>
 
-                <div id="reportListContainer"></div>
+                    <div id="reportListContainer"></div>
 
-                <button class="btn-update" onclick="openReportEditModal()">
-                    ✏️ Cập nhật
-                </button>
+                    <button class="btn-update" onclick="openReportEditModal()">
+                        ✏️ Cập nhật
+                    </button>
+                </div>
+
+                <!-- BỔ SUNG: BẢNG LỊCH ĐÁNH GIÁ SOP -->
+                <div class="card-box" style="margin-bottom: 0;">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📋 Lịch Đánh Giá SOP</h3>
+
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="sopTable">
+                        <thead>
+                            <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
+                                <th style="padding: 10px; font-size: 13px; border-radius: 6px 0 0 6px;">Ngày tháng</th>
+                                <th style="padding: 10px; font-size: 13px; text-align: center;">Nhà máy</th>
+                                <th style="padding: 10px; font-size: 13px; text-align: center; border-radius: 0 6px 6px 0;">Checklist</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <button class="btn-update" onclick="openSopEditModal()">
+                        ✏️ Cập nhật
+                    </button>
+                </div>
             </div>
 
             <!-- CỘT BÊN PHẢI -->
@@ -451,6 +481,25 @@
         </div>
     </div>
 
+    <!-- MODAL SOP: CẬP NHẬT LỊCH ĐÁNH GIÁ SOP -->
+    <div class="modal-overlay" id="sopModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Lịch Đánh Giá SOP</h3>
+                <button class="close-btn" onclick="closeSopEditModal()">&times;</button>
+            </div>
+            
+            <div id="modalSopContainer"></div>
+
+            <button class="btn-add-row" onclick="addSopModalRow()">+ Thêm dòng mới</button>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeSopEditModal()">Hủy</button>
+                <button class="btn-save" onclick="saveSopTable()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL 1: CẬP NHẬT QUY TRÌNH CÔNG VIỆC -->
     <div class="modal-overlay" id="procModal">
         <div class="modal-content">
@@ -515,7 +564,6 @@
         function openDocument(url) {
             if (!url || url === '#') return;
             
-            // Nếu là chuỗi dữ liệu PDF Base64
             if (url.startsWith('data:application/pdf')) {
                 try {
                     const arr = url.split(',');
@@ -533,7 +581,6 @@
                     alert("Không thể mở file PDF này. File có thể bị hỏng!");
                 }
             } else {
-                // Đường dẫn URL thông thường
                 window.open(url, '_blank');
             }
         }
@@ -636,6 +683,88 @@
             localStorage.setItem('hv_reports_data', JSON.stringify(newData));
             loadReports();
             closeReportEditModal();
+        }
+
+        // ================= LỊCH ĐÁNH GIÁ SOP =================
+        const defaultSop = [
+            { date: "01/08/2026", factory: "GTGL", checklistLink: "" },
+            { date: "15/08/2026", factory: "GTNS", checklistLink: "" }
+        ];
+
+        function loadSop() {
+            const saved = localStorage.getItem('hv_sop_data');
+            const data = saved ? JSON.parse(saved) : defaultSop;
+            const tbody = document.querySelector('#sopTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid #f1f3f5';
+                
+                const linkCell = (item.checklistLink && item.checklistLink !== '#') 
+                    ? `<span class="view-link" onclick="openDocument('${item.checklistLink.replace(/'/g, "\\'")}')">Xem ↗</span>` 
+                    : `<span style="color: #94a3b8;">-</span>`;
+
+                tr.innerHTML = `
+                    <td style="padding: 10px; font-size: 13px; color: #666;">${item.date}</td>
+                    <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b;">${item.factory}</td>
+                    <td style="padding: 10px; font-size: 13px; text-align: center;">${linkCell}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openSopEditModal() {
+            const container = document.getElementById('modalSopContainer');
+            container.innerHTML = '';
+            const saved = localStorage.getItem('hv_sop_data');
+            const data = saved ? JSON.parse(saved) : defaultSop;
+            data.forEach(item => addSopModalRow(item.date, item.factory, item.checklistLink));
+            document.getElementById('sopModal').style.display = 'flex';
+        }
+
+        function closeSopEditModal() {
+            document.getElementById('sopModal').style.display = 'none';
+        }
+
+        function addSopModalRow(date = '', factory = '', checklistLink = '') {
+            const container = document.getElementById('modalSopContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-sop';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Ngày tháng" value="${date}">
+                <input type="text" placeholder="Nhà máy" value="${factory}">
+                <input type="text" class="link-input" placeholder="Link hoặc PDF Checklist" value="${checklistLink}">
+                <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function saveSopTable() {
+            const container = document.getElementById('modalSopContainer');
+            const editRows = container.querySelectorAll('.edit-row-sop');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const date = inputs[0].value.trim();
+                const factory = inputs[1].value.trim();
+                const checklistLink = inputs[2].value.trim();
+
+                if (date || factory || checklistLink) {
+                    newData.push({ date, factory, checklistLink });
+                }
+            });
+
+            try {
+                localStorage.setItem('hv_sop_data', JSON.stringify(newData));
+                loadSop();
+                closeSopEditModal();
+            } catch (e) {
+                alert("Dung lượng File PDF vượt quá bộ nhớ LocalStorage của trình duyệt! Hãy đính kèm bằng đường Link Google Drive.");
+            }
         }
 
         // ================= 1. SỔ TAY QUY TRÌNH =================
@@ -903,6 +1032,7 @@
         // TỰ ĐỘNG KHỞI TẠO DỮ LIỆU KHI TẢI TRANG
         window.addEventListener('DOMContentLoaded', () => {
             loadReports();
+            loadSop();
             loadProc();
             loadInsp();
             loadAudit();
