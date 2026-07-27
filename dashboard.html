@@ -526,6 +526,7 @@
             { title: "📊 Báo cáo kiểm hàng UNIQLO", link: "https://docs.google.com/spreadsheets/d/1fokM2A81tj-9QW86C__3himjvPMKWjE5k8d1WWzMjKo/edit?gid=1316557202#gid=1316557202" },
             { title: "📊 Báo cáo Tổng hợp sự cố sản xuất", link: "https://docs.google.com/spreadsheets/d/1hw-4JHQdBQFa7by5pyYWCSfGFS3ymvZrW1YsNMaLcNE/edit?gid=1057145470#gid=1057145470" },
             { title: "📊 Báo cáo Tổng hợp sự cố sản xuất Nhà máy LAOS", link: "https://docs.google.com/spreadsheets/d/1RkAIOUVqutgVptWn3R9OxshLUs-R8La1oPsgt3NFECGU/edit?gid=1435937454#gid=1435937454" },
+            { title: "📊 Báo cáo hàng hỏng", link: "#" },
             { title: "📱 AppSheet: Chưa cập nhật", link: "#" }
         ];
 
@@ -539,7 +540,14 @@
                 const a = document.createElement('a');
                 a.href = item.link;
                 a.target = '_blank';
-                a.className = item.title.toLowerCase().includes('appsheet') ? 'link-card appsheet-link' : 'link-card sheet-link';
+                
+                // Kiểm tra nếu tên chứa "appsheet" thì dùng kiểu giao diện xanh dương (appsheet-link)
+                if (item.title.toLowerCase().includes('appsheet')) {
+                    a.className = 'link-card appsheet-link';
+                } else {
+                    a.className = 'link-card sheet-link';
+                }
+
                 if (index === data.length - 1) a.style.marginBottom = '0';
                 a.innerText = item.title;
                 container.appendChild(a);
