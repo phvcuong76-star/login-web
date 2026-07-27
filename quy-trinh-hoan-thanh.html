@@ -108,8 +108,11 @@
         ];
 
         // 2. Lấy dữ liệu từ localStorage
+       
+        // Khóa riêng cho Bộ Phận Cắt
+        const STORAGE_KEY = 'finishing_docs_data';
         function loadData() {
-            const savedData = localStorage.getItem('warehouse_docs_data');
+            const savedData = localStorage.getItem(STORAGE_KEY);
             return savedData ? JSON.parse(savedData) : defaultData;
         }
 
@@ -199,7 +202,7 @@
             });
 
             try {
-                localStorage.setItem('warehouse_docs_data', JSON.stringify(newData));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
                 renderList();
                 closeModal();
             } catch (e) {
