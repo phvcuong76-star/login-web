@@ -106,7 +106,7 @@
             border: 1px solid #d2e3fc;
         }
 
-        /* Nút cập nhật lịch kiểm hàng */
+        /* Nút cập nhật chung */
         .btn-update {
             display: inline-flex;
             align-items: center;
@@ -141,7 +141,7 @@
         .modal-content {
             background: white;
             width: 100%;
-            max-width: 650px;
+            max-width: 700px;
             border-radius: 12px;
             padding: 24px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -171,12 +171,19 @@
 
         .edit-row {
             display: grid;
+            grid-template-columns: 2fr 1.5fr 2fr 40px;
+            gap: 8px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        .edit-row-audit {
+            display: grid;
             grid-template-columns: 2fr 1.5fr 2fr 1.5fr 40px;
             gap: 8px;
             margin-bottom: 10px;
             align-items: center;
         }
-        .edit-row input {
+        .edit-row input, .edit-row-audit input {
             padding: 8px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
@@ -335,7 +342,7 @@
                 <div class="card-box">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📂 Tài Liệu & HƯỚNG DẪN</h3>
 
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="docTable">
                         <thead>
                             <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
                                 <th style="padding: 10px; font-size: 13px; border-radius: 6px 0 0 6px;">Tên Tài Liệu</th>
@@ -344,7 +351,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr style="background-color: #f1f3f5;">
+                            <tr style="background-color: #f1f3f5;" data-header="true">
                                 <td style="padding: 10px; font-weight: bold; font-size: 13px; color: #1a73e8;" colspan="3">📖 Sổ tay Quy trình công việc</td>
                             </tr>
                             <tr style="border-bottom: 1px solid #f1f3f5;">
@@ -369,6 +376,11 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <!-- NÚT CẬP NHẬT TÀI LIỆU -->
+                    <button class="btn-update" onclick="openDocEditModal()">
+                        ✏️ Cập nhật Tài Liệu
+                    </button>
                 </div>
 
                 <!-- KHỐI 3: LỊCH KIỂM HÀNG & AUDIT -->
@@ -412,7 +424,7 @@
                         </tbody>
                     </table>
 
-                    <!-- NÚT CẬP NHẬT BÊN DƯỚI BẢNG -->
+                    <!-- NÚT CẬP NHẬT LỊCH -->
                     <button class="btn-update" onclick="openEditModal()">
                         ✏️ Cập nhật Lịch
                     </button>
@@ -428,7 +440,28 @@
         </div>
     </div>
 
-    <!-- MODAL FORM ĐỂ CHỈNH SỬA / CẬP NHẬT DỮ LIỆU -->
+    <!-- MODAL 1: CẬP NHẬT TÀI LIỆU & HƯỚNG DẪN -->
+    <div class="modal-overlay" id="docModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Danh Sách Tài Liệu & Quy Trình</h3>
+                <button class="close-btn" onclick="closeDocEditModal()">&times;</button>
+            </div>
+            
+            <div id="modalDocContainer">
+                <!-- Load bằng JS -->
+            </div>
+
+            <button class="btn-add-row" onclick="addDocModalRow()">+ Thêm tài liệu mới</button>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeDocEditModal()">Hủy</button>
+                <button class="btn-save" onclick="saveDocTable()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: CẬP NHẬT LỊCH AUDIT -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -437,7 +470,7 @@
             </div>
             
             <div id="modalRowContainer">
-                <!-- Danh sách dòng cần sửa sẽ load bằng JS tại đây -->
+                <!-- Load bằng JS -->
             </div>
 
             <button class="btn-add-row" onclick="addModalRow()">+ Thêm dòng mới</button>
@@ -452,7 +485,79 @@
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
-        // Quản lý Modal Cập Nhật
+        // ================= Quản lý Modal Tài Liệu =================
+        function openDocEditModal() {
+            const container = document.getElementById('modalDocContainer');
+            container.innerHTML = '';
+            
+            const rows = document.querySelectorAll('#docTable tbody tr');
+            rows.forEach(row => {
+                // Bỏ qua dòng tiêu đề nhóm "Sổ tay Quy trình"
+                if (row.getAttribute('data-header') === 'true') return;
+
+                const cols = row.querySelectorAll('td');
+                let name = cols[0].innerText.replace('└─ ', '').trim();
+                let note = cols[1].innerText.trim();
+                let link = cols[2].querySelector('a') ? cols[2].querySelector('a').getAttribute('href') : '';
+
+                addDocModalRow(name, note, link);
+            });
+
+            document.getElementById('docModal').style.display = 'flex';
+        }
+
+        function closeDocEditModal() {
+            document.getElementById('docModal').style.display = 'none';
+        }
+
+        function addDocModalRow(name = '', note = '', link = '') {
+            const container = document.getElementById('modalDocContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Tên Tài Liệu" value="${name}">
+                <input type="text" placeholder="Ghi chú" value="${note}">
+                <input type="text" placeholder="Link (URL)" value="${link}">
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function saveDocTable() {
+            const container = document.getElementById('modalDocContainer');
+            const editRows = container.querySelectorAll('.edit-row');
+            const tbody = document.querySelector('#docTable tbody');
+            
+            // Giữ lại dòng tiêu đề nhóm "📖 Sổ tay Quy trình công việc"
+            tbody.innerHTML = `
+                <tr style="background-color: #f1f3f5;" data-header="true">
+                    <td style="padding: 10px; font-weight: bold; font-size: 13px; color: #1a73e8;" colspan="3">📖 Sổ tay Quy trình công việc</td>
+                </tr>
+            `;
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const name = inputs[0].value.trim();
+                const note = inputs[1].value.trim();
+                const link = inputs[2].value.trim() || '#';
+
+                if (name) {
+                    const tr = document.createElement('tr');
+                    tr.style.borderBottom = '1px solid #f1f3f5';
+                    tr.innerHTML = `
+                        <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${name}</td>
+                        <td style="padding: 8px 10px; font-size: 13px; color: #666;">${note}</td>
+                        <td style="padding: 8px 10px; text-align: center;"><a href="${link}" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            });
+
+            closeDocEditModal();
+        }
+
+
+        // ================= Quản lý Modal Lịch Audit =================
         function openEditModal() {
             const container = document.getElementById('modalRowContainer');
             container.innerHTML = '';
@@ -478,7 +583,7 @@
         function addModalRow(customer = '', date = '', type = '', factory = '') {
             const container = document.getElementById('modalRowContainer');
             const rowDiv = document.createElement('div');
-            rowDiv.className = 'edit-row';
+            rowDiv.className = 'edit-row-audit';
             rowDiv.innerHTML = `
                 <input type="text" placeholder="Khách hàng" value="${customer}">
                 <input type="text" placeholder="Ngày" value="${date}">
@@ -491,11 +596,11 @@
 
         function saveAuditTable() {
             const container = document.getElementById('modalRowContainer');
-            const editRows = container.querySelectorAll('.edit-row');
+            const editRows = container.querySelectorAll('.edit-row-audit');
             const tbody = document.querySelector('#auditTable tbody');
             tbody.innerHTML = '';
 
-            editRows.forEach((row, index) => {
+            editRows.forEach((row) => {
                 const inputs = row.querySelectorAll('input');
                 const customer = inputs[0].value.trim();
                 const date = inputs[1].value.trim();
@@ -506,7 +611,6 @@
                     const tr = document.createElement('tr');
                     tr.style.borderBottom = '1px solid #f1f3f5';
                     
-                    // Màu sắc tùy biến đơn giản cho loại kiểm hàng
                     let typeColor = '#1a73e8';
                     if (type.toLowerCase().includes('audit')) typeColor = '#d93025';
                     if (type.toLowerCase().includes('pre')) typeColor = '#137333';
