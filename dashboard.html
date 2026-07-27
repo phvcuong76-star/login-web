@@ -530,25 +530,32 @@
             { title: "📱 AppSheet: Chưa cập nhật", link: "#" }
         ];
 
+        // --- HÀM TỰ ĐỘNG SẮP XẾP VÀ HIỂN THỊ BÁO CÁO (CÁCH 2) ---
         function loadReports() {
             const saved = localStorage.getItem('hv_reports_data');
-            const data = saved ? JSON.parse(saved) : defaultReports;
+            let data = saved ? JSON.parse(saved) : defaultReports;
             const container = document.getElementById('reportListContainer');
             container.innerHTML = '';
 
-            data.forEach((item, index) => {
+            // Tự động lọc riêng các báo cáo thường và báo cáo AppSheet
+            const normalReports = data.filter(item => !item.title.toLowerCase().includes('appsheet'));
+            const appsheetReports = data.filter(item => item.title.toLowerCase().includes('appsheet'));
+            
+            // Gộp lại sao cho AppSheet LUÔN LUÔN nằm ở dưới cùng
+            const sortedData = [...normalReports, ...appsheetReports];
+
+            sortedData.forEach((item, index) => {
                 const a = document.createElement('a');
                 a.href = item.link;
                 a.target = '_blank';
                 
-                // Kiểm tra nếu tên chứa "appsheet" thì dùng kiểu giao diện xanh dương (appsheet-link)
                 if (item.title.toLowerCase().includes('appsheet')) {
                     a.className = 'link-card appsheet-link';
                 } else {
                     a.className = 'link-card sheet-link';
                 }
 
-                if (index === data.length - 1) a.style.marginBottom = '0';
+                if (index === sortedData.length - 1) a.style.marginBottom = '0';
                 a.innerText = item.title;
                 container.appendChild(a);
             });
@@ -571,7 +578,13 @@
             container.innerHTML = '';
             const saved = localStorage.getItem('hv_reports_data');
             const data = saved ? JSON.parse(saved) : defaultReports;
-            data.forEach(item => addReportModalRow(item.title, item.link));
+            
+            // Hiển thị danh sách trong Modal theo thứ tự đã sắp xếp
+            const normalReports = data.filter(item => !item.title.toLowerCase().includes('appsheet'));
+            const appsheetReports = data.filter(item => item.title.toLowerCase().includes('appsheet'));
+            const sortedData = [...normalReports, ...appsheetReports];
+
+            sortedData.forEach(item => addReportModalRow(item.title, item.link));
             document.getElementById('reportModal').style.display = 'flex';
         }
 
@@ -697,7 +710,6 @@
                     alert('Vui lòng chọn tệp định dạng .PDF!');
                     return;
                 }
-                // Giới hạn dung lượng file trực tiếp (Dưới 2MB để tránh tràn bộ nhớ localStorage)
                 if (file.size > 2 * 1024 * 1024) {
                     alert('File PDF vượt quá 2MB! Vui lòng tải file lên Google Drive và dán Link vào đây để tránh bị lỗi bộ nhớ.');
                     return;
