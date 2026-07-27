@@ -278,6 +278,14 @@
         #google_translate_element, .goog-te-banner-frame, .goog-te-gadget {
             display: none !important;
         }
+
+        .doc-section-title {
+            background-color: #f1f3f5;
+            font-weight: bold;
+            font-size: 13px;
+            color: #1a73e8;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
@@ -338,22 +346,18 @@
 
             <!-- CỘT BÊN PHẢI -->
             <div>
-                <!-- KHỐI 2: TÀI LIỆU -->
+                <!-- KHỐI 2: TÀI LIỆU & HƯỚNG DẪN -->
                 <div class="card-box">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📂 Tài Liệu & HƯỚNG DẪN</h3>
 
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="docTable">
+                    <!-- BẢNG 1: SỔ TAY QUY TRÌNH CÔNG VIỆC -->
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 10px;" id="procTable">
                         <thead>
-                            <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
-                                <th style="padding: 10px; font-size: 13px; border-radius: 6px 0 0 6px;">Tên Tài Liệu</th>
-                                <th style="padding: 10px; font-size: 13px;">Ghi chú</th>
-                                <th style="padding: 10px; font-size: 13px; text-align: center; border-radius: 0 6px 6px 0;">Liên kết</th>
+                            <tr class="doc-section-title">
+                                <td colspan="3">📖 Sổ tay Quy trình công việc</td>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr style="background-color: #f1f3f5;" data-header="true">
-                                <td style="padding: 10px; font-weight: bold; font-size: 13px; color: #1a73e8;" colspan="3">📖 Sổ tay Quy trình công việc</td>
-                            </tr>
                             <tr style="border-bottom: 1px solid #f1f3f5;">
                                 <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Quy trình bộ phận Kho</td>
                                 <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
@@ -369,17 +373,31 @@
                                 <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
                                 <td style="padding: 8px 10px; text-align: center;"><a href="quy-trinh-may.html" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
                             </tr>
-                            <tr>
-                                <td style="padding: 10px; font-weight: bold; font-size: 13px;">Hướng dẫn kiểm hàng</td>
-                                <td style="padding: 10px; font-size: 13px; color: #666;">Tài liệu khách hàng</td>
-                                <td style="padding: 10px; text-align: center;"><a href="LINK_TAI_LIEU_2" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
+                        </tbody>
+                    </table>
+
+                    <button class="btn-update" onclick="openProcEditModal()" style="margin-bottom: 25px;">
+                        ✏️ Cập nhật Quy trình
+                    </button>
+
+                    <!-- BẢNG 2: HƯỚNG DẪN KIỂM HÀNG (CẤP BẬC TƯƠNG ĐƯƠNG) -->
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 10px;" id="inspTable">
+                        <thead>
+                            <tr class="doc-section-title">
+                                <td colspan="3">🔍 Hướng dẫn kiểm hàng</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #f1f3f5;">
+                                <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Hướng dẫn kiểm hàng tổng hợp</td>
+                                <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu khách hàng</td>
+                                <td style="padding: 8px 10px; text-align: center;"><a href="LINK_TAI_LIEU_2" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <!-- NÚT CẬP NHẬT TÀI LIỆU -->
-                    <button class="btn-update" onclick="openDocEditModal()">
-                        ✏️ Cập nhật Tài Liệu
+                    <button class="btn-update" onclick="openInspEditModal()">
+                        ✏️ Cập nhật Hướng dẫn
                     </button>
                 </div>
 
@@ -424,7 +442,6 @@
                         </tbody>
                     </table>
 
-                    <!-- NÚT CẬP NHẬT LỊCH -->
                     <button class="btn-update" onclick="openEditModal()">
                         ✏️ Cập nhật Lịch
                     </button>
@@ -440,28 +457,45 @@
         </div>
     </div>
 
-    <!-- MODAL 1: CẬP NHẬT TÀI LIỆU & HƯỚNG DẪN -->
-    <div class="modal-overlay" id="docModal">
+    <!-- MODAL 1: CẬP NHẬT QUY TRÌNH CÔNG VIỆC -->
+    <div class="modal-overlay" id="procModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>✏️ Cập Nhật Danh Sách Tài Liệu & Quy Trình</h3>
-                <button class="close-btn" onclick="closeDocEditModal()">&times;</button>
+                <h3>✏️ Cập Nhật Sổ Tay Quy Trình Công Việc</h3>
+                <button class="close-btn" onclick="closeProcEditModal()">&times;</button>
             </div>
             
-            <div id="modalDocContainer">
-                <!-- Load bằng JS -->
-            </div>
+            <div id="modalProcContainer"></div>
 
-            <button class="btn-add-row" onclick="addDocModalRow()">+ Thêm tài liệu mới</button>
+            <button class="btn-add-row" onclick="addDocModalRow('modalProcContainer')">+ Thêm quy trình mới</button>
 
             <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeDocEditModal()">Hủy</button>
-                <button class="btn-save" onclick="saveDocTable()">Lưu thay đổi</button>
+                <button class="btn-cancel" onclick="closeProcEditModal()">Hủy</button>
+                <button class="btn-save" onclick="saveProcTable()">Lưu thay đổi</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: CẬP NHẬT LỊCH AUDIT -->
+    <!-- MODAL 2: CẬP NHẬT HƯỚNG DẪN KIỂM HÀNG -->
+    <div class="modal-overlay" id="inspModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Hướng Dẫn Kiểm Hàng</h3>
+                <button class="close-btn" onclick="closeInspEditModal()">&times;</button>
+            </div>
+            
+            <div id="modalInspContainer"></div>
+
+            <button class="btn-add-row" onclick="addDocModalRow('modalInspContainer')">+ Thêm hướng dẫn mới</button>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeInspEditModal()">Hủy</button>
+                <button class="btn-save" onclick="saveInspTable()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: CẬP NHẬT LỊCH AUDIT -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -469,9 +503,7 @@
                 <button class="close-btn" onclick="closeEditModal()">&times;</button>
             </div>
             
-            <div id="modalRowContainer">
-                <!-- Load bằng JS -->
-            </div>
+            <div id="modalRowContainer"></div>
 
             <button class="btn-add-row" onclick="addModalRow()">+ Thêm dòng mới</button>
 
@@ -485,33 +517,9 @@
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
-        // ================= Quản lý Modal Tài Liệu =================
-        function openDocEditModal() {
-            const container = document.getElementById('modalDocContainer');
-            container.innerHTML = '';
-            
-            const rows = document.querySelectorAll('#docTable tbody tr');
-            rows.forEach(row => {
-                // Bỏ qua dòng tiêu đề nhóm "Sổ tay Quy trình"
-                if (row.getAttribute('data-header') === 'true') return;
-
-                const cols = row.querySelectorAll('td');
-                let name = cols[0].innerText.replace('└─ ', '').trim();
-                let note = cols[1].innerText.trim();
-                let link = cols[2].querySelector('a') ? cols[2].querySelector('a').getAttribute('href') : '';
-
-                addDocModalRow(name, note, link);
-            });
-
-            document.getElementById('docModal').style.display = 'flex';
-        }
-
-        function closeDocEditModal() {
-            document.getElementById('docModal').style.display = 'none';
-        }
-
-        function addDocModalRow(name = '', note = '', link = '') {
-            const container = document.getElementById('modalDocContainer');
+        // --- HÀM TẠO DÒNG NHẬP LIỆU CHUNG CHO CÁC MODAL TÀI LIỆU ---
+        function addDocModalRow(containerId, name = '', note = '', link = '') {
+            const container = document.getElementById(containerId);
             const rowDiv = document.createElement('div');
             rowDiv.className = 'edit-row';
             rowDiv.innerHTML = `
@@ -523,17 +531,80 @@
             container.appendChild(rowDiv);
         }
 
-        function saveDocTable() {
-            const container = document.getElementById('modalDocContainer');
-            const editRows = container.querySelectorAll('.edit-row');
-            const tbody = document.querySelector('#docTable tbody');
+        // ================= 1. CẬP NHẬT SỔ TAY QUY TRÌNH =================
+        function openProcEditModal() {
+            const container = document.getElementById('modalProcContainer');
+            container.innerHTML = '';
             
-            // Giữ lại dòng tiêu đề nhóm "📖 Sổ tay Quy trình công việc"
-            tbody.innerHTML = `
-                <tr style="background-color: #f1f3f5;" data-header="true">
-                    <td style="padding: 10px; font-weight: bold; font-size: 13px; color: #1a73e8;" colspan="3">📖 Sổ tay Quy trình công việc</td>
-                </tr>
-            `;
+            const rows = document.querySelectorAll('#procTable tbody tr');
+            rows.forEach(row => {
+                const cols = row.querySelectorAll('td');
+                let name = cols[0].innerText.replace('└─ ', '').trim();
+                let note = cols[1].innerText.trim();
+                let link = cols[2].querySelector('a') ? cols[2].querySelector('a').getAttribute('href') : '';
+                addDocModalRow('modalProcContainer', name, note, link);
+            });
+
+            document.getElementById('procModal').style.display = 'flex';
+        }
+
+        function closeProcEditModal() {
+            document.getElementById('procModal').style.display = 'none';
+        }
+
+        function saveProcTable() {
+            const container = document.getElementById('modalProcContainer');
+            const editRows = container.querySelectorAll('.edit-row');
+            const tbody = document.querySelector('#procTable tbody');
+            tbody.innerHTML = '';
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const name = inputs[0].value.trim();
+                const note = inputs[1].value.trim();
+                const link = inputs[2].value.trim() || '#';
+
+                if (name) {
+                    const tr = document.createElement('tr');
+                    tr.style.borderBottom = '1px solid #f1f3f5';
+                    tr.innerHTML = `
+                        <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${name}</td>
+                        <td style="padding: 8px 10px; font-size: 13px; color: #666;">${note}</td>
+                        <td style="padding: 8px 10px; text-align: center;"><a href="${link}" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            });
+
+            closeProcEditModal();
+        }
+
+        // ================= 2. CẬP NHẬT HƯỚNG DẪN KIỂM HÀNG =================
+        function openInspEditModal() {
+            const container = document.getElementById('modalInspContainer');
+            container.innerHTML = '';
+            
+            const rows = document.querySelectorAll('#inspTable tbody tr');
+            rows.forEach(row => {
+                const cols = row.querySelectorAll('td');
+                let name = cols[0].innerText.replace('└─ ', '').trim();
+                let note = cols[1].innerText.trim();
+                let link = cols[2].querySelector('a') ? cols[2].querySelector('a').getAttribute('href') : '';
+                addDocModalRow('modalInspContainer', name, note, link);
+            });
+
+            document.getElementById('inspModal').style.display = 'flex';
+        }
+
+        function closeInspEditModal() {
+            document.getElementById('inspModal').style.display = 'none';
+        }
+
+        function saveInspTable() {
+            const container = document.getElementById('modalInspContainer');
+            const editRows = container.querySelectorAll('.edit-row');
+            const tbody = document.querySelector('#inspTable tbody');
+            tbody.innerHTML = '';
 
             editRows.forEach((row) => {
                 const inputs = row.querySelectorAll('input');
@@ -553,11 +624,10 @@
                 }
             });
 
-            closeDocEditModal();
+            closeInspEditModal();
         }
 
-
-        // ================= Quản lý Modal Lịch Audit =================
+        // ================= 3. CẬP NHẬT LỊCH AUDIT =================
         function openEditModal() {
             const container = document.getElementById('modalRowContainer');
             container.innerHTML = '';
