@@ -106,24 +106,28 @@
         }
 
         .btn-update {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            margin-top: 15px;
-            padding: 8px 16px;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .btn-update:hover {
-            background-color: #1557b0;
-        }
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #2563eb;               /* Chữ màu xanh dương nhẹ */
+    background-color: #eff6ff;     /* Nền xanh rất nhạt */
+    border: 1px solid #bfdbfe;     /* Viền mảnh nhẹ */
+    border-radius: 6px;            /* Bo góc vừa phải */
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Hiệu ứng khi rê chuột vào nút */
+.btn-update:hover {
+    background-color: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+}
 
         /* Modal Form CSS */
         .modal-overlay {
