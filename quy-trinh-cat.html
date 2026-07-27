@@ -1,1 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Quy Trình - Bộ Phận Cắt</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f6f9; padding: 40px 20px; margin: 0; }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .back-btn { text-decoration: none; color: #1a73e8; background: #e8f0fe; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 13px; }
+        .lang-switch { display: inline-flex; background-color: #e9ecef; padding: 4px; border-radius: 20px; gap: 4px; }
+        .lang-btn { border: none; background: transparent; padding: 4px 10px; font-size: 12px; font-weight: 600; color: #6c757d; border-radius: 16px; cursor: pointer; }
+        .lang-btn.active { background-color: #1a73e8; color: #ffffff; }
+        h2 { text-align: center; color: #1e293b; margin-bottom: 30px; }
+        
+        .doc-list { display: flex; flex-direction: column; gap: 15px; }
+        .doc-item { display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; padding: 16px 20px; border-radius: 10px; transition: all 0.2s; }
+        .doc-item:hover { border-color: #cbd5e1; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .doc-title { font-weight: 700; color: #1e293b; margin-bottom: 4px; font-size: 15px; }
+        .doc-desc { color: #64748b; font-size: 13px; margin: 0; }
+        .btn-view { background: #1a73e8; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+        .btn-update { background: #1a73e8; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 25px; float: right; display: flex; align-items: center; gap: 6px; }
+
+        /* Modal Styles */
+        .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: #fff; width: 100%; max-width: 700px; border-radius: 12px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .edit-row { display: grid; grid-template-columns: 2fr 2fr 2fr 80px 35px; gap: 8px; margin-bottom: 10px; align-items: center; }
+        .edit-row input { padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; width: 100%; }
+        .btn-del { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; border-radius: 6px; height: 32px; cursor: pointer; }
+        .btn-pdf { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px; font-size: 11px; cursor: pointer; white-space: nowrap; }
+        .btn-add { width: 100%; padding: 8px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 6px; cursor: pointer; font-weight: 600; color: #475569; margin-top: 10px; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .btn-save { background: #16a34a; color: #fff; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .btn-cancel { background: #e2e8f0; color: #475569; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="top-nav">
+            <a href="dashboard.html" class="back-btn">← Quay lại trang chủ</a>
+            <div class="lang-switch">
+                <button class="lang-btn">KR</button>
+                <button class="lang-btn">EN</button>
+                <button class="lang-btn active">VN</button>
+            </div>
+        </div>
+
+        <h2>📦 Danh Sách Quy Trình - Bộ Phận Kho</h2>
+
+        <div class="doc-list" id="docListContainer">
+            <!-- Dữ liệu hiển thị ở đây -->
+        </div>
+
+        <button class="btn-update" onclick="openModal()">✏️ Cập nhật Danh sách</button>
+        <div style="clear: both;"></div>
+    </div>
+
+    <!-- MODAL EDIT -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <h3 style="margin-top:0;">✏️ Cập Nhật Danh Sách Tài Liệu Kho</h3>
+            <div id="modalRowContainer"></div>
+            <button class="btn-add" onclick="addModalRow()">+ Thêm tài liệu mới</button>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal()">Hủy</button>
+                <button class="btn-save" onclick="saveData()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Dữ liệu mặc định khi chưa từng chỉnh sửa
+        const defaultData = [
+            { title: "1. Quy trình Nhập kho Nguyên Phụ liệu", desc: "Hướng dẫn chi tiết các bước kiểm đếm và lưu kho NPL", link: "https://drive.google.com/file/d/xxx/view" },
+            { title: "2. Quy trình Xuất hàng cho Chuyền sản xuất", desc: "Quy định về phiếu xuất kho và bàn giao vật tư", link: "#" },
+            { title: "3. Quy trình Kiểm kê Kho định kỳ", desc: "Mẫu biểu và thao tác chốt số lượng hàng tháng", link: "#" },
+            { title: "4. Hướng dẫn Quản lý Kho Thành phẩm", desc: "Tiêu chuẩn chất xếp và bảo quản thùng thành phẩm", link: "#" }
+        ];
+
+        // 2. Lấy dữ liệu từ localStorage (nếu có) hoặc dùng dữ liệu mặc định
+        function loadData() {
+            const savedData = localStorage.getItem('warehouse_docs_data');
+            return savedData ? JSON.parse(savedData) : defaultData;
+        }
+
+        // 3. Render dữ liệu ra màn hình
+        function renderList() {
+            const data = loadData();
+            const container = document.getElementById('docListContainer');
+            container.innerHTML = '';
+
+            data.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'doc-item';
+                itemDiv.innerHTML = `
+                    <div>
+                        <div class="doc-title">${item.title}</div>
+                        <div class="doc-desc">${item.desc}</div>
+                    </div>
+                    <a href="${item.link}" target="_blank" class="btn-view">Mở tài liệu ↗</a>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        // 4. Modal Logic
+        function openModal() {
+            const data = loadData();
+            const container = document.getElementById('modalRowContainer');
+            container.innerHTML = '';
+            
+            data.forEach(item => addModalRow(item.title, item.desc, item.link));
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function addModalRow(title = '', desc = '', link = '') {
+            const container = document.getElementById('modalRowContainer');
+            const row = document.createElement('div');
+            row.className = 'edit-row';
+            row.innerHTML = `
+                <input type="text" placeholder="Tên quy trình" value="${title}">
+                <input type="text" placeholder="Mô tả" value="${desc}">
+                <input type="text" class="link-input" placeholder="Link (Drive/PDF)" value="${link}">
+                <input type="file" accept="application/pdf" style="display:none" onchange="uploadPdf(this)">
+                <button type="button" class="btn-pdf" onclick="this.previousElementSibling.click()">📁 Tải PDF</button>
+                <button type="button" class="btn-del" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(row);
+        }
+
+        function uploadPdf(fileInput) {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    fileInput.parentElement.querySelector('.link-input').value = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 5. Lưu dữ liệu vào localStorage
+        function saveData() {
+            const rows = document.querySelectorAll('#modalRowContainer .edit-row');
+            const newData = [];
+
+            rows.forEach(row => {
+                const inputs = row.querySelectorAll('input[type="text"]');
+                const title = inputs[0].value.trim();
+                const desc = inputs[1].value.trim();
+                const link = inputs[2].value.trim() || '#';
+
+                if (title) {
+                    newData.push({ title, desc, link });
+                }
+            });
+
+            // Lưu mảng JSON vào bộ nhớ trình duyệt
+            localStorage.setItem('warehouse_docs_data', JSON.stringify(newData));
+            
+            renderList();
+            closeModal();
+        }
+
+        // Tải danh sách lần đầu khi mở trang
+        renderList();
+    </script>
+</body>
+</html>
 
