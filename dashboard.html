@@ -1,579 +1,4 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PHÒNG CHẤT LƯỢNG - HAI VINA</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #f4f6f9;
-            padding: 30px 20px;
-            margin: 0;
-            top: 0 !important;
-        }
-        .main-wrapper {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .header-top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .company-logo {
-            height: 45px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .main-title-box {
-            background: linear-gradient(135deg, #1a73e8, #1557b0);
-            max-width: 580px;
-            margin: 0 auto 30px auto;
-            padding: 16px 30px;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
-            border: 1px solid #185abc;
-            text-align: center;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .main-title-box:hover {
-            box-shadow: 0 6px 20px rgba(26, 115, 232, 0.45);
-            transform: translateY(-2px);
-        }
-
-        .main-title-box h2 {
-            color: #ffffff;
-            margin: 0;
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            text-align: left;
-            align-items: start;
-            margin-bottom: 25px;
-        }
-
-        .card-box {
-            background: white;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
-        }
-
-        .link-card {
-            display: block;
-            padding: 14px 18px;
-            margin-bottom: 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.2s ease;
-        }
-        .sheet-link {
-            background-color: #e6f4ea;
-            color: #137333;
-            border: 1px solid #ceead6;
-        }
-        .sheet-link:hover {
-            background-color: #ceead6;
-        }
-        .appsheet-link {
-            background-color: #e8f0fe;
-            color: #1a73e8;
-            border: 1px solid #d2e3fc;
-        }
-
-        .btn-update {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            margin-top: 15px;
-            padding: 8px 16px;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .btn-update:hover {
-            background-color: #1557b0;
-        }
-
-        /* Modal Form CSS */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 15px;
-        }
-        .modal-content {
-            background: white;
-            width: 100%;
-            max-width: 750px;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e9ecef;
-            padding-bottom: 12px;
-            margin-bottom: 20px;
-        }
-        .modal-header h3 {
-            margin: 0;
-            font-size: 18px;
-            color: #1e293b;
-        }
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            color: #64748b;
-        }
-
-        .edit-row {
-            display: grid;
-            grid-template-columns: 2fr 1.5fr 2fr 40px;
-            gap: 8px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        /* Dòng cấu trúc mới cho Tài liệu khách hàng (Có Nút PDF) */
-        .edit-row-insp {
-            display: grid;
-            grid-template-columns: 2fr 1.2fr 2fr auto 40px;
-            gap: 8px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .edit-row-report {
-            display: grid;
-            grid-template-columns: 2.5fr 3fr 40px;
-            gap: 8px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-        .edit-row-audit {
-            display: grid;
-            grid-template-columns: 2fr 1.5fr 2fr 1.5fr 40px;
-            gap: 8px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input {
-            padding: 8px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            font-size: 13px;
-            width: 100%;
-        }
-        .btn-pdf-upload {
-            background: #eff6ff;
-            color: #2563eb;
-            border: 1px solid #bfdbfe;
-            padding: 8px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .btn-pdf-upload:hover {
-            background: #dbeafe;
-        }
-        .btn-delete-row {
-            background: #fee2e2;
-            color: #dc2626;
-            border: 1px solid #fca5a5;
-            border-radius: 6px;
-            height: 34px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-add-row {
-            background: #f1f5f9;
-            color: #334155;
-            border: 1px dashed #cbd5e1;
-            padding: 8px;
-            width: 100%;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-top: 10px;
-            font-size: 13px;
-        }
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #e9ecef;
-        }
-        .btn-save {
-            background: #16a34a;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .btn-cancel {
-            background: #e2e8f0;
-            color: #475569;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .side-banner {
-            position: fixed;
-            top: 100px;
-            width: 150px;
-            z-index: 10;
-        }
-        .banner-left { left: 20px; }
-        .banner-right { right: 20px; }
-
-        @media (max-width: 1400px) {
-            .side-banner { display: none; }
-        }
-
-        .lang-switch {
-            display: inline-flex;
-            background-color: #e9ecef;
-            padding: 4px;
-            border-radius: 20px;
-            gap: 4px;
-        }
-        .lang-btn {
-            border: none;
-            background: transparent;
-            padding: 5px 12px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #6c757d;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .lang-btn.active {
-            background-color: #1a73e8;
-            color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        #google_translate_element, .goog-te-banner-frame, .goog-te-gadget {
-            display: none !important;
-        }
-
-        .doc-section-title {
-            background-color: #f1f3f5;
-            font-weight: bold;
-            font-size: 13px;
-            color: #1a73e8;
-            padding: 10px;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="side-banner banner-left" style="height: 700px;">
-        <img src="images nha may 2.jpg" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-    </div>
-    <div class="side-banner banner-right" style="height: 700px;">
-        <img src="images nha may 3.jpg" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-    </div>
-
-    <div class="main-wrapper">
-        <div class="header-top-bar">
-            <div class="logo-box">
-                <img src="QA APPROVED.png" alt="Logo Công ty" class="company-logo">
-            </div>
-
-            <div class="lang-switch-container notranslate" translate="no">
-                <div class="lang-switch">
-                    <button class="lang-btn" onclick="translatePage('ko', this)">KR</button>
-                    <button class="lang-btn" onclick="translatePage('en', this)">EN</button>
-                    <button class="lang-btn active" onclick="translatePage('vi', this)">VN</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="main-title-box">
-            <h2>📋 PHÒNG CHẤT LƯỢNG - HAI VINA</h2>
-        </div>
-
-        <div class="dashboard-grid">
-            <!-- KHỐI 1: BÁO CÁO -->
-            <div class="card-box" style="margin-bottom: 0;">
-                <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📊 Danh Sách Báo Cáo</h3>
-
-                <div id="reportListContainer">
-                    <a href="https://docs.google.com/spreadsheets/d/1gfFYZTz1SIm0CVrydI4UY934wJ5fvghQ7hi5MhSB1pE/edit?gid=653998014#gid=653998014" target="_blank" class="link-card sheet-link">
-                        📊 Báo cáo tổng hợp HQC/FQC hàng tuần
-                    </a>
-                    <a href="https://docs.google.com/spreadsheets/d/1of2bFSyYKBswoAnQOCFsJm8JfKAGUS9qmwlvaU1SSBV8/edit?pli=1&gid=1312774476#gid=1312774476" target="_blank" class="link-card sheet-link">
-                        📊 Báo cáo tổng hợp Pre-final hàng tuần
-                    </a>
-                    <a href="https://docs.google.com/spreadsheets/d/1F_R7qaZdo9WQLjxJtIz69rEN77JQvRnz_z2ZUA0jxI/edit?gid=616548280#gid=616548280" target="_blank" class="link-card sheet-link">
-                        📊 Báo cáo tổng hợp Pre-final Lào hàng tuần
-                    </a>
-                    <a href="https://docs.google.com/spreadsheets/d/1fokM2A81tj-9QW86C__3himjvPMKWjE5k8d1WWzMjKo/edit?gid=1316557202#gid=1316557202" target="_blank" class="link-card sheet-link">
-                        📊 Báo cáo kiểm hàng UNIQLO
-                    </a>
-                    <a href="https://docs.google.com/spreadsheets/d/1hw-4JHQdBQFa7by5pyYWCSfGFS3ymvZrW1YsNMaLcNE/edit?gid=1057145470#gid=1057145470" target="_blank" class="link-card sheet-link">
-                        📊 Báo cáo Tổng hợp sự cố sản xuất
-                    </a>
-                    <a href="https://docs.google.com/spreadsheets/d/1RkAIOUVqutgVptWn3R9OxshLUs-R8La1oPsgt3NFECGU/edit?gid=1435937454#gid=1435937454" target="_blank" class="link-card sheet-link">
-                        📊 Báo cáo Tổng hợp sự cố sản xuất Nhà máy LAOS
-                    </a>
-                    <a href="#" class="link-card appsheet-link" style="margin-bottom: 0;">
-                        📱 AppSheet: Chưa cập nhật
-                    </a>
-                </div>
-
-                <button class="btn-update" onclick="openReportEditModal()">
-                    ✏️ Cập nhật Báo cáo
-                </button>
-            </div>
-
-            <!-- CỘT BÊN PHẢI -->
-            <div>
-                <!-- KHỐI 2: TÀI LIỆU & HƯỚNG DẪN -->
-                <div class="card-box">
-                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📂 Tài Liệu & HƯỚNG DẪN</h3>
-
-                    <!-- BẢNG 1: SỔ TAY QUY TRÌNH CÔNG VIỆC -->
-                    <table style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 10px;" id="procTable">
-                        <thead>
-                            <tr class="doc-section-title">
-                                <td colspan="3">📖 Sổ tay Quy trình công việc</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="border-bottom: 1px solid #f1f3f5;">
-                                <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Quy trình bộ phận Kho</td>
-                                <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
-                                <td style="padding: 8px 10px; text-align: center;"><a href="quy-trinh-kho.html" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
-                            </tr>
-                            <tr style="border-bottom: 1px solid #f1f3f5;">
-                                <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Quy trình bộ phận Cắt</td>
-                                <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
-                                <td style="padding: 8px 10px; text-align: center;"><a href="quy-trinh-cat.html" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
-                            </tr>
-                            <tr style="border-bottom: 1px solid #f1f3f5;">
-                                <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Quy trình Chuyền may</td>
-                                <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu nội bộ</td>
-                                <td style="padding: 8px 10px; text-align: center;"><a href="quy-trinh-may.html" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <button class="btn-update" onclick="openProcEditModal()" style="margin-bottom: 25px;">
-                        ✏️ Cập nhật
-                    </button>
-
-                    <!-- BẢNG 2: TÀI LIỆU KHÁCH HÀNG -->
-                    <table style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 10px;" id="inspTable">
-                        <thead>
-                            <tr class="doc-section-title">
-                                <td colspan="3">🔍 Tài liệu khách hàng</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="border-bottom: 1px solid #f1f3f5;">
-                                <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>Hướng dẫn kiểm hàng tổng hợp</td>
-                                <td style="padding: 8px 10px; font-size: 13px; color: #666;">Tài liệu khách hàng</td>
-                                <td style="padding: 8px 10px; text-align: center;"><a href="LINK_TAI_LIEU_2" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <button class="btn-update" onclick="openInspEditModal()">
-                        ✏️ Cập nhật
-                    </button>
-                </div>
-
-                <!-- KHỐI 3: LỊCH KIỂM HÀNG & AUDIT -->
-                <div class="card-box" style="margin-bottom: 0;">
-                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📅 Lịch Kiểm Hàng & Audit</h3>
-
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="auditTable">
-                        <thead>
-                            <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
-                                <th style="padding: 10px; font-size: 13px; border-radius: 6px 0 0 6px;">Tên Khách hàng</th>
-                                <th style="padding: 10px; font-size: 13px;">Ngày</th>
-                                <th style="padding: 10px; font-size: 13px;">Loại</th>
-                                <th style="padding: 10px; font-size: 13px; text-align: center; border-radius: 0 6px 6px 0;">Nhà máy</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="border-bottom: 1px solid #f1f3f5;">
-                                <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b;">UNIQLO</td>
-                                <td style="padding: 10px; font-size: 13px; color: #666;">15/10/2024</td>
-                                <td style="padding: 10px; font-size: 13px; color: #1a73e8; font-weight: 600;">Final Inspection</td>
-                                <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b;">Nhà máy 1</td>
-                            </tr>
-                            <tr style="border-bottom: 1px solid #f1f3f5;">
-                                <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b;">GU</td>
-                                <td style="padding: 10px; font-size: 13px; color: #666;">18/10/2024</td>
-                                <td style="padding: 10px; font-size: 13px; color: #d93025; font-weight: 600;">Quality Audit</td>
-                                <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b;">Nhà máy 2</td>
-                            </tr>
-                            <tr style="border-bottom: 1px solid #f1f3f5;">
-                                <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b;">ADIDAS</td>
-                                <td style="padding: 10px; font-size: 13px; color: #666;">22/10/2024</td>
-                                <td style="padding: 10px; font-size: 13px; color: #137333; font-weight: 600;">Pre-final</td>
-                                <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b;">LAOS</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b;">PUMA</td>
-                                <td style="padding: 10px; font-size: 13px; color: #666;">25/10/2024</td>
-                                <td style="padding: 10px; font-size: 13px; color: #b06000; font-weight: 600;">System Audit</td>
-                                <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b;">Nhà máy 1</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <button class="btn-update" onclick="openEditModal()">
-                        ✏️ Cập nhật Lịch
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-box" style="margin-bottom: 0;">
-            <h3 style="margin-top: 0; margin-bottom: 15px; color: #333; font-size: 18px;">📌 Bổ Sung Thông Tin</h3>
-            <div style="color: #475569; font-size: 14px; line-height: 1.6;">
-                <p style="margin: 0 0 10px 0;">Nhập nội dung bổ sung thông tin hoặc các lưu ý quan trọng tại đây...</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 0: CẬP NHẬT DANH SÁCH BÁO CÁO -->
-    <div class="modal-overlay" id="reportModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>✏️ Cập Nhật Danh Sách Báo Cáo</h3>
-                <button class="close-btn" onclick="closeReportEditModal()">&times;</button>
-            </div>
-            
-            <div id="modalReportContainer"></div>
-
-            <button class="btn-add-row" onclick="addReportModalRow()">+ Thêm báo cáo mới</button>
-
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeReportEditModal()">Hủy</button>
-                <button class="btn-save" onclick="saveReportList()">Lưu thay đổi</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 1: CẬP NHẬT QUY TRÌNH CÔNG VIỆC -->
-    <div class="modal-overlay" id="procModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>✏️ Cập Nhật Sổ Tay Quy Trình Công Việc</h3>
-                <button class="close-btn" onclick="closeProcEditModal()">&times;</button>
-            </div>
-            
-            <div id="modalProcContainer"></div>
-
-            <button class="btn-add-row" onclick="addDocModalRow('modalProcContainer')">+ Thêm quy trình mới</button>
-
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeProcEditModal()">Hủy</button>
-                <button class="btn-save" onclick="saveProcTable()">Lưu thay đổi</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 2: CẬP NHẬT HƯỚNG DẪN KIỂM HÀNG (CÓ NÚT UPLOAD PDF) -->
-    <div class="modal-overlay" id="inspModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>✏️ Cập Nhật Hướng Dẫn Kiểm Hàng</h3>
-                <button class="close-btn" onclick="closeInspEditModal()">&times;</button>
-            </div>
-            
-            <div id="modalInspContainer"></div>
-
-            <button class="btn-add-row" onclick="addInspModalRow()">+ Thêm hướng dẫn mới</button>
-
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeInspEditModal()">Hủy</button>
-                <button class="btn-save" onclick="saveInspTable()">Lưu thay đổi</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 3: CẬP NHẬT LỊCH AUDIT -->
-    <div class="modal-overlay" id="editModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>✏️ Cập Nhật Lịch Kiểm Hàng & Audit</h3>
-                <button class="close-btn" onclick="closeEditModal()">&times;</button>
-            </div>
-            
-            <div id="modalRowContainer"></div>
-
-            <button class="btn-add-row" onclick="addModalRow()">+ Thêm dòng mới</button>
-
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeEditModal()">Hủy</button>
-                <button class="btn-save" onclick="saveAuditTable()">Lưu thay đổi</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="google_translate_element"></div>
-
-    <script type="text/javascript">
+<script type="text/javascript">
         // --- HÀM TẠO DÒNG NHẬP LIỆU CHUNG (DÙNG CHO BẢNG QUY TRÌNH) ---
         function addDocModalRow(containerId, name = '', note = '', link = '') {
             const container = document.getElementById(containerId);
@@ -588,7 +13,34 @@
             container.appendChild(rowDiv);
         }
 
-        // ================= 0. CẬP NHẬT DANH SÁCH BÁO CÁO =================
+        // ================= 0. DANH SÁCH BÁO CÁO =================
+        const defaultReports = [
+            { title: "📊 Báo cáo tổng hợp HQC/FQC hàng tuần", link: "https://docs.google.com/spreadsheets/d/1gfFYZTz1SIm0CVrydI4UY934wJ5fvghQ7hi5MhSB1pE/edit?gid=653998014#gid=653998014" },
+            { title: "📊 Báo cáo tổng hợp Pre-final hàng tuần", link: "https://docs.google.com/spreadsheets/d/1of2bFSyYKBswoAnQOCFsJm8JfKAGUS9qmwlvaU1SSBV8/edit?pli=1&gid=1312774476#gid=1312774476" },
+            { title: "📊 Báo cáo tổng hợp Pre-final Lào hàng tuần", link: "https://docs.google.com/spreadsheets/d/1F_R7qaZdo9WQLjxJtIz69rEN77JQvRnz_z2ZUA0jxI/edit?gid=616548280#gid=616548280" },
+            { title: "📊 Báo cáo kiểm hàng UNIQLO", link: "https://docs.google.com/spreadsheets/d/1fokM2A81tj-9QW86C__3himjvPMKWjE5k8d1WWzMjKo/edit?gid=1316557202#gid=1316557202" },
+            { title: "📊 Báo cáo Tổng hợp sự cố sản xuất", link: "https://docs.google.com/spreadsheets/d/1hw-4JHQdBQFa7by5pyYWCSfGFS3ymvZrW1YsNMaLcNE/edit?gid=1057145470#gid=1057145470" },
+            { title: "📊 Báo cáo Tổng hợp sự cố sản xuất Nhà máy LAOS", link: "https://docs.google.com/spreadsheets/d/1RkAIOUVqutgVptWn3R9OxshLUs-R8La1oPsgt3NFECGU/edit?gid=1435937454#gid=1435937454" },
+            { title: "📱 AppSheet: Chưa cập nhật", link: "#" }
+        ];
+
+        function loadReports() {
+            const saved = localStorage.getItem('hv_reports_data');
+            const data = saved ? JSON.parse(saved) : defaultReports;
+            const container = document.getElementById('reportListContainer');
+            container.innerHTML = '';
+
+            data.forEach((item, index) => {
+                const a = document.createElement('a');
+                a.href = item.link;
+                a.target = '_blank';
+                a.className = item.title.toLowerCase().includes('appsheet') ? 'link-card appsheet-link' : 'link-card sheet-link';
+                if (index === data.length - 1) a.style.marginBottom = '0';
+                a.innerText = item.title;
+                container.appendChild(a);
+            });
+        }
+
         function addReportModalRow(title = '', link = '') {
             const container = document.getElementById('modalReportContainer');
             const rowDiv = document.createElement('div');
@@ -605,13 +57,10 @@
             const container = document.getElementById('modalReportContainer');
             container.innerHTML = '';
             
-            const links = document.querySelectorAll('#reportListContainer a');
-            links.forEach(link => {
-                let title = link.innerText.trim();
-                let url = link.getAttribute('href');
-                addReportModalRow(title, url);
-            });
-
+            const saved = localStorage.getItem('hv_reports_data');
+            const data = saved ? JSON.parse(saved) : defaultReports;
+            
+            data.forEach(item => addReportModalRow(item.title, item.link));
             document.getElementById('reportModal').style.display = 'flex';
         }
 
@@ -622,51 +71,53 @@
         function saveReportList() {
             const container = document.getElementById('modalReportContainer');
             const editRows = container.querySelectorAll('.edit-row-report');
-            const reportContainer = document.getElementById('reportListContainer');
-            reportContainer.innerHTML = '';
+            const newData = [];
 
-            editRows.forEach((row, index) => {
+            editRows.forEach((row) => {
                 const inputs = row.querySelectorAll('input');
                 const title = inputs[0].value.trim();
                 const link = inputs[1].value.trim() || '#';
-
-                if (title) {
-                    const a = document.createElement('a');
-                    a.href = link;
-                    a.target = '_blank';
-                    
-                    if (title.toLowerCase().includes('appsheet')) {
-                        a.className = 'link-card appsheet-link';
-                    } else {
-                        a.className = 'link-card sheet-link';
-                    }
-
-                    if (index === editRows.length - 1) {
-                        a.style.marginBottom = '0';
-                    }
-
-                    a.innerText = title;
-                    reportContainer.appendChild(a);
-                }
+                if (title) newData.push({ title, link });
             });
 
+            localStorage.setItem('hv_reports_data', JSON.stringify(newData));
+            loadReports();
             closeReportEditModal();
         }
 
-        // ================= 1. CẬP NHẬT SỔ TAY QUY TRÌNH =================
+        // ================= 1. SỔ TAY QUY TRÌNH =================
+        const defaultProc = [
+            { name: "Quy trình bộ phận Kho", note: "Tài liệu nội bộ", link: "quy-trinh-kho.html" },
+            { name: "Quy trình bộ phận Cắt", note: "Tài liệu nội bộ", link: "quy-trinh-cat.html" },
+            { name: "Quy trình Chuyền may", note: "Tài liệu nội bộ", link: "quy-trinh-may.html" }
+        ];
+
+        function loadProc() {
+            const saved = localStorage.getItem('hv_proc_data');
+            const data = saved ? JSON.parse(saved) : defaultProc;
+            const tbody = document.querySelector('#procTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid #f1f3f5';
+                tr.innerHTML = `
+                    <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
+                    <td style="padding: 8px 10px; font-size: 13px; color: #666;">${item.note}</td>
+                    <td style="padding: 8px 10px; text-align: center;"><a href="${item.link}" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
         function openProcEditModal() {
             const container = document.getElementById('modalProcContainer');
             container.innerHTML = '';
             
-            const rows = document.querySelectorAll('#procTable tbody tr');
-            rows.forEach(row => {
-                const cols = row.querySelectorAll('td');
-                let name = cols[0].innerText.replace('└─ ', '').trim();
-                let note = cols[1].innerText.trim();
-                let link = cols[2].querySelector('a') ? cols[2].querySelector('a').getAttribute('href') : '';
-                addDocModalRow('modalProcContainer', name, note, link);
-            });
+            const saved = localStorage.getItem('hv_proc_data');
+            const data = saved ? JSON.parse(saved) : defaultProc;
 
+            data.forEach(item => addDocModalRow('modalProcContainer', item.name, item.note, item.link));
             document.getElementById('procModal').style.display = 'flex';
         }
 
@@ -677,31 +128,44 @@
         function saveProcTable() {
             const container = document.getElementById('modalProcContainer');
             const editRows = container.querySelectorAll('.edit-row');
-            const tbody = document.querySelector('#procTable tbody');
-            tbody.innerHTML = '';
+            const newData = [];
 
             editRows.forEach((row) => {
                 const inputs = row.querySelectorAll('input');
                 const name = inputs[0].value.trim();
                 const note = inputs[1].value.trim();
                 const link = inputs[2].value.trim() || '#';
-
-                if (name) {
-                    const tr = document.createElement('tr');
-                    tr.style.borderBottom = '1px solid #f1f3f5';
-                    tr.innerHTML = `
-                        <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${name}</td>
-                        <td style="padding: 8px 10px; font-size: 13px; color: #666;">${note}</td>
-                        <td style="padding: 8px 10px; text-align: center;"><a href="${link}" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
-                    `;
-                    tbody.appendChild(tr);
-                }
+                if (name) newData.push({ name, note, link });
             });
 
+            localStorage.setItem('hv_proc_data', JSON.stringify(newData));
+            loadProc();
             closeProcEditModal();
         }
 
-        // ================= 2. CẬP NHẬT HƯỚNG DẪN KIỂM HÀNG (CÓ CHỨC NĂNG UPLOAD PDF) =================
+        // ================= 2. HƯỚNG DẪN KIỂM HÀNG =================
+        const defaultInsp = [
+            { name: "Hướng dẫn kiểm hàng tổng hợp", note: "Tài liệu khách hàng", link: "#" }
+        ];
+
+        function loadInsp() {
+            const saved = localStorage.getItem('hv_insp_data');
+            const data = saved ? JSON.parse(saved) : defaultInsp;
+            const tbody = document.querySelector('#inspTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid #f1f3f5';
+                tr.innerHTML = `
+                    <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
+                    <td style="padding: 8px 10px; font-size: 13px; color: #666;">${item.note}</td>
+                    <td style="padding: 8px 10px; text-align: center;"><a href="${item.link}" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
         function addInspModalRow(name = '', note = '', link = '') {
             const container = document.getElementById('modalInspContainer');
             const rowDiv = document.createElement('div');
@@ -711,9 +175,7 @@
                 <input type="text" placeholder="Ghi chú" value="${note}">
                 <input type="text" class="link-input" placeholder="Link hoặc chọn PDF" value="${link}">
                 <input type="file" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
-                <button type="button" class="btn-pdf-upload" onclick="this.previousElementSibling.click()">
-                    📄 Tải PDF
-                </button>
+                <button type="button" class="btn-pdf-upload" onclick="this.previousElementSibling.click()">📄 Tải PDF</button>
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
             `;
             container.appendChild(rowDiv);
@@ -726,9 +188,11 @@
                     alert('Vui lòng chọn tệp định dạng .PDF!');
                     return;
                 }
-                const url = URL.createObjectURL(file);
-                const linkInput = fileInput.parentElement.querySelector('.link-input');
-                linkInput.value = url;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    fileInput.parentElement.querySelector('.link-input').value = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         }
 
@@ -736,15 +200,10 @@
             const container = document.getElementById('modalInspContainer');
             container.innerHTML = '';
             
-            const rows = document.querySelectorAll('#inspTable tbody tr');
-            rows.forEach(row => {
-                const cols = row.querySelectorAll('td');
-                let name = cols[0].innerText.replace('└─ ', '').trim();
-                let note = cols[1].innerText.trim();
-                let link = cols[2].querySelector('a') ? cols[2].querySelector('a').getAttribute('href') : '';
-                addInspModalRow(name, note, link);
-            });
+            const saved = localStorage.getItem('hv_insp_data');
+            const data = saved ? JSON.parse(saved) : defaultInsp;
 
+            data.forEach(item => addInspModalRow(item.name, item.note, item.link));
             document.getElementById('inspModal').style.display = 'flex';
         }
 
@@ -755,46 +214,61 @@
         function saveInspTable() {
             const container = document.getElementById('modalInspContainer');
             const editRows = container.querySelectorAll('.edit-row-insp');
-            const tbody = document.querySelector('#inspTable tbody');
-            tbody.innerHTML = '';
+            const newData = [];
 
             editRows.forEach((row) => {
                 const inputs = row.querySelectorAll('input');
                 const name = inputs[0].value.trim();
                 const note = inputs[1].value.trim();
                 const link = inputs[2].value.trim() || '#';
-
-                if (name) {
-                    const tr = document.createElement('tr');
-                    tr.style.borderBottom = '1px solid #f1f3f5';
-                    tr.innerHTML = `
-                        <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${name}</td>
-                        <td style="padding: 8px 10px; font-size: 13px; color: #666;">${note}</td>
-                        <td style="padding: 8px 10px; text-align: center;"><a href="${link}" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Xem ↗</a></td>
-                    `;
-                    tbody.appendChild(tr);
-                }
+                if (name) newData.push({ name, note, link });
             });
 
+            localStorage.setItem('hv_insp_data', JSON.stringify(newData));
+            loadInsp();
             closeInspEditModal();
         }
 
-        // ================= 3. CẬP NHẬT LỊCH AUDIT =================
+        // ================= 3. LỊCH AUDIT =================
+        const defaultAudit = [
+            { customer: "UNIQLO", date: "15/10/2024", type: "Final Inspection", factory: "Nhà máy 1" },
+            { customer: "GU", date: "18/10/2024", type: "Quality Audit", factory: "Nhà máy 2" },
+            { customer: "ADIDAS", date: "22/10/2024", type: "Pre-final", factory: "LAOS" },
+            { customer: "PUMA", date: "25/10/2024", type: "System Audit", factory: "Nhà máy 1" }
+        ];
+
+        function loadAudit() {
+            const saved = localStorage.getItem('hv_audit_data');
+            const data = saved ? JSON.parse(saved) : defaultAudit;
+            const tbody = document.querySelector('#auditTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid #f1f3f5';
+                
+                let typeColor = '#1a73e8';
+                if (item.type.toLowerCase().includes('audit')) typeColor = '#d93025';
+                if (item.type.toLowerCase().includes('pre')) typeColor = '#137333';
+
+                tr.innerHTML = `
+                    <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b;">${item.customer}</td>
+                    <td style="padding: 10px; font-size: 13px; color: #666;">${item.date}</td>
+                    <td style="padding: 10px; font-size: 13px; color: ${typeColor}; font-weight: 600;">${item.type}</td>
+                    <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b;">${item.factory}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
         function openEditModal() {
             const container = document.getElementById('modalRowContainer');
             container.innerHTML = '';
             
-            const rows = document.querySelectorAll('#auditTable tbody tr');
-            rows.forEach(row => {
-                const cols = row.querySelectorAll('td');
-                const customer = cols[0].innerText.trim();
-                const date = cols[1].innerText.trim();
-                const type = cols[2].innerText.trim();
-                const factory = cols[3].innerText.trim();
+            const saved = localStorage.getItem('hv_audit_data');
+            const data = saved ? JSON.parse(saved) : defaultAudit;
 
-                addModalRow(customer, date, type, factory);
-            });
-
+            data.forEach(item => addModalRow(item.customer, item.date, item.type, item.factory));
             document.getElementById('editModal').style.display = 'flex';
         }
 
@@ -819,8 +293,7 @@
         function saveAuditTable() {
             const container = document.getElementById('modalRowContainer');
             const editRows = container.querySelectorAll('.edit-row-audit');
-            const tbody = document.querySelector('#auditTable tbody');
-            tbody.innerHTML = '';
+            const newData = [];
 
             editRows.forEach((row) => {
                 const inputs = row.querySelectorAll('input');
@@ -830,25 +303,22 @@
                 const factory = inputs[3].value.trim();
 
                 if (customer || date || type || factory) {
-                    const tr = document.createElement('tr');
-                    tr.style.borderBottom = '1px solid #f1f3f5';
-                    
-                    let typeColor = '#1a73e8';
-                    if (type.toLowerCase().includes('audit')) typeColor = '#d93025';
-                    if (type.toLowerCase().includes('pre')) typeColor = '#137333';
-
-                    tr.innerHTML = `
-                        <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b;">${customer}</td>
-                        <td style="padding: 10px; font-size: 13px; color: #666;">${date}</td>
-                        <td style="padding: 10px; font-size: 13px; color: ${typeColor}; font-weight: 600;">${type}</td>
-                        <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b;">${factory}</td>
-                    `;
-                    tbody.appendChild(tr);
+                    newData.push({ customer, date, type, factory });
                 }
             });
 
+            localStorage.setItem('hv_audit_data', JSON.stringify(newData));
+            loadAudit();
             closeEditModal();
         }
+
+        // TỰ ĐỘNG KHỞI TẠO DỮ LIỆU KHI TẢI TRANG
+        window.addEventListener('DOMContentLoaded', () => {
+            loadReports();
+            loadProc();
+            loadInsp();
+            loadAudit();
+        });
 
         // Translation
         function googleTranslateElementInit() {
@@ -870,7 +340,3 @@
             }
         }
     </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-</body>
-</html>
