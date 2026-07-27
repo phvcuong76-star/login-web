@@ -106,28 +106,28 @@
         }
 
         .btn-update {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 12px;
-    padding: 6px 14px;
-    font-size: 12px;
-    font-weight: 500;
-    color: #2563eb;               /* Chữ màu xanh dương nhẹ */
-    background-color: #eff6ff;     /* Nền xanh rất nhạt */
-    border: 1px solid #bfdbfe;     /* Viền mảnh nhẹ */
-    border-radius: 6px;            /* Bo góc vừa phải */
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #2563eb;               /* Chữ màu xanh dương nhẹ */
+            background-color: #eff6ff;     /* Nền xanh rất nhạt */
+            border: 1px solid #bfdbfe;     /* Viền mảnh nhẹ */
+            border-radius: 6px;            /* Bo góc vừa phải */
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-/* Hiệu ứng khi rê chuột vào nút */
-.btn-update:hover {
-    background-color: #2563eb;
-    color: #ffffff;
-    border-color: #2563eb;
-    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
-}
+        /* Hiệu ứng khi rê chuột vào nút */
+        .btn-update:hover {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+        }
 
         /* Modal Form CSS */
         .modal-overlay {
@@ -361,7 +361,7 @@
         </div>
 
         <div class="main-title-box" style="margin-top: -40px; padding: 20px 40px;">
-    <h2>PHÒNG CHẤT LƯỢNG - HAI VINA</h2>
+            <h2>PHÒNG CHẤT LƯỢNG - HAI VINA</h2>
         </div>
 
         <div class="dashboard-grid">
@@ -374,10 +374,10 @@
                     <div id="reportListContainer"></div>
 
                     <div style="text-align: right;">
-                <button class="btn-update" onclick="openReportEditModal()">
-                ✏️ Cập nhật
-                </button>
-                </div>
+                        <button class="btn-update" onclick="openReportEditModal()">
+                            ✏️ Cập nhật
+                        </button>
+                    </div>
                 </div>
 
                 <!-- BỔ SUNG: BẢNG LỊCH ĐÁNH GIÁ SOP -->
@@ -395,9 +395,11 @@
                         <tbody></tbody>
                     </table>
                
-                    <button class="btn-update" onclick="openSopEditModal()" style="margin-bottom: 25px;">
-                        ✏️ Cập nhật
-                    </button>
+                    <div style="text-align: right;">
+                        <button class="btn-update" onclick="openSopEditModal()">
+                            ✏️ Cập nhật
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -417,9 +419,11 @@
                         <tbody></tbody>
                     </table>
 
-                    <button class="btn-update" onclick="openProcEditModal()" style="margin-bottom: 25px;">
-                        ✏️ Cập nhật
-                    </button>
+                    <div style="text-align: right; margin-bottom: 25px;">
+                        <button class="btn-update" onclick="openProcEditModal()">
+                            ✏️ Cập nhật
+                        </button>
+                    </div>
 
                     <!-- BẢNG 2: TÀI LIỆU KHÁCH HÀNG -->
                     <table style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 10px;" id="inspTable">
@@ -431,9 +435,11 @@
                         <tbody></tbody>
                     </table>
 
-                    <button class="btn-update" onclick="openInspEditModal()">
-                        ✏️ Cập nhật
-                    </button>
+                    <div style="text-align: right;">
+                        <button class="btn-update" onclick="openInspEditModal()">
+                            ✏️ Cập nhật
+                        </button>
+                    </div>
                 </div>
 
                 <!-- KHỐI 3: LỊCH KIỂM HÀNG & AUDIT -->
@@ -453,24 +459,28 @@
                         <tbody></tbody>
                     </table>
 
-                    <button class="btn-update" onclick="openEditModal()">
-                        ✏️ Cập nhật Lịch
-                    </button>
+                    <div style="text-align: right;">
+                        <button class="btn-update" onclick="openEditModal()">
+                            ✏️ Cập nhật Lịch
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="card-box" style="margin-bottom: 0;">
-    <h3 style="margin-top: 0; margin-bottom: 15px; color: #333; font-size: 18px;">Thông Tin</h3>
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; font-size: 12px; font-weight: 500; color: #94a3b8;">
-    <div>
-        <p style="margin: 0 0 5px 0;">Phòng Chất lượng - Công ty TNHH Hai Vina</p>
-        <p style="margin: 0;">Trụ sở chính: Thôn Lãng Xuyên, xã Gia Lộc, thành phố Hải Phòng, Việt Nam / Điện thoại: 02203717500</p>
+            <h3 style="margin-top: 0; margin-bottom: 15px; color: #333; font-size: 18px;">Thông Tin</h3>
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; font-size: 12px; font-weight: 500; color: #94a3b8;">
+                <div>
+                    <p style="margin: 0 0 5px 0;">Phòng Chất lượng - Công ty TNHH Hai Vina</p>
+                    <p style="margin: 0;">Trụ sở chính: Thôn Lãng Xuyên, xã Gia Lộc, thành phố Hải Phòng, Việt Nam / Điện thoại: 02203717500</p>
+                </div>
+                <div style="white-space: nowrap;">
+                    Thiết kế: QA team
+                </div>
+            </div>
+        </div>
     </div>
-    <div style="white-space: nowrap;">
-        Thiết kế: QA team
-    </div>
-</div>
 
     <!-- MODAL 0: CẬP NHẬT DANH SÁCH BÁO CÁO -->
     <div class="modal-overlay" id="reportModal">
@@ -586,20 +596,20 @@
                     }
                     const blob = new Blob([u8arr], { type: mime });
                     const blobUrl = URL.createObjectURL(blob);
-                    window.open(blobUrl, '_blamk');
+                    window.open(blobUrl, '_blank');
                 } catch (e) {
                     alert("Không thể mở file PDF này. File có thể bị hỏng!");
                 }
-            return;
-    }
+                return;
+            }
 
-    // 2. Kiểm tra nếu là trang nội bộ (.html hoặc đường dẫn tương đối) -> Mở tại trang hiện tại (_self)
-    const isInternalPage = url.endsWith('.html') || (!url.startsWith('http://') && !url.startsWith('https://'));
+            // 2. Kiểm tra nếu là trang nội bộ (.html hoặc đường dẫn tương đối) -> Mở tại trang hiện tại (_self)
+            const isInternalPage = url.endsWith('.html') || (!url.startsWith('http://') && !url.startsWith('https://'));
 
-    if (isInternalPage) {
-        window.location.href = url; // Mở đè ngay tại trang hiện tại (_self)
-    } else {
-        window.open(url, '_blank'); // Link ngoài (Drive, web khác) -> Mở tab mới
+            if (isInternalPage) {
+                window.location.href = url; // Mở đè ngay tại trang hiện tại (_self)
+            } else {
+                window.open(url, '_blank'); // Link ngoài (Drive, web khác) -> Mở tab mới
             }
         }
 
