@@ -1,22 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phòng Chất Lượng (HAI VINA)</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f8fafc; color: #334155; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: #fff; padding: 15px 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        h1 { font-size: 20px; color: #0f172a; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+        .card { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; }
+        .card-title { font-weight: 600; font-size: 16px; color: #1e293b; }
+        .btn-edit { background: #e2e8f0; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        .btn-edit:hover { background: #cbd5e1; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background: #f1f5f9; text-align: left; padding: 8px 10px; font-size: 12px; color: #475569; }
+        td { padding: 8px 10px; font-size: 13px; border-bottom: 1px solid #f1f3f5; }
+        .link-card { display: block; padding: 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 8px; text-decoration: none; color: #2563eb; font-weight: 500; font-size: 13px; }
+        .link-card:hover { background: #eff6ff; }
+        .appsheet-link { border-left: 4px solid #10b981; }
+        .sheet-link { border-left: 4px solid #3b82f6; }
+        .view-link { color: #2563eb; cursor: pointer; font-weight: 600; }
+        
+        /* Modal Style */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: #fff; padding: 20px; border-radius: 10px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; }
+        .edit-row, .edit-row-report, .edit-row-sop, .edit-row-audit, .edit-row-insp { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; }
+        .edit-row input, .edit-row-report input, .edit-row-sop input, .edit-row-audit input, .edit-row-insp input { flex: 1; padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; }
+        .btn-delete-row { background: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; }
+        .modal-actions { margin-top: 15px; display: flex; justify-content: flex-end; gap: 10px; }
+        .btn-save { background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; }
+        .btn-cancel { background: #64748b; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; }
+        .btn-pdf-upload { background: #0284c7; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; white-space: nowrap; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Phòng Chất Lượng (HAI VINA)</h1>
+        <div id="google_translate_element"></div>
+    </header>
+
+    <div class="grid">
+        <!-- 0. Báo cáo tổng hợp -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">📊 Báo Cáo Tổng Hợp</span>
+                <button class="btn-edit" onclick="openReportEditModal()">⚙️ Sửa</button>
+            </div>
+            <div id="reportListContainer">Đang tải báo cáo...</div>
+        </div>
+
+        <!-- 1. Lịch đánh giá SOP -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">📋 Lịch Đánh Giá SOP</span>
+                <button class="btn-edit" onclick="openSopEditModal()">⚙️ Sửa</button>
+            </div>
+            <table id="sopTable">
+                <thead>
+                    <tr><th>Thời gian</th><th style="text-align:center;">Nhà máy</th><th style="text-align:center;">Checklist</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- 2. Sổ tay quy trình -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">📘 Sổ Tay Quy Trình</span>
+                <button class="btn-edit" onclick="openProcEditModal()">⚙️ Sửa</button>
+            </div>
+            <table id="procTable">
+                <thead>
+                    <tr><th>Tên quy trình</th><th>Ghi chú</th><th style="text-align:center;">Tài liệu</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- 3. Hướng dẫn kiểm hàng -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">📑 Hướng Dẫn Kiểm Hàng</span>
+                <button class="btn-edit" onclick="openInspEditModal()">⚙️ Sửa</button>
+            </div>
+            <table id="inspTable">
+                <thead>
+                    <tr><th>Tên hướng dẫn</th><th>Ghi chú</th><th style="text-align:center;">File</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- 4. Lịch Audit -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <div class="card-header">
+                <span class="card-title">📅 Lịch Audit / Khách Hàng Kiểm Hàng</span>
+                <button class="btn-edit" onclick="openEditModal()">⚙️ Sửa</button>
+            </div>
+            <table id="auditTable">
+                <thead>
+                    <tr><th>Khách hàng</th><th>Ngày</th><th>Loại</th><th style="text-align:center;">Nhà máy</th><th style="text-align:center;">Tài liệu</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL SỬA BÁO CÁO -->
+<div id="reportModal" class="modal">
+    <div class="modal-content">
+        <h3>Chỉnh sửa Báo cáo</h3>
+        <div id="modalReportContainer" style="margin-top: 15px;"></div>
+        <button onclick="addReportModalRow()" style="margin-top: 10px; padding: 5px 10px;">+ Thêm dòng</button>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeReportEditModal()">Hủy</button>
+            <button class="btn-save" onclick="saveReportList()">Lưu lại</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL SỬA SOP -->
+<div id="sopModal" class="modal">
+    <div class="modal-content">
+        <h3>Chỉnh sửa Lịch SOP</h3>
+        <div id="modalSopContainer" style="margin-top: 15px;"></div>
+        <button onclick="addSopModalRow()" style="margin-top: 10px; padding: 5px 10px;">+ Thêm dòng</button>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeSopEditModal()">Hủy</button>
+            <button class="btn-save" onclick="saveSopTable()">Lưu lại</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL SỬA QUY TRÌNH -->
+<div id="procModal" class="modal">
+    <div class="modal-content">
+        <h3>Chỉnh sửa Sổ tay Quy trình</h3>
+        <div id="modalProcContainer" style="margin-top: 15px;"></div>
+        <button onclick="addDocModalRow('modalProcContainer')" style="margin-top: 10px; padding: 5px 10px;">+ Thêm dòng</button>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeProcEditModal()">Hủy</button>
+            <button class="btn-save" onclick="saveProcTable()">Lưu lại</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL SỬA HƯỚNG DẪN KIỂM HÀNG -->
+<div id="inspModal" class="modal">
+    <div class="modal-content">
+        <h3>Chỉnh sửa Hướng dẫn kiểm hàng</h3>
+        <div id="modalInspContainer" style="margin-top: 15px;"></div>
+        <button onclick="addInspModalRow()" style="margin-top: 10px; padding: 5px 10px;">+ Thêm dòng</button>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeInspEditModal()">Hủy</button>
+            <button class="btn-save" onclick="saveInspTable()">Lưu lại</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL SỬA AUDIT -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <h3>Chỉnh sửa Lịch Audit</h3>
+        <div id="modalRowContainer" style="margin-top: 15px;"></div>
+        <button onclick="addModalRow()" style="margin-top: 10px; padding: 5px 10px;">+ Thêm dòng</button>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeEditModal()">Hủy</button>
+            <button class="btn-save" onclick="saveAuditTable()">Lưu lại</button>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPT XỬ LÝ -->
 <script type="text/javascript">
     const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
 
-    // --- SỬA LỖI ĐỊNH DẠNG NGÀY THÁNG DD/MM/YYYY ---
     function formatDate(dateString) {
         if (!dateString) return '';
         if (typeof dateString === 'string' && dateString.includes('/')) return dateString;
-        
         const d = new Date(dateString);
         if (isNaN(d.getTime())) return dateString;
-        
-        const day = String(d.getDate()).padStart(2, '0');
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const year = d.getFullYear();
-        
-        return `${day}/${month}/${year}`;
+        return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
     }
 
-    // --- HÀM MỞ FILE CHUNG ---
     function openDocument(url) {
         if (!url || url === '#' || url === '-') return;
         if (url.startsWith('data:application/pdf')) {
@@ -26,552 +199,126 @@
                 const bstr = atob(arr[1]);
                 let n = bstr.length;
                 const u8arr = new Uint8Array(n);
-                while (n--) {
-                    u8arr[n] = bstr.charCodeAt(n);
-                }
+                while (n--) { u8arr[n] = bstr.charCodeAt(n); }
                 const blob = new Blob([u8arr], { type: mime });
-                const blobUrl = URL.createObjectURL(blob);
-                window.open(blobUrl, '_blank');
-            } catch (e) {
-                alert("Không thể mở file PDF này. File có thể bị hỏng!");
-            }
+                window.open(URL.createObjectURL(blob), '_blank');
+            } catch (e) { alert("Không thể mở file PDF!"); }
             return;
         }
-
-        const isInternalPage = url.endsWith('.html') || (!url.startsWith('http://') && !url.startsWith('https://'));
-        if (isInternalPage) {
-            window.location.href = url;
-        } else {
-            window.open(url, '_blank');
-        }
+        window.open(url, '_blank');
     }
 
-    function addDocModalRow(containerId, name = '', note = '', link = '') {
-        const container = document.getElementById(containerId);
-        const rowDiv = document.createElement('div');
-        rowDiv.className = 'edit-row';
-        rowDiv.innerHTML = `
-            <input type="text" placeholder="Tên Tài Liệu" value="${name}">
-            <input type="text" placeholder="Ghi chú" value="${note}">
-            <input type="text" placeholder="Link (URL)" value="${link}">
-            <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
-        `;
-        container.appendChild(rowDiv);
-    }
-
-    // --- SỬA LỖI LƯU DỮ LIỆU LÊN GOOGLE SHEETS ---
     async function saveToGoogleSheet(sheetName, data, callbackClose) {
         try {
-            // Dùng content-type text/plain để tránh vướng CORS preflight của Google Apps Script
             await fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({
-                    action: 'updateSheet',
-                    sheetName: sheetName,
-                    data: data
-                })
+                body: JSON.stringify({ action: 'updateSheet', sheetName, data })
             });
-            alert("Cập nhật thành công lên hệ thống!");
+            alert("Cập nhật thành công!");
             if (callbackClose) callbackClose();
-            setTimeout(() => { loadAllDataFromGoogleSheet(); }, 1200);
+            setTimeout(loadAllDataFromGoogleSheet, 1200);
         } catch (e) {
-            console.error(e);
             alert("Có lỗi xảy ra khi lưu dữ liệu!");
         }
     }
 
-    // ================= DỮ LIỆU MẶC ĐỊNH DỰ PHÒNG =================
     const defaultReports = [
-        { title: "📊 Báo cáo tổng hợp HQC/FQC hàng tuần", link: "https://docs.google.com/spreadsheets/d/1gfFYZTz1SIm0CVrydI4UY934wJ5fvghQ7hi5MhSB1pE/edit?gid=653998014#gid=653998014" },
-        { title: "📊 Báo cáo tổng hợp Pre-final hàng tuần", link: "https://docs.google.com/spreadsheets/d/1of2bFSyYKBswoAnQOCFsJm8JfKAGUS9qmwlvaU1SSBV8/edit?pli=1&gid=1312774476#gid=1312774476" },
-        { title: "📊 Báo cáo tổng hợp Pre-final Lào hàng tuần", link: "https://docs.google.com/spreadsheets/d/1F_R7qaZdo9WQLjxJtIz69rEN77JQvRnz_z2ZUA0jxI/edit?gid=616548280#gid=616548280" },
-        { title: "📊 Báo cáo kiểm hàng UNIQLO", link: "https://docs.google.com/spreadsheets/d/1fokM2A81tj-9QW86C__3himjvPMKWjE5k8d1WWzMjKo/edit?gid=1316557202#gid=1316557202" },
-        { title: "📊 Báo cáo Tổng hợp sự cố sản xuất", link: "https://docs.google.com/spreadsheets/d/1hw-4JHQdBQFa7by5pyYWCSfGFS3ymvZrW1YsNMaLcNE/edit?gid=1057145470#gid=1057145470" },
-        { title: "📊 Báo cáo Tổng hợp sự cố sản xuất Nhà máy LAOS", link: "https://docs.google.com/spreadsheets/d/1RkAIOUVqutgVptWn3R9OxshLUs-R8La1oPsgt3NFECGU/edit?gid=1435937454#gid=1435937454" },
-        { title: "📊 Báo cáo hàng hỏng gia công", link: "https://docs.google.com/spreadsheets/d/1k4zNpSPGHBivLlxHN_1DnSmqAefXwoW4iIPL6hRstgo/edit?gid=847802590#gid=847802590" },
-        { title: "📊 Báo cáo Tổng hợp Final Mechanix", link: "https://docs.google.com/spreadsheets/d/1dWXFCA7wKKKMamEa69TuzJLoxwD59eOfkuAZBZ9HOGo/edit?gid=2003944841#gid=2003944841" },
-        { title: "📊 Báo cáo Tổng hợp Inline QA", link: "https://docs.google.com/spreadsheets/d/1dbhx_qfm65uKouDWXiROK8s6qjKtlLN7OJVBw3W7ljY/edit?gid=1668041491#gid=1668041491" },
-        { title: "📊 Báo cáo Tổng hợp Inline QA (lỗi đặc biệt) & Kiểm mẫu ", link: "https://docs.google.com/spreadsheets/d/17yUkmR1i3PNocqj80hcm1RELHJ3KOo8vK0VxmQsuJdE/edit?gid=0#gid=0" }
+        { title: "📊 Báo cáo tổng hợp HQC/FQC hàng tuần", link: "https://docs.google.com/spreadsheets/d/1gfFYZTz1SIm0CVrydI4UY934wJ5fvghQ7hi5MhSB1pE/edit" },
+        { title: "📊 Báo cáo kiểm hàng UNIQLO", link: "https://docs.google.com/spreadsheets/d/1fokM2A81tj-9QW86C__3himjvPMKWjE5k8d1WWzMjKo/edit" }
     ];
 
-    const defaultSop = [
-        { date: "30/07/2026", factory: "Găng tay Nam Sách / Quần áo Gia Lộc", checklistLink: "" },
-        { date: "31/07/2026", factory: "Găng tay Gia Lộc, Đặc thù Gia Lộc", checklistLink: "" }
-    ];
+    let globalData = { reports: defaultReports, sop: [], proc: [], insp: [], audit: [] };
 
-    const defaultProc = [
-        { name: "Quy trình bộ phận Kho", note: "Tài liệu nội bộ", link: "quy-trinh-kho.html" },
-        { name: "Quy trình bộ phận Cắt", note: "Tài liệu nội bộ", link: "quy-trinh-cat.html" },
-        { name: "Quy trình bộ phận Chẩn bị", note: "Tài liệu nội bộ", link: "quy-trinh-chuan-bi.html" },
-        { name: "Quy trình Chuyền may", note: "Tài liệu nội bộ", link: "quy-trinh-may.html" },
-        { name: "Quy trình Hoàn thành", note: "Tài liệu nội bộ", link: "quy-trinh-hoan-thanh.html" },
-        { name: "Quy trình Đối ứng kỹ thuật", note: "Tài liệu nội bộ", link: "quy-trinh-doi-ung.html" }
-    ];
-
-    const defaultInsp = [
-        { name: "Hướng dẫn kiểm hàng tổng hợp", note: "Tài liệu khách hàng", link: "#" }
-    ];
-
-    const defaultAudit = [
-        { customer: "Tên KH", date: "27/07/2026", type: "Inspection", factory: "GTGL/GTNS", docLink: "" }
-    ];
-
-    let globalData = {
-        reports: defaultReports,
-        sop: defaultSop,
-        proc: defaultProc,
-        insp: defaultInsp,
-        audit: defaultAudit
-    };
-
-    // --- HÀM TẢI DỮ LIỆU TỪ GOOGLE SHEETS ---
     async function loadAllDataFromGoogleSheet() {
-        if (!API_URL) return;
-
         try {
             const response = await fetch(API_URL);
             const data = await response.json();
-
-            if (data.reports && data.reports.length > 0) globalData.reports = data.reports;
-            if (data.sop && data.sop.length > 0) globalData.sop = data.sop;
-            if (data.proc && data.proc.length > 0) globalData.proc = data.proc;
-            if (data.insp && data.insp.length > 0) globalData.insp = data.insp;
-            if (data.audit && data.audit.length > 0) globalData.audit = data.audit;
-
+            if (data.reports) globalData.reports = data.reports;
+            if (data.sop) globalData.sop = data.sop;
+            if (data.proc) globalData.proc = data.proc;
+            if (data.insp) globalData.insp = data.insp;
+            if (data.audit) globalData.audit = data.audit;
+        } catch (error) {
+            console.warn("Lỗi API Google Sheet, hiển thị giao diện mặc định.", error);
+        } finally {
             renderReports(globalData.reports);
             renderSop(globalData.sop);
             renderProc(globalData.proc);
             renderInsp(globalData.insp);
             renderAudit(globalData.audit);
-        } catch (error) {
-            console.error("Lỗi tải dữ liệu, hiển thị dữ liệu mặc định:", error);
-            renderReports(defaultReports);
-            renderSop(defaultSop);
-            renderProc(defaultProc);
-            renderInsp(defaultInsp);
-            renderAudit(defaultAudit);
         }
     }
 
-    // ================= 0. DANH SÁCH BÁO CÁO =================
     function renderReports(data) {
         const container = document.getElementById('reportListContainer');
+        if (!container) return;
         container.innerHTML = '';
-
-        const normalReports = data.filter(item => !(item.title || '').toLowerCase().includes('appsheet'));
-        const appsheetReports = data.filter(item => (item.title || '').toLowerCase().includes('appsheet'));
-        const sortedData = [...normalReports, ...appsheetReports];
-
-        sortedData.forEach((item, index) => {
+        (data || []).forEach(item => {
             const a = document.createElement('a');
             a.href = item.link || '#';
             a.target = '_blank';
-            a.className = (item.title || '').toLowerCase().includes('appsheet') ? 'link-card appsheet-link' : 'link-card sheet-link';
-            if (index === sortedData.length - 1) a.style.marginBottom = '0';
+            a.className = 'link-card sheet-link';
             a.innerText = item.title || 'Báo cáo không tên';
             container.appendChild(a);
         });
     }
 
-    function addReportModalRow(title = '', link = '') {
-        const container = document.getElementById('modalReportContainer');
-        const rowDiv = document.createElement('div');
-        rowDiv.className = 'edit-row-report';
-        rowDiv.innerHTML = `
-            <input type="text" placeholder="Tên Báo Cáo" value="${title}">
-            <input type="text" placeholder="Link (URL)" value="${link}">
-            <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
-        `;
-        container.appendChild(rowDiv);
-    }
-
-    function openReportEditModal() {
-        const container = document.getElementById('modalReportContainer');
-        container.innerHTML = '';
-        const data = globalData.reports;
-        
-        const normalReports = data.filter(item => !(item.title || '').toLowerCase().includes('appsheet'));
-        const appsheetReports = data.filter(item => (item.title || '').toLowerCase().includes('appsheet'));
-        const sortedData = [...normalReports, ...appsheetReports];
-
-        sortedData.forEach(item => addReportModalRow(item.title, item.link));
-        document.getElementById('reportModal').style.display = 'flex';
-    }
-
-    function closeReportEditModal() {
-        document.getElementById('reportModal').style.display = 'none';
-    }
-
-    function saveReportList() {
-        const container = document.getElementById('modalReportContainer');
-        const editRows = container.querySelectorAll('.edit-row-report');
-        const newData = [];
-
-        editRows.forEach((row) => {
-            const inputs = row.querySelectorAll('input');
-            const title = inputs[0].value.trim();
-            const link = inputs[1].value.trim() || '#';
-            if (title) newData.push({ title, link });
-        });
-
-        globalData.reports = newData;
-        saveToGoogleSheet('reports', newData, closeReportEditModal);
-    }
-
-    // ================= LỊCH ĐÁNH GIÁ SOP =================
     function renderSop(data) {
         const tbody = document.querySelector('#sopTable tbody');
+        if (!tbody) return;
         tbody.innerHTML = '';
-
-        data.forEach(item => {
-            const tr = document.createElement('tr');
-            tr.style.borderBottom = '1px solid #f1f3f5';
-            
+        (data || []).forEach(item => {
             const linkVal = item.checklistLink || item.checklistlink || item.link || '';
-            const linkCell = (linkVal && linkVal !== '#') 
-                ? `<span class="view-link" onclick="openDocument('${linkVal.replace(/'/g, "\\'")}')">Xem ↗</span>` 
-                : `<span style="color: #94a3b8;">-</span>`;
-
-            tr.innerHTML = `
-                <td style="padding: 10px; font-size: 13px; color: #666; white-space: nowrap;">${formatDate(item.date)}</td>
-                <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b;">${item.factory || ''}</td>
-                <td style="padding: 10px; font-size: 13px; text-align: center; white-space: nowrap;">${linkCell}</td>
-            `;
-            tbody.appendChild(tr);
+            const linkCell = (linkVal && linkVal !== '#') ? `<span class="view-link" onclick="openDocument('${linkVal}')">Xem ↗</span>` : `-`;
+            tbody.innerHTML += `<tr><td>${formatDate(item.date)}</td><td style="text-align:center;">${item.factory||''}</td><td style="text-align:center;">${linkCell}</td></tr>`;
         });
     }
 
-    function openSopEditModal() {
-        const container = document.getElementById('modalSopContainer');
-        container.innerHTML = '';
-        globalData.sop.forEach(item => {
-            const linkVal = item.checklistLink || item.checklistlink || item.link || '';
-            addSopModalRow(formatDate(item.date), item.factory, linkVal);
-        });
-        document.getElementById('sopModal').style.display = 'flex';
-    }
-
-    function closeSopEditModal() {
-        document.getElementById('sopModal').style.display = 'none';
-    }
-
-    function addSopModalRow(date = '', factory = '', checklistLink = '') {
-        const container = document.getElementById('modalSopContainer');
-        const rowDiv = document.createElement('div');
-        rowDiv.className = 'edit-row-sop';
-        rowDiv.innerHTML = `
-            <input type="text" placeholder="Ngày tháng" value="${date}">
-            <input type="text" placeholder="Nhà máy" value="${factory}">
-            <input type="text" class="link-input" placeholder="Link hoặc PDF Checklist" value="${checklistLink}">
-            <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
-            <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
-            <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
-        `;
-        container.appendChild(rowDiv);
-    }
-
-    function saveSopTable() {
-        const container = document.getElementById('modalSopContainer');
-        const editRows = container.querySelectorAll('.edit-row-sop');
-        const newData = [];
-
-        editRows.forEach((row) => {
-            const inputs = row.querySelectorAll('input');
-            const date = inputs[0].value.trim();
-            const factory = inputs[1].value.trim();
-            const checklistLink = inputs[2].value.trim();
-
-            if (date || factory || checklistLink) {
-                newData.push({ date, factory, checklistLink });
-            }
-        });
-
-        globalData.sop = newData;
-        saveToGoogleSheet('sop', newData, closeSopEditModal);
-    }
-
-    // ================= 1. SỔ TAY QUY TRÌNH =================
     function renderProc(data) {
         const tbody = document.querySelector('#procTable tbody');
+        if (!tbody) return;
         tbody.innerHTML = '';
-
-        data.forEach(item => {
-            const tr = document.createElement('tr');
-            tr.style.borderBottom = '1px solid #f1f3f5';
-            
-            const linkCell = (item.link && item.link !== '#') 
-                ? `<span class="view-link" onclick="openDocument('${item.link.replace(/'/g, "\\'")}')">Xem</span>` 
-                : `<span style="color: #94a3b8;">-</span>`;
-
-            tr.innerHTML = `
-                <td style="padding: 8px 10px 8px 15px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${item.name || ''}</td>
-                <td style="padding: 8px 10px; font-size: 13px; color: #666; white-space: nowrap;">${item.note || ''}</td>
-                <td style="padding: 8px 10px; text-align: center; white-space: nowrap;">${linkCell}</td>
-            `;
-            tbody.appendChild(tr);
+        (data || []).forEach(item => {
+            const linkCell = (item.link && item.link !== '#') ? `<span class="view-link" onclick="openDocument('${item.link}')">Xem</span>` : `-`;
+            tbody.innerHTML += `<tr><td>└─ ${item.name||''}</td><td>${item.note||''}</td><td style="text-align:center;">${linkCell}</td></tr>`;
         });
     }
 
-    function openProcEditModal() {
-        const container = document.getElementById('modalProcContainer');
-        container.innerHTML = '';
-        globalData.proc.forEach(item => addDocModalRow('modalProcContainer', item.name, item.note, item.link));
-        document.getElementById('procModal').style.display = 'flex';
-    }
-
-    function closeProcEditModal() {
-        document.getElementById('procModal').style.display = 'none';
-    }
-
-    function saveProcTable() {
-        const container = document.getElementById('modalProcContainer');
-        const editRows = container.querySelectorAll('.edit-row');
-        const newData = [];
-
-        editRows.forEach((row) => {
-            const inputs = row.querySelectorAll('input');
-            const name = inputs[0].value.trim();
-            const note = inputs[1].value.trim();
-            const link = inputs[2].value.trim() || '#';
-            if (name) newData.push({ name, note, link });
-        });
-
-        globalData.proc = newData;
-        saveToGoogleSheet('proc', newData, closeProcEditModal);
-    }
-
-    // ================= 2. HƯỚNG DẪN KIỂM HÀNG =================
     function renderInsp(data) {
         const tbody = document.querySelector('#inspTable tbody');
+        if (!tbody) return;
         tbody.innerHTML = '';
-
-        data.forEach(item => {
-            const tr = document.createElement('tr');
-            tr.style.borderBottom = '1px solid #f1f3f5';
-            
-            const linkCell = (item.link && item.link !== '#') 
-                ? `<span class="view-link" onclick="openDocument('${item.link.replace(/'/g, "\\'")}')">Xem ↗</span>` 
-                : `<span style="color: #94a3b8;">-</span>`;
-
-            tr.innerHTML = `
-                <td style="padding: 8px 10px 8px 15px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${item.name || ''}</td>
-                <td style="padding: 8px 10px; font-size: 13px; color: #666; white-space: nowrap;">${item.note || ''}</td>
-                <td style="padding: 8px 10px; text-align: center; white-space: nowrap;">${linkCell}</td>
-            `;
-            tbody.appendChild(tr);
+        (data || []).forEach(item => {
+            const linkCell = (item.link && item.link !== '#') ? `<span class="view-link" onclick="openDocument('${item.link}')">Xem ↗</span>` : `-`;
+            tbody.innerHTML += `<tr><td>└─ ${item.name||''}</td><td>${item.note||''}</td><td style="text-align:center;">${linkCell}</td></tr>`;
         });
     }
 
-    function addInspModalRow(name = '', note = '', link = '') {
-        const container = document.getElementById('modalInspContainer');
-        const rowDiv = document.createElement('div');
-        rowDiv.className = 'edit-row-insp';
-        rowDiv.innerHTML = `
-            <input type="text" placeholder="Tên Hướng Dẫn" value="${name}">
-            <input type="text" placeholder="Ghi chú" value="${note}">
-            <input type="text" class="link-input" placeholder="Link hoặc chọn PDF" value="${link}">
-            <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
-            <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 Tải PDF</button>
-            <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
-        `;
-        container.appendChild(rowDiv);
-    }
-
-    function triggerFileInput(btn) {
-        const fileInput = btn.parentElement.querySelector('.pdf-file-input');
-        if (fileInput) fileInput.click();
-    }
-
-    // === HÀM TẢI PDF LÊN GOOGLE DRIVE TRỰC TIẾP ===
-    function handlePdfUpload(fileInput) {
-        const file = fileInput.files[0];
-        if (!file) return;
-
-        if (file.type !== 'application/pdf') {
-            alert('Vui lòng chọn tệp định dạng .PDF!');
-            return;
-        }
-
-        if (file.size > 5 * 1024 * 1024) {
-            alert('Kích thước file PDF quá lớn (vượt 5MB). Vui lòng giảm dung lượng trước khi tải lên!');
-            return;
-        }
-
-        const parentRow = fileInput.parentElement;
-        const linkInput = parentRow.querySelector('.link-input');
-        const btnUpload = parentRow.querySelector('.btn-pdf-upload');
-
-        const originalBtnText = btnUpload.innerText;
-        btnUpload.innerText = "⏳ Đang tải...";
-        btnUpload.disabled = true;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const base64Data = e.target.result;
-
-            fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({
-                    action: 'uploadPdf',
-                    fileName: file.name,
-                    mimeType: file.type,
-                    fileData: base64Data
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    linkInput.value = data.fileUrl;
-                    alert('Tải file lên Google Drive thành công!');
-                } else {
-                    alert('Lỗi upload: ' + (data.message || 'Không thể upload'));
-                }
-            })
-            .catch(err => {
-                alert('Lỗi kết nối khi tải file lên Drive!');
-                console.error(err);
-            })
-            .finally(() => {
-                btnUpload.innerText = originalBtnText;
-                btnUpload.disabled = false;
-            });
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function openInspEditModal() {
-        const container = document.getElementById('modalInspContainer');
-        container.innerHTML = '';
-        globalData.insp.forEach(item => addInspModalRow(item.name, item.note, item.link));
-        document.getElementById('inspModal').style.display = 'flex';
-    }
-
-    function closeInspEditModal() {
-        document.getElementById('inspModal').style.display = 'none';
-    }
-
-    function saveInspTable() {
-        const container = document.getElementById('modalInspContainer');
-        const editRows = container.querySelectorAll('.edit-row-insp');
-        const newData = [];
-
-        editRows.forEach((row) => {
-            const inputs = row.querySelectorAll('input');
-            const name = inputs[0].value.trim();
-            const note = inputs[1].value.trim();
-            const link = inputs[2].value.trim() || '#';
-            if (name) newData.push({ name, note, link });
-        });
-
-        globalData.insp = newData;
-        saveToGoogleSheet('insp', newData, closeInspEditModal);
-    }
-
-    // ================= 3. LỊCH AUDIT =================
     function renderAudit(data) {
         const tbody = document.querySelector('#auditTable tbody');
+        if (!tbody) return;
         tbody.innerHTML = '';
-
-        data.forEach(item => {
-            const tr = document.createElement('tr');
-            tr.style.borderBottom = '1px solid #f1f3f5';
-            
-            let typeColor = '#1a73e8';
-            const typeStr = (item.type || '').toLowerCase();
-            if (typeStr.includes('audit')) typeColor = '#d93025';
-            if (typeStr.includes('pre')) typeColor = '#137333';
-
+        (data || []).forEach(item => {
             const linkVal = item.docLink || item.doclink || item.link || '';
-            const docCell = (linkVal && linkVal !== '#') 
-                ? `<span class="view-link" onclick="openDocument('${linkVal.replace(/'/g, "\\'")}')">Xem ↗</span>` 
-                : `<span style="color: #94a3b8;">-</span>`;
-
-            tr.innerHTML = `
-                <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b; white-space: nowrap;">${item.customer || ''}</td>
-                <td style="padding: 10px; font-size: 13px; color: #666; white-space: nowrap;">${formatDate(item.date)}</td>
-                <td style="padding: 10px; font-size: 13px; color: ${typeColor}; font-weight: 600; white-space: nowrap;">${item.type || ''}</td>
-                <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b; white-space: nowrap;">${item.factory || ''}</td>
-                <td style="padding: 10px; font-size: 13px; text-align: center; white-space: nowrap;">${docCell}</td>
-            `;
-            tbody.appendChild(tr);
+            const docCell = (linkVal && linkVal !== '#') ? `<span class="view-link" onclick="openDocument('${linkVal}')">Xem ↗</span>` : `-`;
+            tbody.innerHTML += `<tr><td>${item.customer||''}</td><td>${formatDate(item.date)}</td><td>${item.type||''}</td><td style="text-align:center;">${item.factory||''}</td><td style="text-align:center;">${docCell}</td></tr>`;
         });
     }
 
-    function openEditModal() {
-        const container = document.getElementById('modalRowContainer');
-        container.innerHTML = '';
-        globalData.audit.forEach(item => {
-            const linkVal = item.docLink || item.doclink || item.link || '';
-            addModalRow(item.customer, formatDate(item.date), item.type, item.factory, linkVal);
-        });
-        document.getElementById('editModal').style.display = 'flex';
-    }
+    // Handlers Modal
+    function openReportEditModal() { document.getElementById('reportModal').style.display = 'flex'; }
+    function closeReportEditModal() { document.getElementById('reportModal').style.display = 'none'; }
+    function openSopEditModal() { document.getElementById('sopModal').style.display = 'flex'; }
+    function closeSopEditModal() { document.getElementById('sopModal').style.display = 'none'; }
+    function openProcEditModal() { document.getElementById('procModal').style.display = 'flex'; }
+    function closeProcEditModal() { document.getElementById('procModal').style.display = 'none'; }
+    function openInspEditModal() { document.getElementById('inspModal').style.display = 'flex'; }
+    function closeInspEditModal() { document.getElementById('inspModal').style.display = 'none'; }
+    function openEditModal() { document.getElementById('editModal').style.display = 'flex'; }
+    function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }
 
-    function closeEditModal() {
-        document.getElementById('editModal').style.display = 'none';
-    }
-
-    function addModalRow(customer = '', date = '', type = '', factory = '', docLink = '') {
-        const container = document.getElementById('modalRowContainer');
-        const rowDiv = document.createElement('div');
-        rowDiv.className = 'edit-row-audit';
-        rowDiv.innerHTML = `
-            <input type="text" placeholder="Khách hàng" value="${customer}">
-            <input type="text" placeholder="Ngày" value="${date}">
-            <input type="text" placeholder="Loại" value="${type}">
-            <input type="text" placeholder="Nhà máy" value="${factory}">
-            <input type="text" class="link-input" placeholder="Link hoặc upload PDF" value="${docLink}">
-            <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
-            <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
-            <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
-        `;
-        container.appendChild(rowDiv);
-    }
-
-    function saveAuditTable() {
-        const container = document.getElementById('modalRowContainer');
-        const editRows = container.querySelectorAll('.edit-row-audit');
-        const newData = [];
-
-        editRows.forEach((row) => {
-            const inputs = row.querySelectorAll('input');
-            const customer = inputs[0].value.trim();
-            const date = inputs[1].value.trim();
-            const type = inputs[2].value.trim();
-            const factory = inputs[3].value.trim();
-            const docLink = inputs[4].value.trim();
-
-            if (customer || date || type || factory || docLink) {
-                newData.push({ customer, date, type, factory, docLink });
-            }
-        });
-
-        globalData.audit = newData;
-        saveToGoogleSheet('audit', newData, closeEditModal);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        loadAllDataFromGoogleSheet();
-    });
-
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'vi',
-            includedLanguages: 'en,ko,vi',
-            autoDisplay: false
-        }, 'google_translate_element');
-    }
-
-    function translatePage(langCode, btn) {
-        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        var selectObj = document.querySelector('.goog-te-combo');
-        if (selectObj) {
-            selectObj.value = langCode;
-            selectObj.dispatchEvent(new Event('change'));
-        }
-    }
+    window.addEventListener('DOMContentLoaded', loadAllDataFromGoogleSheet);
 </script>
+</body>
+</html>
