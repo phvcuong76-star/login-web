@@ -1102,28 +1102,57 @@
             if (fileInput) fileInput.click();
         }
 
+        // === HÀM TẢI PDF LÊN GOOGLE DRIVE TRỰC TIẾP ===
         function handlePdfUpload(fileInput) {
             const file = fileInput.files[0];
-            if (file) {
-                if (file.type !== 'application/pdf') {
-                    alert('Vui lòng chọn tệp định dạng .PDF!');
-                    return;
-                }
-                if (file.size > 2 * 1024 * 1024) {
-                    alert('File PDF lớn hơn 2MB! Hãy tải file lên Google Drive và dán đường Link vào ô để tránh bị quá tải.');
-                    return;
-                }
+            if (!file) return;
 
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const linkInput = fileInput.parentElement.querySelector('.link-input');
-                    if (linkInput) {
-                        linkInput.value = e.target.result;
-                        alert('Đã tải PDF thành công! Hãy nhấn "Lưu thay đổi" để hoàn tất.');
-                    }
-                };
-                reader.readAsDataURL(file);
+            if (file.type !== 'application/pdf') {
+                alert('Vui lòng chọn tệp định dạng .PDF!');
+                return;
             }
+
+            const parentRow = fileInput.parentElement;
+            const linkInput = parentRow.querySelector('.link-input');
+            const btnUpload = parentRow.querySelector('.btn-pdf-upload');
+
+            // Đổi giao diện nút bấm báo đang xử lý
+            const originalBtnText = btnUpload.innerText;
+            btnUpload.innerText = "⏳ Đang tải...";
+            btnUpload.disabled = true;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Data = e.target.result;
+
+                fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'uploadPdf',
+                        fileName: file.name,
+                        mimeType: file.type,
+                        fileData: base64Data
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        linkInput.value = data.fileUrl;
+                        alert('Tải file lên Google Drive thành công!');
+                    } else {
+                        alert('Lỗi upload: ' + data.message);
+                    }
+                })
+                .catch(err => {
+                    alert('Lỗi kết nối khi tải file lên Drive!');
+                    console.error(err);
+                })
+                .finally(() => {
+                    btnUpload.innerText = originalBtnText;
+                    btnUpload.disabled = false;
+                });
+            };
+            reader.readAsDataURL(file);
         }
 
         function openInspEditModal() {
