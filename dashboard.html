@@ -540,7 +540,7 @@
             <div>
                 <!-- KHỐI 2: TÀI LIỆU & HƯỚNG DẪN -->
                 <div class="card-box">
-                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📂 Tài Liệu & Hướng Dẫn</h3>
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📂 Tài Liệu & HƯỚNG DẪN</h3>
 
                     <!-- BẢNG 1: SỔ TAY QUY TRÌNH CÔNG VIỆC -->
                     <div class="table-responsive" style="margin-bottom: 10px;">
@@ -723,6 +723,19 @@
         // DÁN URL ỨNG DỤNG WEB (WEB APP URL) TỪ BƯỚC 3 VÀO ĐÂY
         // =========================================================================
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
+
+        // --- HÀM ĐỊNH DẠNG NGÀY THÁNG SANG DD/MM/YYYY ---
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const d = new Date(dateString);
+            if (isNaN(d.getTime())) return dateString; // Nếu là chuỗi thường thì giữ nguyên
+            
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
+            
+            return `${day}/${month}/${year}`;
+        }
 
         // --- HÀM MỞ FILE CHUNG ---
         function openDocument(url) {
@@ -943,7 +956,7 @@
                     : `<span style="color: #94a3b8;">-</span>`;
 
                 tr.innerHTML = `
-                    <td style="padding: 10px; font-size: 13px; color: #666; white-space: nowrap;">${item.date}</td>
+                    <td style="padding: 10px; font-size: 13px; color: #666; white-space: nowrap;">${formatDate(item.date)}</td>
                     <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b;">${item.factory}</td>
                     <td style="padding: 10px; font-size: 13px; text-align: center; white-space: nowrap;">${linkCell}</td>
                 `;
@@ -954,7 +967,7 @@
         function openSopEditModal() {
             const container = document.getElementById('modalSopContainer');
             container.innerHTML = '';
-            globalData.sop.forEach(item => addSopModalRow(item.date, item.factory, item.checklistLink));
+            globalData.sop.forEach(item => addSopModalRow(formatDate(item.date), item.factory, item.checklistLink));
             document.getElementById('sopModal').style.display = 'flex';
         }
 
@@ -1160,7 +1173,7 @@
 
                 tr.innerHTML = `
                     <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b; white-space: nowrap;">${item.customer}</td>
-                    <td style="padding: 10px; font-size: 13px; color: #666; white-space: nowrap;">${item.date}</td>
+                    <td style="padding: 10px; font-size: 13px; color: #666; white-space: nowrap;">${formatDate(item.date)}</td>
                     <td style="padding: 10px; font-size: 13px; color: ${typeColor}; font-weight: 600; white-space: nowrap;">${item.type}</td>
                     <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b; white-space: nowrap;">${item.factory}</td>
                     <td style="padding: 10px; font-size: 13px; text-align: center; white-space: nowrap;">${docCell}</td>
@@ -1172,7 +1185,7 @@
         function openEditModal() {
             const container = document.getElementById('modalRowContainer');
             container.innerHTML = '';
-            globalData.audit.forEach(item => addModalRow(item.customer, item.date, item.type, item.factory, item.docLink));
+            globalData.audit.forEach(item => addModalRow(item.customer, formatDate(item.date), item.type, item.factory, item.docLink));
             document.getElementById('editModal').style.display = 'flex';
         }
 
