@@ -14,10 +14,36 @@
             padding: 30px 20px;
             margin: 0;
             top: 0 !important;
+            position: relative;
         }
+
+        /* BANNER HAI BÊN: Đưa chìm xuống lớp nền dưới cùng (z-index: -1) */
+        .side-banner {
+            position: fixed;
+            top: 40px;
+            width: 180px;
+            height: calc(100vh - 80px);
+            z-index: -1; /* Chìm hoàn toàn bên dưới các khung nội dung */
+            pointer-events: none; /* Tránh cản trở việc click vào trang */
+        }
+        .banner-left { left: 15px; }
+        .banner-right { right: 15px; }
+
+        .side-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            opacity: 0.85; /* Độ mờ nhẹ để tôn phần nội dung chính */
+        }
+
+        /* KHUNG NỘI DUNG CHÍNH: Nổi lên phía trên banner (z-index: 1) */
         .main-wrapper {
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1; /* Nằm đè lên trên banner */
         }
 
         .header-top-bar {
@@ -73,11 +99,12 @@
             margin-bottom: 25px;
         }
 
+        /* Các khối Card có nền màu trắng đục để che phần banner nằm phía dưới */
         .card-box {
-            background: white;
+            background: #ffffff;
             padding: 25px;
             border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
             margin-bottom: 25px;
         }
 
@@ -113,15 +140,14 @@
             padding: 6px 14px;
             font-size: 12px;
             font-weight: 500;
-            color: #2563eb;               /* Chữ màu xanh dương nhẹ */
-            background-color: #eff6ff;     /* Nền xanh rất nhạt */
-            border: 1px solid #bfdbfe;     /* Viền mảnh nhẹ */
-            border-radius: 6px;            /* Bo góc vừa phải */
+            color: #2563eb;
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        /* Hiệu ứng khi rê chuột vào nút */
         .btn-update:hover {
             background-color: #2563eb;
             color: #ffffff;
@@ -280,16 +306,8 @@
             cursor: pointer;
         }
 
-        .side-banner {
-            position: fixed;
-            top: 100px;
-            width: 150px;
-            z-index: 10;
-        }
-        .banner-left { left: 20px; }
-        .banner-right { right: 20px; }
-
-        @media (max-width: 1400px) {
+        /* Dưới 1300px tự động ẩn banner để đỡ bị đè rối mắt */
+        @media (max-width: 1300px) {
             .side-banner { display: none; }
         }
 
@@ -338,13 +356,15 @@
 </head>
 <body>
 
-    <div class="side-banner banner-left" style="height: 700px;">
-        <img src="images nha may 2.jpg" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <!-- BÁO BANNER HAI BÊN (ĐƯỢC ĐẶT CHÌM BÊN DƯỚI) -->
+    <div class="side-banner banner-left">
+        <img src="images nha may 2.jpg" alt="Nhà máy 2">
     </div>
-    <div class="side-banner banner-right" style="height: 700px;">
-        <img src="images nha may 3.jpg" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <div class="side-banner banner-right">
+        <img src="images nha may 3.jpg" alt="Nhà máy 3">
     </div>
 
+    <!-- TOÀN BỘ NỘI DUNG CHÍNH (ĐÈ LÊN TRÊN BANNER) -->
     <div class="main-wrapper">
         <div class="header-top-bar">
             <div class="logo-box">
@@ -580,10 +600,9 @@
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
-        // --- HÀM MỞ FILE CHUNG (SỬA LỖI TAB TRẮNG CHROME/EDGE) ---
+        // --- HÀM MỞ FILE CHUNG ---
         function openDocument(url) {
             if (!url || url === '#') return;
-            // 1. Nếu là file PDF tải lên dạng base64 -> Mở tab mới (_blank)
             if (url.startsWith('data:application/pdf')) {
                 try {
                     const arr = url.split(',');
@@ -603,17 +622,15 @@
                 return;
             }
 
-            // 2. Kiểm tra nếu là trang nội bộ (.html hoặc đường dẫn tương đối) -> Mở tại trang hiện tại (_self)
             const isInternalPage = url.endsWith('.html') || (!url.startsWith('http://') && !url.startsWith('https://'));
 
             if (isInternalPage) {
-                window.location.href = url; // Mở đè ngay tại trang hiện tại (_self)
+                window.location.href = url;
             } else {
-                window.open(url, '_blank'); // Link ngoài (Drive, web khác) -> Mở tab mới
+                window.open(url, '_blank');
             }
         }
 
-        // --- HÀM TẠO DÒNG NHẬP LIỆU CHUNG ---
         function addDocModalRow(containerId, name = '', note = '', link = '') {
             const container = document.getElementById(containerId);
             const rowDiv = document.createElement('div');
@@ -639,7 +656,6 @@
             { title: "📊 Báo cáo Tổng hợp Final Mechanix", link: "https://docs.google.com/spreadsheets/d/1dWXFCA7wKKKMamEa69TuzJLoxwD59eOfkuAZBZ9HOGo/edit?gid=2003944841#gid=2003944841" },
             { title: "📊 Báo cáo Tổng hợp Inline QA", link: "https://docs.google.com/spreadsheets/d/1dbhx_qfm65uKouDWXiROK8s6qjKtlLN7OJVBw3W7ljY/edit?gid=1668041491#gid=1668041491" },
             { title: "📊 Báo cáo Tổng hợp Inline QA (lỗi đặc biệt) & Kiểm mẫu ", link: "https://docs.google.com/spreadsheets/d/17yUkmR1i3PNocqj80hcm1RELHJ3KOo8vK0VxmQsuJdE/edit?gid=0#gid=0" },
-            
         ];
 
         function loadReports() {
@@ -972,7 +988,6 @@
         // ================= 3. LỊCH AUDIT =================
         const defaultAudit = [
             { customer: "Tên KH", date: "27/07/2026", type: "Inspection", factory: "GTGL/GTNS", docLink: "" },
-            
         ];
 
         function loadAudit() {
@@ -1061,7 +1076,6 @@
             }
         }
 
-        // TỰ ĐỘNG KHỞI TẠO DỮ LIỆU KHI TẢI TRANG
         window.addEventListener('DOMContentLoaded', () => {
             loadReports();
             loadSop();
@@ -1070,7 +1084,6 @@
             loadAudit();
         });
 
-        // Translation
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'vi',
