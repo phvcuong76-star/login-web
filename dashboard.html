@@ -836,7 +836,7 @@
                 const tr = document.createElement('tr');
                 tr.style.borderBottom = '1px solid #f1f3f5';
                 const linkCell = (item.checklistLink && item.checklistLink !== '#') 
-                    ? `<span class="view-link" onclick="openDocument('${item.checklistLink.replace(/'/g, "\\'")}')">Xem ↗</span>` 
+                    ? `<span class="view-link" onclick="openDocument('${item.checklistLink.replace(/'/g, "\\'")}')">Xem</span>` 
                     : `<span style="color: #94a3b8;">-</span>`;
 
                 tr.innerHTML = `
@@ -950,7 +950,7 @@
                 const tr = document.createElement('tr');
                 tr.style.borderBottom = '1px solid #f1f3f5';
                 const linkCell = (item.link && item.link !== '#') 
-                    ? `<span class="view-link" onclick="openDocument('${item.link.replace(/'/g, "\\'")}')">Xem ↗</span>` 
+                    ? `<span class="view-link" onclick="openDocument('${item.link.replace(/'/g, "\\'")}')">Xem</span>` 
                     : `<span style="color: #94a3b8;">-</span>`;
 
                 tr.innerHTML = `
