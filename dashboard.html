@@ -59,10 +59,25 @@
             object-fit: contain;
         }
 
+        /* DÒNG THÔNG BÁO TẢI DỮ LIỆU PHÍA TRÊN BANNER */
+        #loading-notice {
+            text-align: center;
+            color: #1e40af;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 14px;
+            background-color: #e0e7ff;
+            padding: 8px;
+            border-radius: 20px;
+            max-width: 580px;
+            margin: 0 auto 10px auto;
+            border: 1px solid #c7d2fe;
+        }
+
         .main-title-box {
             background: linear-gradient(135deg, #1a73e8, #1557b0);
             max-width: 580px;
-            margin: -20px auto 25px auto;
+            margin: 0 auto 25px auto;
             padding: 16px 30px;
             border-radius: 50px;
             box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
@@ -377,7 +392,7 @@
         @media (max-width: 768px) {
             body { padding: 12px 10px; }
             .company-logo { height: 50px; }
-            .main-title-box { margin: -10px auto 15px auto; padding: 12px 20px; border-radius: 30px; }
+            .main-title-box { margin: 0 auto 15px auto; padding: 12px 20px; border-radius: 30px; }
             .main-title-box h2 { font-size: 15px; letter-spacing: 0.5px; }
             .dashboard-grid { grid-template-columns: 1fr; }
             .card-box { padding: 15px; margin-bottom: 15px; border-radius: 12px; }
@@ -419,6 +434,11 @@
                     <button class="lang-btn active" onclick="translatePage('vi', this)">VN</button>
                 </div>
             </div>
+        </div>
+
+        <!-- DÒNG CHỮ THÔNG BÁO TẢI DỮ LIỆU PHÍA TRÊN BANNER -->
+        <div id="loading-notice">
+            ⏳ Đang tải dữ liệu, xin chờ một lát...
         </div>
 
         <div class="main-title-box">
@@ -727,6 +747,10 @@
         async function loadAllDataFromGoogleSheet() {
             if (!API_URL) return;
 
+            // Hiển thị lại thông báo đang tải (dành cho trường hợp gọi tải lại dữ liệu)
+            const notice = document.getElementById('loading-notice');
+            if (notice) notice.style.display = 'block';
+
             try {
                 const response = await fetch(API_URL);
                 const data = await response.json();
@@ -744,6 +768,9 @@
                 renderAudit(globalData.audit);
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
+            } finally {
+                // TỰ ĐỘNG TẮT DÒNG THÔNG BÁO KHI TẢI DỮ LIỆU XONG HOẶC LỖI
+                if (notice) notice.style.display = 'none';
             }
         }
 
