@@ -848,35 +848,33 @@
 
         // --- HÀM TẢI DỮ LIỆU TỪ GOOGLE SHEETS ---
         async function loadAllDataFromGoogleSheet() {
-    // 1. Render trước dữ liệu mặc định/cũ để giao diện không bị trống
-    renderReports(globalData.reports);
-    renderSop(globalData.sop);
-    renderProc(globalData.proc);
-    renderInsp(globalData.insp);
-    renderAudit(globalData.audit);
+            if (!API_URL || API_URL === "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec") {
+                renderReports(defaultReports);
+                renderSop(defaultSop);
+                renderProc(defaultProc);
+                renderInsp(defaultInsp);
+                renderAudit(defaultAudit);
+                return;
+            }
 
-    // 2. Tải dữ liệu mới nhất từ Google Sheets
-    try {
-        const response = await fetch(API_URL);
-        const data = await response.json();
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
 
-        if (data.reports && data.reports.length > 0) globalData.reports = data.reports;
-        if (data.sop && data.sop.length > 0) globalData.sop = data.sop;
-        if (data.proc && data.proc.length > 0) globalData.proc = data.proc;
-        if (data.insp && data.insp.length > 0) globalData.insp = data.insp;
-        if (data.audit && data.audit.length > 0) globalData.audit = data.audit;
+                if (data.reports && data.reports.length > 0) globalData.reports = data.reports;
+                if (data.sop && data.sop.length > 0) globalData.sop = data.sop;
+                if (data.proc && data.proc.length > 0) globalData.proc = data.proc;
+                if (data.insp && data.insp.length > 0) globalData.insp = data.insp;
+                if (data.audit && data.audit.length > 0) globalData.audit = data.audit;
 
-        // 3. Cập nhật lại giao diện với dữ liệu mới từ Sheet
-        renderReports(globalData.reports);
-        renderSop(globalData.sop);
-        renderProc(globalData.proc);
-        renderInsp(globalData.insp);
-        renderAudit(globalData.audit);
-
-    } catch (error) {
-        console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
-    }
-}
+                renderReports(globalData.reports);
+                renderSop(globalData.sop);
+                renderProc(globalData.proc);
+                renderInsp(globalData.insp);
+                renderAudit(globalData.audit);
+            } catch (error) {
+                console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
+            }
         }
 
         // ================= 0. DANH SÁCH BÁO CÁO =================
