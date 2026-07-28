@@ -1074,7 +1074,7 @@
                 if (item.type && item.type.toLowerCase().includes('pre')) typeColor = '#137333';
 
                 const docCell = (item.docLink && item.docLink !== '#') 
-                    ? `<span class="view-link" onclick="openDocument('${item.docLink.replace(/'/g, "\\'")}')">Xem ↗</span>` 
+                    ? `<span class="view-link" onclick="openDocument('${item.docLink.replace(/'/g, "\\'")}')">Xem</span>` 
                     : `<span style="color: #94a3b8;">-</span>`;
 
                 tr.innerHTML = `
