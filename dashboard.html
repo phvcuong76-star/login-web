@@ -11,7 +11,7 @@
         }
         body {
             background-color: #f4f6f9;
-            padding: 30px 20px;
+            padding: 20px 15px;
             margin: 0;
             top: 0 !important;
             position: relative;
@@ -23,8 +23,8 @@
             top: 40px;
             width: 180px;
             height: calc(100vh - 80px);
-            z-index: -1; /* Chìm hoàn toàn bên dưới các khung nội dung */
-            pointer-events: none; /* Tránh cản trở việc click vào trang */
+            z-index: -1;
+            pointer-events: none;
         }
         .banner-left { left: 15px; }
         .banner-right { right: 15px; }
@@ -35,15 +35,15 @@
             object-fit: cover;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            opacity: 0.85; /* Độ mờ nhẹ để tôn phần nội dung chính */
+            opacity: 0.85;
         }
 
-        /* KHUNG NỘI DUNG CHÍNH: Nổi lên phía trên banner (z-index: 1) */
+        /* KHUNG NỘI DUNG CHÍNH */
         .main-wrapper {
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
-            z-index: 1; /* Nằm đè lên trên banner */
+            z-index: 1;
         }
 
         .header-top-bar {
@@ -54,7 +54,7 @@
         }
 
         .company-logo {
-            height: 45px;
+            height: 70px;
             width: auto;
             object-fit: contain;
         }
@@ -62,7 +62,7 @@
         .main-title-box {
             background: linear-gradient(135deg, #1a73e8, #1557b0);
             max-width: 580px;
-            margin: 0 auto 30px auto;
+            margin: -20px auto 25px auto;
             padding: 16px 30px;
             border-radius: 50px;
             box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
@@ -93,30 +93,30 @@
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 20px;
             text-align: left;
             align-items: start;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        /* Các khối Card có nền màu trắng đục để che phần banner nằm phía dưới */
         .card-box {
             background: #ffffff;
-            padding: 25px;
+            padding: 20px;
             border-radius: 16px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .link-card {
             display: block;
-            padding: 14px 18px;
-            margin-bottom: 12px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
             font-size: 14px;
             transition: all 0.2s ease;
+            word-break: break-word;
         }
         .sheet-link {
             background-color: #e6f4ea;
@@ -155,6 +155,19 @@
             box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
         }
 
+        /* BỌC BẢNG ĐỂ CUỘN NGANG TRÊN DI ĐỘNG */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
         /* Modal Form CSS */
         .modal-overlay {
             position: fixed;
@@ -171,7 +184,7 @@
             width: 100%;
             max-width: 850px;
             border-radius: 12px;
-            padding: 24px;
+            padding: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             max-height: 90vh;
             overflow-y: auto;
@@ -182,11 +195,11 @@
             align-items: center;
             border-bottom: 1px solid #e9ecef;
             padding-bottom: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .modal-header h3 {
             margin: 0;
-            font-size: 18px;
+            font-size: 16px;
             color: #1e293b;
         }
         .close-btn {
@@ -253,6 +266,7 @@
             white-space: nowrap;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 4px;
         }
         .btn-pdf-upload:hover {
@@ -306,11 +320,6 @@
             cursor: pointer;
         }
 
-        /* Dưới 1300px tự động ẩn banner để đỡ bị đè rối mắt */
-        @media (max-width: 1300px) {
-            .side-banner { display: none; }
-        }
-
         .lang-switch {
             display: inline-flex;
             background-color: #e9ecef;
@@ -321,8 +330,8 @@
         .lang-btn {
             border: none;
             background: transparent;
-            padding: 5px 12px;
-            font-size: 13px;
+            padding: 5px 10px;
+            font-size: 12px;
             font-weight: 600;
             color: #6c757d;
             border-radius: 16px;
@@ -352,6 +361,110 @@
             font-weight: bold;
             cursor: pointer;
         }
+
+        .footer-info {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+            font-size: 12px; 
+            font-weight: 500; 
+            color: #94a3b8;
+        }
+
+        /* ================= TỐI ƯU RESPONSIVE CHO ĐIỆN THOẠI ================= */
+        @media (max-width: 1300px) {
+            .side-banner { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 12px 10px;
+            }
+
+            .company-logo {
+                height: 50px;
+            }
+
+            .main-title-box {
+                margin: -10px auto 15px auto;
+                padding: 12px 20px;
+                border-radius: 30px;
+            }
+
+            .main-title-box h2 {
+                font-size: 15px;
+                letter-spacing: 0.5px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr; /* Chuyển thành 1 cột trên điện thoại */
+                gap: 15px;
+            }
+
+            .card-box {
+                padding: 15px;
+                margin-bottom: 15px;
+                border-radius: 12px;
+            }
+
+            .card-box h3 {
+                font-size: 16px !important;
+                margin-bottom: 12px !important;
+            }
+
+            .link-card {
+                font-size: 13px;
+                padding: 10px 12px;
+            }
+
+            .footer-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .footer-info div:last-child {
+                white-space: normal;
+            }
+
+            /* Điều chỉnh Modal nhập liệu xếp dọc trên điện thoại */
+            .modal-content {
+                padding: 15px;
+            }
+
+            .edit-row, 
+            .edit-row-insp, 
+            .edit-row-report, 
+            .edit-row-audit, 
+            .edit-row-sop {
+                display: flex;
+                flex-direction: column;
+                background: #f8fafc;
+                padding: 10px;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                margin-bottom: 12px;
+                position: relative;
+            }
+
+            .edit-row input, 
+            .edit-row-insp input, 
+            .edit-row-report input, 
+            .edit-row-audit input, 
+            .edit-row-sop input {
+                width: 100%;
+            }
+
+            .btn-delete-row {
+                width: 100%;
+                margin-top: 5px;
+            }
+
+            .btn-pdf-upload {
+                width: 100%;
+                padding: 8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -368,7 +481,7 @@
     <div class="main-wrapper">
         <div class="header-top-bar">
             <div class="logo-box">
-                <img src="QA APPROVED.png" alt="Logo Công ty" class="company-logo" style="height: 90px; width: auto;">
+                <img src="QA APPROVED.png" alt="Logo Công ty" class="company-logo">
             </div>
 
             <div class="lang-switch-container notranslate" translate="no">
@@ -380,7 +493,7 @@
             </div>
         </div>
 
-        <div class="main-title-box" style="margin-top: -40px; padding: 20px 40px;">
+        <div class="main-title-box">
             <h2>PHÒNG CHẤT LƯỢNG - HAI VINA</h2>
         </div>
 
@@ -404,16 +517,18 @@
                 <div class="card-box" style="margin-bottom: 0;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📋 Lịch Đánh Giá SOP</h3>
 
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="sopTable">
-                        <thead>
-                            <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
-                                <th style="padding: 10px; font-size: 13px; border-radius: 6px 0 0 6px;">Ngày tháng</th>
-                                <th style="padding: 10px; font-size: 13px; text-align: center;">Nhà máy</th>
-                                <th style="padding: 10px; font-size: 13px; text-align: center; border-radius: 0 6px 6px 0;">Checklist</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="sopTable">
+                            <thead>
+                                <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
+                                    <th style="padding: 10px; font-size: 13px; border-radius: 6px 0 0 6px;">Ngày tháng</th>
+                                    <th style="padding: 10px; font-size: 13px; text-align: center;">Nhà máy</th>
+                                    <th style="padding: 10px; font-size: 13px; text-align: center; border-radius: 0 6px 6px 0;">Checklist</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                
                     <div style="text-align: right;">
                         <button class="btn-update" onclick="openSopEditModal()">
@@ -430,14 +545,16 @@
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📂 Tài Liệu & Hướng Dẫn</h3>
 
                     <!-- BẢNG 1: SỔ TAY QUY TRÌNH CÔNG VIỆC -->
-                    <table style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 10px;" id="procTable">
-                        <thead>
-                            <tr class="doc-section-title">
-                                <td colspan="3">📖 Sổ tay Quy trình công việc</td>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-responsive" style="margin-bottom: 10px;">
+                        <table id="procTable">
+                            <thead>
+                                <tr class="doc-section-title">
+                                    <td colspan="3">📖 Sổ tay Quy trình công việc</td>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
 
                     <div style="text-align: right; margin-bottom: 25px;">
                         <button class="btn-update" onclick="openProcEditModal()">
@@ -446,14 +563,16 @@
                     </div>
 
                     <!-- BẢNG 2: TÀI LIỆU KHÁCH HÀNG -->
-                    <table style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 10px;" id="inspTable">
-                        <thead>
-                            <tr class="doc-section-title">
-                                <td colspan="3">🔍 Tài liệu khách hàng</td>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-responsive" style="margin-bottom: 10px;">
+                        <table id="inspTable">
+                            <thead>
+                                <tr class="doc-section-title">
+                                    <td colspan="3">🔍 Tài liệu khách hàng</td>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
 
                     <div style="text-align: right;">
                         <button class="btn-update" onclick="openInspEditModal()">
@@ -466,18 +585,20 @@
                 <div class="card-box" style="margin-bottom: 0;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📅 Lịch Kiểm Hàng & Audit</h3>
 
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="auditTable">
-                        <thead>
-                            <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
-                                <th style="padding: 10px; font-size: 13px; border-radius: 6px 0 0 6px; width: 130px; white-space: nowrap;">Khách hàng</th>
-                                <th style="padding: 10px; font-size: 13px;">Ngày</th>
-                                <th style="padding: 10px; font-size: 13px;">Loại</th>
-                                <th style="padding: 10px; font-size: 13px; text-align: center;">Nhà máy</th>
-                                <th style="padding: 10px; font-size: 13px; text-align: center; border-radius: 0 6px 6px 0;">Tài liệu</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="auditTable">
+                            <thead>
+                                <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
+                                    <th style="padding: 10px; font-size: 13px; border-radius: 6px 0 0 6px; width: 130px; white-space: nowrap;">Khách hàng</th>
+                                    <th style="padding: 10px; font-size: 13px;">Ngày</th>
+                                    <th style="padding: 10px; font-size: 13px;">Loại</th>
+                                    <th style="padding: 10px; font-size: 13px; text-align: center;">Nhà máy</th>
+                                    <th style="padding: 10px; font-size: 13px; text-align: center; border-radius: 0 6px 6px 0;">Tài liệu</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
 
                     <div style="text-align: right;">
                         <button class="btn-update" onclick="openEditModal()">
@@ -490,12 +611,12 @@
 
         <div class="card-box" style="margin-bottom: 0;">
             <h3 style="margin-top: 0; margin-bottom: 15px; color: #333; font-size: 18px;">Thông Tin</h3>
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; font-size: 12px; font-weight: 500; color: #94a3b8;">
+            <div class="footer-info">
                 <div>
                     <p style="margin: 0 0 5px 0;">Phòng Chất lượng - Công ty TNHH Hai Vina</p>
                     <p style="margin: 0;">Trụ sở chính: Thôn Lãng Xuyên, xã Gia Lộc, thành phố Hải Phòng, Việt Nam / Điện thoại: 02203717500</p>
                 </div>
-                <div style="white-space: nowrap;">
+                <div>
                     Thiết kế: QA team
                 </div>
             </div>
@@ -753,9 +874,9 @@
                     : `<span style="color: #94a3b8;">-</span>`;
 
                 tr.innerHTML = `
-                    <td style="padding: 10px; font-size: 13px; color: #666;">${item.date}</td>
+                    <td style="padding: 10px; font-size: 13px; color: #666; white-space: nowrap;">${item.date}</td>
                     <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b;">${item.factory}</td>
-                    <td style="padding: 10px; font-size: 13px; text-align: center;">${linkCell}</td>
+                    <td style="padding: 10px; font-size: 13px; text-align: center; white-space: nowrap;">${linkCell}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -839,9 +960,9 @@
                     : `<span style="color: #94a3b8;">-</span>`;
 
                 tr.innerHTML = `
-                    <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
-                    <td style="padding: 8px 10px; font-size: 13px; color: #666;">${item.note}</td>
-                    <td style="padding: 8px 10px; text-align: center;">${linkCell}</td>
+                    <td style="padding: 8px 10px 8px 15px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
+                    <td style="padding: 8px 10px; font-size: 13px; color: #666; white-space: nowrap;">${item.note}</td>
+                    <td style="padding: 8px 10px; text-align: center; white-space: nowrap;">${linkCell}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -898,9 +1019,9 @@
                     : `<span style="color: #94a3b8;">-</span>`;
 
                 tr.innerHTML = `
-                    <td style="padding: 8px 10px 8px 20px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
-                    <td style="padding: 8px 10px; font-size: 13px; color: #666;">${item.note}</td>
-                    <td style="padding: 8px 10px; text-align: center;">${linkCell}</td>
+                    <td style="padding: 8px 10px 8px 15px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
+                    <td style="padding: 8px 10px; font-size: 13px; color: #666; white-space: nowrap;">${item.note}</td>
+                    <td style="padding: 8px 10px; text-align: center; white-space: nowrap;">${linkCell}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1009,11 +1130,11 @@
                     : `<span style="color: #94a3b8;">-</span>`;
 
                 tr.innerHTML = `
-                    <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b; width: 120px; white-space: nowrap;">${item.customer}</td>
-                    <td style="padding: 10px; font-size: 13px; color: #666;">${item.date}</td>
-                    <td style="padding: 10px; font-size: 13px; color: ${typeColor}; font-weight: 600;">${item.type}</td>
-                    <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b;">${item.factory}</td>
-                    <td style="padding: 10px; font-size: 13px; text-align: center;">${docCell}</td>
+                    <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b; white-space: nowrap;">${item.customer}</td>
+                    <td style="padding: 10px; font-size: 13px; color: #666; white-space: nowrap;">${item.date}</td>
+                    <td style="padding: 10px; font-size: 13px; color: ${typeColor}; font-weight: 600; white-space: nowrap;">${item.type}</td>
+                    <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b; white-space: nowrap;">${item.factory}</td>
+                    <td style="padding: 10px; font-size: 13px; text-align: center; white-space: nowrap;">${docCell}</td>
                 `;
                 tbody.appendChild(tr);
             });
