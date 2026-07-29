@@ -407,6 +407,23 @@
             color: #94a3b8;
         }
 
+        /* Style Bảng Tổ Chức Trong Modal */
+        .org-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .org-table th, .org-table td {
+            border: 1px solid #cbd5e1;
+            padding: 10px;
+            font-size: 13px;
+        }
+        .org-table th {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
         @media (max-width: 1300px) {
             .side-banner { display: none; }
         }
@@ -559,7 +576,7 @@
                     </div>
                 </div>
 
-                <!-- KHỐI 4: SƠ ĐỒ TỔ CHỨC (ĐÃ ĐƯỢC THÊM VÀO ĐÂY) -->
+                <!-- KHỐI 4: SƠ ĐỒ TỔ CHỨC -->
                 <div class="card-box" style="margin-bottom: 0;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">🏢 Sơ Đồ Tổ Chức</h3>
                     <div style="display: flex; gap: 12px;">
@@ -658,20 +675,108 @@
         </div>
     </div>
 
+    <!-- MODAL SƠ ĐỒ TỔ CHỨC (CÁCH 1) -->
+    <div class="modal-overlay" id="orgChartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="orgModalTitle">🏢 Sơ Đồ Tổ Chức</h3>
+                <button class="close-btn" onclick="closeOrgChartModal()">&times;</button>
+            </div>
+            <div id="orgModalBody" class="table-responsive">
+                <!-- Nội dung bảng/sơ đồ sẽ được đổ động vào đây -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
+            </div>
+        </div>
+    </div>
+
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
 
-        // === HÀM XỬ LÝ KHI BẤM NÚT SƠ ĐỒ TỔ CHỨC ===
+        // === HÀM XỬ LÝ MỞ/ĐÓNG MODAL SƠ ĐỒ TỔ CHỨC (CÁCH 1) ===
         function openOrgChart(type) {
+            const titleEl = document.getElementById('orgModalTitle');
+            const bodyEl = document.getElementById('orgModalBody');
+
             if (type === 'company') {
-                // Thay thế URL sơ đồ tổ chức Công ty của bạn vào đây (file pdf/html hoặc trang web ngoài)
-                openDocument('so-do-cong-ty.pdf'); 
+                titleEl.innerText = "🏢 Sơ Đồ Tổ Chức - Công ty";
+                bodyEl.innerHTML = `
+                    <table class="org-table">
+                        <thead>
+                            <tr>
+                                <th>Bộ phận</th>
+                                <th>Chức vụ</th>
+                                <th>Họ và Tên</th>
+                                <th>Ghi chú</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Ban Giám Đốc</td>
+                                <td>Tổng Giám Đốc</td>
+                                <td>Giám đốc Điều hành</td>
+                                <td>Quản lý chung</td>
+                            </tr>
+                            <tr>
+                                <td>Khối Sản Xuất</td>
+                                <td>Quản lý Nhà máy</td>
+                                <td>Các Trưởng xưởng</td>
+                                <td>Nhà máy 1, 2, 3</td>
+                            </tr>
+                            <tr>
+                                <td>Khối Hỗ Trợ</td>
+                                <td>Trưởng phòng</td>
+                                <td>HR, QA, Kho, Kế toán</td>
+                                <td>Văn phòng chính</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
             } else if (type === 'qa') {
-                // Thay thế URL sơ đồ tổ chức QA của bạn vào đây
-                openDocument('so-do-qa.pdf');
+                titleEl.innerText = "🔍 Sơ Đồ Tổ Chức - Phòng QA";
+                bodyEl.innerHTML = `
+                    <table class="org-table">
+                        <thead>
+                            <tr>
+                                <th>Bộ phận QA</th>
+                                <th>Chức danh</th>
+                                <th>Nhiệm vụ chính</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>QA Manager</td>
+                                <td>Trưởng phòng Chất lượng</td>
+                                <td>Điều hành toàn bộ hoạt động QA/QC</td>
+                            </tr>
+                            <tr>
+                                <td>IQC Team</td>
+                                <td>Kiểm tra đầu vào</td>
+                                <td>Kiểm tra nguyên phụ liệu, vải</td>
+                            </tr>
+                            <tr>
+                                <td>PQC / Line QC</td>
+                                <td>Kiểm tra chuyền may</td>
+                                <td>Giám sát chất lượng trên chuyền sản xuất</td>
+                            </tr>
+                            <tr>
+                                <td>OQC / Audit Team</td>
+                                <td>Kiểm tra xuất hàng & Audit</td>
+                                <td>Đánh giá chất lượng thành phẩm, xuất khẩu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
             }
+
+            document.getElementById('orgChartModal').style.display = 'flex';
+        }
+
+        function closeOrgChartModal() {
+            document.getElementById('orgChartModal').style.display = 'none';
         }
 
         function formatDate(dateString) {
