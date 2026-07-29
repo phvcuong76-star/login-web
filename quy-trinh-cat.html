@@ -51,12 +51,11 @@
         <h2>📦 Danh Sách Quy Trình - Bộ Phận Cắt</h2>
 
         <div class="doc-list" id="docListContainer">
-            <!-- Dữ liệu hiển thị ở đây -->
+            <p>Đang tải dữ liệu...</p>
         </div>
 
-        <button class="btn-update" onclick="alert('tài liệu không được cập nhật')">✏️ Cập nhật Danh sách</button>
+        <button class="btn-update" onclick="openModal()">✏️ Cập nhật Danh sách</button>
         <div style="clear: both;"></div>
-        <!-- ĐỂ NÚT CẬP NHẬT HOẠT ĐỘNG LẠI, THAY BẰNG "openModal()" -->
     </div>
 
     <!-- MODAL EDIT -->
@@ -67,17 +66,23 @@
             <button class="btn-add" onclick="addModalRow()">+ Thêm tài liệu mới</button>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeModal()">Hủy</button>
-                <button class="btn-save" onclick="saveData()">Lưu thay đổi</button>
+                <button class="btn-save" id="btnSave" onclick="saveData()">Lưu thay đổi</button>
             </div>
         </div>
     </div>
 
     <script>
+        // URL Web App từ Google Apps Script
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec';
+        // Tab dữ liệu riêng cho Bộ phận Cắt trên Google Sheets
+        const SHEET_NAME = 'cutting_docs';
+
+        let currentCuttingList = [];
+
         // Hàm mở file PDF hoặc Link web an toàn
         function openDocument(url) {
             if (!url || url === '#') return;
             
-            // Nếu là dữ liệu Base64 từ file PDF tải lên
             if (url.startsWith('data:application/pdf')) {
                 try {
                     const arr = url.split(',');
@@ -95,43 +100,49 @@
                     alert("Không thể mở file PDF! Vui lòng thử lại.");
                 }
             } else {
-                // Link Google Drive / Website thông thường
                 window.open(url, '_blank');
             }
         }
 
-        // 1. Dữ liệu mặc định
-        const defaultData = [
-            { title: "1. Quy trình Bộ phận Cắt", desc: "Tiếng Việt", link: "https://drive.google.com/file/d/1sjm9UUyA6tBtahodV0262U2WutrLd_0x/view?usp=sharing" },
-            { title: "2. Quy trình Bộ phận Cắt", desc: "Tiếng Anh", link: "https://drive.google.com/file/d/1DWLUJ9kiH2Umu5wSlfehFhNbx97cU16a/view?usp=sharing" },
-           
-        ];
+        // 1. Tải dữ liệu từ tab 'cutting_docs' trên Google Sheets
+        async function loadCuttingDocsData() {
+            const container = document.getElementById('docListContainer');
+            if (container) container.innerHTML = '<p>Đang tải dữ liệu từ Google Sheets...</p>';
 
-        // 2. Lấy dữ liệu từ localStorage
-       // Khóa riêng cho Bộ Phận Cắt
-        const STORAGE_KEY = 'cutting_docs_data';
-        function loadData() {
-            const savedData = localStorage.getItem(STORAGE_KEY);
-            return savedData ? JSON.parse(savedData) : defaultData;
+            try {
+                const res = await fetch(SCRIPT_URL);
+                const result = await res.json();
+                
+                // Lấy mảng dữ liệu thuộc tab 'cutting_docs'
+                currentCuttingList = result[SHEET_NAME] || [];
+
+                renderList(currentCuttingList);
+            } catch (err) {
+                console.error('Lỗi khi tải dữ liệu:', err);
+                if (container) container.innerHTML = '<p style="color: red;">Không thể tải dữ liệu. Vui lòng kiểm tra lại cấu hình SCRIPT_URL!</p>';
+            }
         }
 
-        // 3. Render dữ liệu ra màn hình
-        function renderList() {
-            const data = loadData();
+        // 2. Render danh sách tài liệu ra màn hình
+        function renderList(list) {
             const container = document.getElementById('docListContainer');
             container.innerHTML = '';
 
-            data.forEach(item => {
+            if (!list || list.length === 0) {
+                container.innerHTML = '<p>Chưa có tài liệu nào trong danh sách.</p>';
+                return;
+            }
+
+            list.forEach(item => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'doc-item';
                 
-                // Tránh lỗi dấu ngoặc đơn khi truyền link
-                const safeLink = item.link.replace(/'/g, "\\'");
+                const safeLink = (item.link || '#').replace(/'/g, "\\'");
                 
                 itemDiv.innerHTML = `
                     <div>
-                        <div class="doc-title">${item.title}</div>
-                        <div class="doc-desc">${item.desc}</div>
+                        <div class="doc-title">${item.title || 'Chưa có tiêu đề'}</div>
+                        <div class="doc-desc">${item.lang || item.desc || ''}</div>
                     </div>
                     <button class="btn-view" onclick="openDocument('${safeLink}')">Mở tài liệu ↗</button>
                 `;
@@ -139,13 +150,16 @@
             });
         }
 
-        // 4. Modal Logic
+        // 3. Quản lý Modal Cập Nhật
         function openModal() {
-            const data = loadData();
             const container = document.getElementById('modalRowContainer');
             container.innerHTML = '';
             
-            data.forEach(item => addModalRow(item.title, item.desc, item.link));
+            if (currentCuttingList.length === 0) {
+                addModalRow();
+            } else {
+                currentCuttingList.forEach(item => addModalRow(item.title, item.lang || item.desc, item.link));
+            }
             document.getElementById('editModal').style.display = 'flex';
         }
 
@@ -159,7 +173,7 @@
             row.className = 'edit-row';
             row.innerHTML = `
                 <input type="text" placeholder="Tên quy trình" value="${title}">
-                <input type="text" placeholder="Mô tả" value="${desc}">
+                <input type="text" placeholder="Ngôn ngữ / Mô tả" value="${desc}">
                 <input type="text" class="link-input" placeholder="Link (Drive/PDF)" value="${link}">
                 <input type="file" accept="application/pdf" style="display:none" onchange="uploadPdf(this)">
                 <button type="button" class="btn-pdf" onclick="this.previousElementSibling.click()">📁 Tải PDF</button>
@@ -172,7 +186,7 @@
             const file = fileInput.files[0];
             if (file) {
                 if (file.size > 3 * 1024 * 1024) {
-                    alert('File PDF lớn hơn 3MB! Vui lòng dùng đường link Google Drive để tránh làm đầy bộ nhớ trình duyệt.');
+                    alert('File PDF lớn hơn 3MB! Vui lòng dùng đường link Google Drive để tránh làm đầy bộ nhớ.');
                     return;
                 }
                 const reader = new FileReader();
@@ -184,33 +198,55 @@
             }
         }
 
-        // 5. Lưu dữ liệu
-        function saveData() {
+        // 4. Lưu dữ liệu về Google Sheets (tab cutting_docs)
+        async function saveData() {
             const rows = document.querySelectorAll('#modalRowContainer .edit-row');
-            const newData = [];
+            const updateData = [];
 
             rows.forEach(row => {
                 const inputs = row.querySelectorAll('input[type="text"]');
                 const title = inputs[0].value.trim();
-                const desc = inputs[1].value.trim();
+                const lang = inputs[1].value.trim();
                 const link = inputs[2].value.trim() || '#';
 
                 if (title) {
-                    newData.push({ title, desc, link });
+                    updateData.push({ title, lang, link });
                 }
             });
 
+            const btnSave = document.getElementById('btnSave');
+            btnSave.disabled = true;
+            btnSave.innerText = 'Đang lưu...';
+
             try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
-                renderList();
-                closeModal();
+                const res = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'updateSheet',
+                        sheetName: SHEET_NAME, // Định hướng lưu về tab 'cutting_docs'
+                        data: updateData
+                    })
+                });
+
+                const result = await res.json();
+                if (result.status === 'success') {
+                    alert('Đã cập nhật danh sách vào Google Sheet thành công!');
+                    closeModal();
+                    loadCuttingDocsData(); // Tải lại dữ liệu sau khi cập nhật thành công
+                } else {
+                    alert('Lưu thất bại: ' + (result.message || 'Có lỗi xảy ra!'));
+                }
             } catch (e) {
-                alert("Dung lượng PDF quá lớn vượt quá bộ nhớ Trình duyệt! Hãy dán link Google Drive.");
+                console.error(e);
+                alert("Lỗi khi kết nối với server Google Sheet!");
+            } finally {
+                btnSave.disabled = false;
+                btnSave.innerText = 'Lưu thay đổi';
             }
         }
 
-        // Lần đầu tải trang
-        renderList();
+        // Tải dữ liệu ban đầu
+        loadCuttingDocsData();
     </script>
 </body>
 </html>
