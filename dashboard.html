@@ -578,10 +578,10 @@
 
                 <!-- KHỐI 4: THÔNG TIN VÀ NHÂN SỰ -->
                 <div class="card-box" style="margin-bottom: 0;">
-                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">🏢 Thông tin và nhân sự</h3>
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
                     <div style="display: flex; gap: 12px;">
-                        <button class="btn-org" onclick="openOrgChart('company')">🏢 Công ty</button>
-                        <button class="btn-org" onclick="openOrgChart('qa')">🔍 QA Team</button>
+                        <button class="btn-org" onclick="openOrgChart('company')">Công ty</button>
+                        <button class="btn-org" onclick="openOrgChart('qa')">QA Team</button>
                     </div>
                 </div>
             </div>
@@ -675,7 +675,7 @@
         </div>
     </div>
 
-    <!-- MODAL SƠ ĐỒ TỔ CHỨC (CÁCH 1) -->
+    <!-- MODAL THÔNG TIN VÀ NHÂN SỰ -->
     <div class="modal-overlay" id="orgChartModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -696,13 +696,13 @@
     <script type="text/javascript">
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
 
-        // === HÀM XỬ LÝ MỞ/ĐÓNG MODAL SƠ ĐỒ TỔ CHỨC (CÁCH 1) ===
+        // === HÀM XỬ LÝ MỞ/ĐÓNG MODAL THÔNG TIN VÀ NHÂN SỰ ===
         function openOrgChart(type) {
             const titleEl = document.getElementById('orgModalTitle');
             const bodyEl = document.getElementById('orgModalBody');
 
             if (type === 'company') {
-                titleEl.innerText = "🏢 Tình hình nhân sự công ty";
+                titleEl.innerText = "👥 Tình hình nhân sự công ty";
                 bodyEl.innerHTML = `
                     <table class="org-table">
                         <thead>
@@ -725,7 +725,7 @@
                     </table>
                 `;
             } else if (type === 'qa') {
-                titleEl.innerText = "🔍 Tình hình nhân sự Phòng chất lượng";
+                titleEl.innerText = "👥 Tình hình nhân sự Phòng chất lượng";
                 bodyEl.innerHTML = `
                     <table class="org-table">
                         <thead>
