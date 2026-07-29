@@ -170,6 +170,28 @@
             box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
         }
 
+        /* NÚT BẤM CHO SƠ ĐỒ TỔ CHỨC */
+        .btn-org {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: 1px solid #d2e3fc;
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-org:hover {
+            background-color: #1a73e8;
+            color: #ffffff;
+            border-color: #1a73e8;
+            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.25);
+        }
+
         .table-responsive {
             width: 100%;
             overflow-x: auto;
@@ -498,9 +520,7 @@
                     <div style="text-align: right; margin-bottom: 25px;">
                         <button class="btn-update" onclick="alert('Bấm vào Xem để cập nhật từng bộ phận')">Cập nhật</button>
                     </div>
-                  
-                    <!-- ĐỂ NÚT CẬP NHẬT HOẠT ĐỘNG LẠI, THAY BẰNG "openProcEditModal()"-->
-                   
+
                     <!-- BẢNG 2: TÀI LIỆU KHÁCH HÀNG -->
                     <div class="table-responsive" style="margin-bottom: 10px;">
                         <table id="inspTable">
@@ -518,7 +538,7 @@
                 </div>
 
                 <!-- KHỐI 3: LỊCH KIỂM HÀNG & AUDIT -->
-                <div class="card-box" style="margin-bottom: 0;">
+                <div class="card-box" style="margin-bottom: 20px;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📅 Lịch Kiểm Hàng & Audit</h3>
                     <div class="table-responsive">
                         <table id="auditTable">
@@ -536,6 +556,15 @@
                     </div>
                     <div style="text-align: right;">
                         <button class="btn-update" onclick="openEditModal()">Cập nhật</button>
+                    </div>
+                </div>
+
+                <!-- KHỐI 4: SƠ ĐỒ TỔ CHỨC (ĐÃ ĐƯỢC THÊM VÀO ĐÂY) -->
+                <div class="card-box" style="margin-bottom: 0;">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">🏢 Sơ Đồ Tổ Chức</h3>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn-org" onclick="openOrgChart('company')">🏢 Công ty</button>
+                        <button class="btn-org" onclick="openOrgChart('qa')">🔍 QA</button>
                     </div>
                 </div>
             </div>
@@ -634,6 +663,17 @@
     <script type="text/javascript">
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
 
+        // === HÀM XỬ LÝ KHI BẤM NÚT SƠ ĐỒ TỔ CHỨC ===
+        function openOrgChart(type) {
+            if (type === 'company') {
+                // Thay thế URL sơ đồ tổ chức Công ty của bạn vào đây (file pdf/html hoặc trang web ngoài)
+                openDocument('so-do-cong-ty.pdf'); 
+            } else if (type === 'qa') {
+                // Thay thế URL sơ đồ tổ chức QA của bạn vào đây
+                openDocument('so-do-qa.pdf');
+            }
+        }
+
         function formatDate(dateString) {
             if (!dateString) return '';
             const d = new Date(dateString);
@@ -687,10 +727,8 @@
             container.appendChild(rowDiv);
         }
 
-        // === HÀM LƯU ĐÃ ĐƯỢC TỐI ƯU ĐỂ TRÁNH MẤT DỮ LIỆU ===
         async function saveToGoogleSheet(sheetName, data, callbackClose) {
             try {
-                // Render ngay lên giao diện hiện tại để phản hồi tức thì
                 renderReports(globalData.reports);
                 renderSop(globalData.sop);
                 renderProc(globalData.proc);
@@ -711,7 +749,6 @@
                 alert("Cập nhật thành công lên hệ thống chung!");
                 if (callbackClose) callbackClose();
 
-                // Tăng thời gian chờ lên 3.0s để Google Sheets hoàn thành ghi dữ liệu
                 setTimeout(() => { 
                     loadAllDataFromGoogleSheet(); 
                 }, 3000);
@@ -722,9 +759,7 @@
         }
 
         const defaultReports = [];
-
         const defaultSop = [];
-
         const defaultProc = [
             { name: "Quy trình bộ phận Kho", note: "Tài liệu nội bộ", link: "quy-trinh-kho.html" },
             { name: "Quy trình bộ phận Cắt", note: "Tài liệu nội bộ", link: "quy-trinh-cat.html" },
@@ -734,9 +769,7 @@
             { name: "Quy trình Hoàn thành", note: "Tài liệu nội bộ", link: "quy-trinh-hoan-thanh.html" },
             { name: "Quy trình Đối ứng kỹ thuật", note: "Tài liệu nội bộ", link: "quy-trinh-doi-ung.html" }
         ];
-
         const defaultInsp = [];
-
         const defaultAudit = [];
 
         let globalData = {
@@ -750,7 +783,6 @@
         async function loadAllDataFromGoogleSheet() {
             if (!API_URL) return;
 
-            // Hiển thị lại thông báo đang tải (dành cho trường hợp gọi tải lại dữ liệu)
             const notice = document.getElementById('loading-notice');
             if (notice) notice.style.display = 'block';
 
@@ -772,12 +804,10 @@
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
             } finally {
-                // TỰ ĐỘNG TẮT DÒNG THÔNG BÁO KHI TẢI DỮ LIỆU XONG HOẶC LỖI
                 if (notice) notice.style.display = 'none';
             }
         }
 
-        // RENDER & MODAL HANDLERS
         function renderReports(data) {
             const container = document.getElementById('reportListContainer');
             container.innerHTML = '';
