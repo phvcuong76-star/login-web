@@ -122,16 +122,26 @@
             margin-bottom: 20px;
         }
 
+        /* PHƯƠNG ÁN 2: THẺ CÓ DÒNG CHÍNH VÀ DÒNG PHỤ */
         .link-card {
-            display: block;
+            display: flex;
+            flex-direction: column;
             padding: 12px 15px;
             margin-bottom: 10px;
             border-radius: 8px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
             transition: all 0.2s ease;
             word-break: break-word;
+        }
+        .link-card-main {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .link-card-sub {
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 0.8;
         }
         .sheet-link {
             background-color: #e6f4ea;
@@ -141,10 +151,16 @@
         .sheet-link:hover {
             background-color: #ceead6;
         }
+        .sheet-link .link-card-sub {
+            color: #2e7d32;
+        }
         .appsheet-link {
             background-color: #e8f0fe;
             color: #1a73e8;
             border: 1px solid #d2e3fc;
+        }
+        .appsheet-link .link-card-sub {
+            color: #1565c0;
         }
 
         .btn-update {
@@ -264,7 +280,7 @@
 
         .edit-row-report {
             display: grid;
-            grid-template-columns: 2.5fr 3fr 40px;
+            grid-template-columns: 2fr 1.5fr 2fr 40px;
             gap: 8px;
             margin-bottom: 10px;
             align-items: center;
@@ -892,6 +908,7 @@
             }
         }
 
+        /* PHƯƠNG ÁN 2: Render Báo Cáo theo giao diện Thẻ + Dòng Phụ */
         function renderReports(data) {
             const container = document.getElementById('reportListContainer');
             container.innerHTML = '';
@@ -905,17 +922,24 @@
                 a.target = '_blank';
                 a.className = item.title.toLowerCase().includes('appsheet') ? 'link-card appsheet-link' : 'link-card sheet-link';
                 if (index === sortedData.length - 1) a.style.marginBottom = '0';
-                a.innerText = item.title;
+                
+                const authorText = item.author ? `Người nhập: ${item.author}` : '';
+                
+                a.innerHTML = `
+                    <div class="link-card-main">${item.title}</div>
+                    ${authorText ? `<div class="link-card-sub">${authorText}</div>` : ''}
+                `;
                 container.appendChild(a);
             });
         }
 
-        function addReportModalRow(title = '', link = '') {
+        function addReportModalRow(title = '', author = '', link = '') {
             const container = document.getElementById('modalReportContainer');
             const rowDiv = document.createElement('div');
             rowDiv.className = 'edit-row-report';
             rowDiv.innerHTML = `
                 <input type="text" placeholder="Tên Báo Cáo" value="${title}">
+                <input type="text" placeholder="Người nhập (mới)" value="${author}">
                 <input type="text" placeholder="Link (URL)" value="${link}">
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
             `;
@@ -930,7 +954,7 @@
             const appsheetReports = data.filter(item => item.title.toLowerCase().includes('appsheet'));
             const sortedData = [...normalReports, ...appsheetReports];
 
-            sortedData.forEach(item => addReportModalRow(item.title, item.link));
+            sortedData.forEach(item => addReportModalRow(item.title, item.author || '', item.link));
             document.getElementById('reportModal').style.display = 'flex';
         }
 
@@ -946,8 +970,9 @@
             editRows.forEach((row) => {
                 const inputs = row.querySelectorAll('input');
                 const title = inputs[0].value.trim();
-                const link = inputs[1].value.trim() || '#';
-                if (title) newData.push({ title, link });
+                const author = inputs[1].value.trim();
+                const link = inputs[2].value.trim() || '#';
+                if (title) newData.push({ title, author, link });
             });
 
             globalData.reports = newData;
