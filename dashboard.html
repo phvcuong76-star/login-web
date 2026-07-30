@@ -122,7 +122,7 @@
             margin-bottom: 20px;
         }
 
-        /* PHƯƠNG ÁN 2: THẺ CÓ DÒNG CHÍNH VÀ DÒNG PHỤ */
+        /* THẺ LIÊN KẾT BÁO CÁO */
         .link-card {
             display: flex;
             flex-direction: column;
@@ -285,13 +285,8 @@
             margin-bottom: 10px;
             align-items: center;
         }
-        .edit-row-audit {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1.5fr 1.2fr 2fr auto 35px;
-            gap: 6px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
+
+        /* BƯỚC 2: Layout Modal SOP */
         .edit-row-sop {
             display: grid;
             grid-template-columns: 1.5fr 1.5fr 2fr auto 35px;
@@ -299,6 +294,16 @@
             margin-bottom: 10px;
             align-items: center;
         }
+
+        /* BƯỚC 3: Layout Modal Audit */
+        .edit-row-audit {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1.5fr 1.2fr 2fr auto 35px;
+            gap: 6px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
         .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input {
             padding: 8px;
             border: 1px solid #cbd5e1;
@@ -512,7 +517,7 @@
                     </div>
                 </div>
 
-                <!-- LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
+                <!-- BƯỚC 2: LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
                 <div class="card-box" style="margin-bottom: 0;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📋 Lịch Đánh Giá SOP & Công tác</h3>
                     <div class="table-responsive">
@@ -570,7 +575,7 @@
                     </div>
                 </div>
 
-                <!-- KHỐI 3: LỊCH KIỂM HÀNG & AUDIT -->
+                <!-- BƯỚC 3: LỊCH KIỂM HÀNG & AUDIT -->
                 <div class="card-box" style="margin-bottom: 20px;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📅 Lịch Kiểm Hàng & Audit</h3>
                     <div class="table-responsive">
@@ -631,10 +636,11 @@
         </div>
     </div>
 
+    <!-- BƯỚC 2: MODAL LỊCH ĐÁNH GIÁ SOP -->
     <div class="modal-overlay" id="sopModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>✏️ Cập Nhật Lịch Đánh Giá SOP</h3>
+                <h3>✏️ Cập Nhật Lịch Đánh Giá SOP & Công tác</h3>
                 <button class="close-btn" onclick="closeSopEditModal()">&times;</button>
             </div>
             <div id="modalSopContainer"></div>
@@ -676,6 +682,7 @@
         </div>
     </div>
 
+    <!-- BƯỚC 3: MODAL LỊCH KIỂM HÀNG & AUDIT -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -736,7 +743,6 @@
                                 <td>đang cập nhật</td>
                                 <td>đang cập nhật</td>
                             </tr>
-                            
                         </tbody>
                     </table>
                 `;
@@ -761,7 +767,6 @@
                                 <td>đang cập nhật</td>
                                 <td>đang cập nhật</td>
                             </tr>
-                           
                         </tbody>
                     </table>
                 `;
@@ -908,7 +913,7 @@
             }
         }
 
-        /* PHƯƠNG ÁN 2: Render Báo Cáo theo giao diện Thẻ + Dòng Phụ */
+        /* Render Báo Cáo */
         function renderReports(data) {
             const container = document.getElementById('reportListContainer');
             container.innerHTML = '';
@@ -979,6 +984,9 @@
             saveToGoogleSheet('reports', newData, closeReportEditModal);
         }
 
+        // ==========================================
+        // BƯỚC 2: RENDER & XỬ LÝ DỮ LIỆU SOP
+        // ==========================================
         function renderSop(data) {
             const tbody = document.querySelector('#sopTable tbody');
             tbody.innerHTML = '';
@@ -992,7 +1000,7 @@
 
                 tr.innerHTML = `
                     <td style="padding: 10px; font-size: 13px; color: #666; white-space: nowrap;">${formatDate(item.date)}</td>
-                    <td style="padding: 10px; font-size: 13px; text-align: left; font-weight: 600; color: #1e293b;">${item.factory}</td>
+                    <td style="padding: 10px; font-size: 13px; text-align: left; font-weight: 600; color: #1e293b;">${item.factory || item.content || ''}</td>
                     <td style="padding: 10px; font-size: 13px; text-align: center; white-space: nowrap;">${linkCell}</td>
                 `;
                 tbody.appendChild(tr);
@@ -1002,7 +1010,7 @@
         function openSopEditModal() {
             const container = document.getElementById('modalSopContainer');
             container.innerHTML = '';
-            globalData.sop.forEach(item => addSopModalRow(formatDate(item.date), item.factory, item.checklistLink));
+            globalData.sop.forEach(item => addSopModalRow(formatDate(item.date), item.factory || item.content || '', item.checklistLink));
             document.getElementById('sopModal').style.display = 'flex';
         }
 
@@ -1016,7 +1024,7 @@
             rowDiv.className = 'edit-row-sop';
             rowDiv.innerHTML = `
                 <input type="text" placeholder="Ngày tháng" value="${date}">
-                <input type="text" placeholder="Nhà máy" value="${factory}">
+                <input type="text" placeholder="Nội dung" value="${factory}">
                 <input type="text" class="link-input" placeholder="Link hoặc PDF Checklist" value="${checklistLink}">
                 <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
                 <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
@@ -1045,6 +1053,7 @@
             saveToGoogleSheet('sop', newData, closeSopEditModal);
         }
 
+        /* Render Sổ tay quy trình */
         function renderProc(data) {
             const tbody = document.querySelector('#procTable tbody');
             tbody.innerHTML = '';
@@ -1093,6 +1102,7 @@
             saveToGoogleSheet('proc', newData, closeProcEditModal);
         }
 
+        /* Render Hướng Dẫn Kiểm Hàng */
         function renderInsp(data) {
             const tbody = document.querySelector('#inspTable tbody');
             tbody.innerHTML = '';
@@ -1212,6 +1222,9 @@
             saveToGoogleSheet('insp', newData, closeInspEditModal);
         }
 
+        // ==========================================
+        // BƯỚC 3: RENDER & XỬ LÝ DỮ LIỆU AUDIT
+        // ==========================================
         function renderAudit(data) {
             const tbody = document.querySelector('#auditTable tbody');
             tbody.innerHTML = '';
