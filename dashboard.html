@@ -223,6 +223,56 @@
             box-shadow: 0 4px 10px rgba(26, 115, 232, 0.25);
         }
 
+        /* BƯỚC 1: CSS CHO HOVER POPOVER TRÊN NÚT NHÂN SỰ */
+        .org-btn-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .org-popover {
+            visibility: hidden;
+            opacity: 0;
+            width: 480px;
+            background-color: #ffffff;
+            color: #333;
+            text-align: left;
+            border-radius: 12px;
+            padding: 15px;
+            position: absolute;
+            z-index: 100;
+            bottom: 125%; /* Hiện bảng nằm phía trên nút bấm */
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+            border: 1px solid #cbd5e1;
+            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+            pointer-events: none;
+        }
+
+        /* Mũi tên nhỏ bên dưới hộp thông tin */
+        .org-popover::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -8px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: #ffffff transparent transparent transparent;
+        }
+
+        .org-btn-wrapper:hover .org-popover {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .org-popover h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #1a73e8;
+        }
+
         .table-responsive {
             width: 100%;
             overflow-x: auto;
@@ -538,6 +588,7 @@
             .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input { width: 100%; }
             .btn-delete-row { width: 100%; margin-top: 5px; }
             .btn-pdf-upload { width: 100%; padding: 8px; }
+            .org-popover { width: 290px; }
         }
     </style>
 </head>
@@ -588,7 +639,7 @@
                     </div>
                 </div>
 
-                <!-- LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC (ĐÃ ĐỔI SANG MÀU VÀNG KEM #fffbe6) -->
+                <!-- LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
                 <div class="card-box" style="margin-bottom: 0; background-color: #fffbe6;">
                     <h3 class="card-box-title">📋 Lịch Đánh Giá SOP & Công tác</h3>
                     <div class="table-responsive">
@@ -611,7 +662,7 @@
 
             <!-- CỘT BÊN PHẢI -->
             <div>
-                <!-- KHỐI 2: TÀI LIỆU & HƯỚNG DẪN (ĐÃ ĐỔI MÀU NỀN SANG XANH NHẠT PASTEL #f0f7ff hoặc #f9fafb cho xám nhạt) -->
+                <!-- KHỐI 2: TÀI LIỆU & HƯỚNG DẪN -->
                 <div class="card-box" style="background-color: #faf5ff;">
                     <h3 class="card-box-title">📂 Tài Liệu & Hướng dẫn</h3>
 
@@ -646,7 +697,7 @@
                     </div>
                 </div>
 
-                <!-- LỊCH KIỂM HÀNG & AUDIT (ĐÃ ĐỔI SANG MÀU VÀNG KEM #fffbe6) -->
+                <!-- LỊCH KIỂM HÀNG & AUDIT -->
                 <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
                     <h3 class="card-box-title">📅 Lịch Kiểm Hàng & Audit</h3>
                     <div class="table-responsive">
@@ -668,12 +719,65 @@
                     </div>
                 </div>
 
-                <!-- KHỐI 4: THÔNG TIN VÀ NHÂN SỰ -->
+                <!-- BƯỚC 2: KHỐI 4: THÔNG TIN VÀ NHÂN SỰ (ĐÃ BỔ SUNG HOVER POPOVER) -->
                 <div class="card-box" style="margin-bottom: 0;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
                     <div style="display: flex; gap: 12px;">
-                        <button class="btn-org" onclick="openOrgChart('company')">Công ty</button>
-                        <button class="btn-org" onclick="openOrgChart('qa')">QA Team</button>
+                        
+                        <!-- Nút 1: Công ty -->
+                        <div class="org-btn-wrapper">
+                            <button class="btn-org" onclick="openOrgChart('company')">Công ty</button>
+                            <div class="org-popover">
+                                <h4>👥 Tình hình nhân sự công ty</h4>
+                                <table class="org-table" style="margin-top: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th>Số lượng nhân viên</th>
+                                            <th>Số lượng công nhân</th>
+                                            <th>Số lượng QC</th>
+                                            <th>Quản lý Hàn Quốc</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>đang cập nhật</td>
+                                            <td>đang cập nhật</td>
+                                            <td>đang cập nhật</td>
+                                            <td>đang cập nhật</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Nút 2: QA Team -->
+                        <div class="org-btn-wrapper">
+                            <button class="btn-org" onclick="openOrgChart('qa')">QA Team</button>
+                            <div class="org-popover">
+                                <h4>👥 Tình hình nhân sự Phòng chất lượng</h4>
+                                <table class="org-table" style="margin-top: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th>Tổng số QA</th>
+                                            <th>QA leader</th>
+                                            <th>QA Officer</th>
+                                            <th>Inline QA</th>
+                                            <th>Pre-final QA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>đang cập nhật</td>
+                                            <td>đang cập nhật</td>
+                                            <td>đang cập nhật</td>
+                                            <td>đang cập nhật</td>
+                                            <td>đang cập nhật</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -1056,7 +1160,7 @@
         }
 
         // ==========================================
-        // RENDER & XỬ LÝ DỮ LIỆU SOP (ĐÃ ĐỐI SANG CLASS CSS RÊNG)
+        // RENDER & XỬ LÝ DỮ LIỆU SOP
         // ==========================================
         function renderSop(data) {
             const tbody = document.querySelector('#sopTable tbody');
@@ -1124,7 +1228,7 @@
             saveToGoogleSheet('sop', newData, closeSopEditModal);
         }
 
-        /* Render Sổ tay quy trình (ĐÃ ĐỔI SANG CLASS CSS RIÊNG) */
+        /* Render Sổ tay quy trình */
         function renderProc(data) {
             const tbody = document.querySelector('#procTable tbody');
             tbody.innerHTML = '';
@@ -1173,7 +1277,7 @@
             saveToGoogleSheet('proc', newData, closeProcEditModal);
         }
 
-        /* Render Hướng Dẫn Kiểm Hàng (ĐÃ ĐỔI SANG CLASS CSS RIÊNG) */
+        /* Render Hướng Dẫn Kiểm Hàng */
         function renderInsp(data) {
             const tbody = document.querySelector('#inspTable tbody');
             tbody.innerHTML = '';
@@ -1294,7 +1398,7 @@
         }
 
         // ==========================================
-        // RENDER & XỬ LÝ DỮ LIỆU AUDIT (ĐÃ ĐỔI SANG CLASS CSS RIÊNG)
+        // RENDER & XỬ LÝ DỮ LIỆU AUDIT
         // ==========================================
         function renderAudit(data) {
             const tbody = document.querySelector('#auditTable tbody');
