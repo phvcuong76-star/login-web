@@ -125,7 +125,7 @@
         /* THẺ LIÊN KẾT BÁO CÁO */
         .link-card {
             display: flex;
-            justify-content: space-between; /* Đẩy tên báo cáo sang trái, người nhập sang phải[cite: 4] */
+            justify-content: space-between; /* Đẩy tên báo cáo sang trái, người nhập sang phải */
             align-items: center;
             padding: 12px 15px;
             margin-bottom: 10px;
@@ -140,7 +140,7 @@
             font-size: 14px;
             white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis; /* Cắt bớt tên bằng dấu ba chấm nếu quá dài[cite: 4] */
+            text-overflow: ellipsis; /* Cắt bớt tên bằng dấu ba chấm nếu quá dài */
             flex: 1;
             min-width: 0;
         }
@@ -294,7 +294,7 @@
             align-items: center;
         }
 
-        /* Layout Modal SOP */
+        /* BƯỚC 2: Layout Modal SOP */
         .edit-row-sop {
             display: grid;
             grid-template-columns: 1.5fr 1.5fr 2fr auto 35px;
@@ -303,7 +303,7 @@
             align-items: center;
         }
 
-        /* Layout Modal Audit */
+        /* BƯỚC 3: Layout Modal Audit */
         .edit-row-audit {
             display: grid;
             grid-template-columns: 1.5fr 1fr 1.5fr 1.2fr 2fr auto 35px;
@@ -525,7 +525,7 @@
                     </div>
                 </div>
 
-                <!-- LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
+                <!-- BƯỚC 2: LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
                 <div class="card-box" style="margin-bottom: 0;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📋 Lịch Đánh Giá SOP & Công tác</h3>
                     <div class="table-responsive">
@@ -583,7 +583,7 @@
                     </div>
                 </div>
 
-                <!-- LỊCH KIỂM HÀNG & AUDIT -->
+                <!-- BƯỚC 3: LỊCH KIỂM HÀNG & AUDIT -->
                 <div class="card-box" style="margin-bottom: 20px;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📅 Lịch Kiểm Hàng & Audit</h3>
                     <div class="table-responsive">
@@ -644,7 +644,7 @@
         </div>
     </div>
 
-    <!-- MODAL LỊCH ĐÁNH GIÁ SOP -->
+    <!-- BƯỚC 2: MODAL LỊCH ĐÁNH GIÁ SOP -->
     <div class="modal-overlay" id="sopModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -690,7 +690,7 @@
         </div>
     </div>
 
-    <!-- MODAL LỊCH KIỂM HÀNG & AUDIT -->
+    <!-- BƯỚC 3: MODAL LỊCH KIỂM HÀNG & AUDIT -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -921,7 +921,7 @@
             }
         }
 
-        /* 1. Sửa hàm renderReports */
+        /* 1. Sửa hàm renderReports (Hiển thị ra giao diện) */
         function renderReports(data) {
             const container = document.getElementById('reportListContainer');
             container.innerHTML = '';
@@ -936,7 +936,7 @@
                 a.className = item.title.toLowerCase().includes('appsheet') ? 'link-card appsheet-link' : 'link-card sheet-link';
                 if (index === sortedData.length - 1) a.style.marginBottom = '0';
                 
-                const authorText = item.author ? `Người thực hiện: ${item.author}` : '';
+                const authorText = item.author ? item.author : '';
                 
                 a.innerHTML = `
                     <div class="link-card-main" title="${item.title}">${item.title}</div>
@@ -946,14 +946,14 @@
             });
         }
 
-        /* 2. Sửa placeholder trong Modal cập nhật */
+        /* 2. Sửa placeholder trong Modal Chỉnh sửa (Form cập nhật) */
         function addReportModalRow(title = '', author = '', link = '') {
             const container = document.getElementById('modalReportContainer');
             const rowDiv = document.createElement('div');
             rowDiv.className = 'edit-row-report';
             rowDiv.innerHTML = `
                 <input type="text" placeholder="Tên Báo Cáo" value="${title}">
-                <input type="text" placeholder="Người thực hiện" value="${author}">
+                <input type="text" placeholder="Người nhập" value="${author}">
                 <input type="text" placeholder="Link (URL)" value="${link}">
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
             `;
@@ -994,7 +994,7 @@
         }
 
         // ==========================================
-        // RENDER & XỬ LÝ DỮ LIỆU SOP
+        // BƯỚC 2: RENDER & XỬ LÝ DỮ LIỆU SOP
         // ==========================================
         function renderSop(data) {
             const tbody = document.querySelector('#sopTable tbody');
@@ -1232,7 +1232,7 @@
         }
 
         // ==========================================
-        // RENDER & XỬ LÝ DỮ LIỆU AUDIT
+        // BƯỚC 3: RENDER & XỬ LÝ DỮ LIỆU AUDIT
         // ==========================================
         function renderAudit(data) {
             const tbody = document.querySelector('#auditTable tbody');
