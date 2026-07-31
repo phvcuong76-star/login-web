@@ -122,10 +122,17 @@
             margin-bottom: 20px;
         }
 
+        .card-box-title {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 18px;
+        }
+
         /* THẺ LIÊN KẾT BÁO CÁO */
         .link-card {
             display: flex;
-            justify-content: space-between; /* Đẩy tên báo cáo sang trái, người nhập sang phải */
+            justify-content: space-between;
             align-items: center;
             padding: 12px 15px;
             margin-bottom: 10px;
@@ -140,7 +147,7 @@
             font-size: 14px;
             white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis; /* Cắt bớt tên bằng dấu ba chấm nếu quá dài */
+            text-overflow: ellipsis;
             flex: 1;
             min-width: 0;
         }
@@ -148,7 +155,7 @@
             font-size: 12px;
             font-weight: 400;
             opacity: 0.8;
-            white-space: nowrap; /* Giữ chữ Người nhập trên cùng 1 hàng */
+            white-space: nowrap;
             flex-shrink: 0;
         }
         .sheet-link {
@@ -228,6 +235,62 @@
             text-align: left;
         }
 
+        /* CLASS DÙNG CHUNG CHO BẢNG DỮ LIỆU DỄ BẢO TRÌ */
+        .table-row-border {
+            border-bottom: 1px solid #f1f3f5;
+        }
+        .table-header-row {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .table-header-cell {
+            padding: 10px;
+            font-size: 13px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-left {
+            text-align: left;
+        }
+        .text-nowrap {
+            white-space: nowrap;
+        }
+
+        /* CLASS ĐỊNH DẠNG CÁC Ô TRONG BẢNG (TD) */
+        .cell-date {
+            padding: 10px;
+            font-size: 13px;
+            color: #666;
+            white-space: nowrap;
+        }
+        .cell-content {
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .cell-title {
+            padding: 8px 10px 8px 15px;
+            font-size: 13px;
+        }
+        .cell-note {
+            padding: 8px 10px;
+            font-size: 13px;
+            color: #666;
+            white-space: nowrap;
+        }
+        .cell-text-bold {
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+            white-space: nowrap;
+        }
+        .cell-subtext {
+            color: #94a3b8;
+        }
+
         /* Modal Form CSS */
         .modal-overlay {
             position: fixed;
@@ -294,7 +357,7 @@
             align-items: center;
         }
 
-        /* BƯỚC 2: Layout Modal SOP */
+        /* Layout Modal SOP */
         .edit-row-sop {
             display: grid;
             grid-template-columns: 1.5fr 1.5fr 2fr auto 35px;
@@ -303,7 +366,7 @@
             align-items: center;
         }
 
-        /* BƯỚC 3: Layout Modal Audit */
+        /* Layout Modal Audit */
         .edit-row-audit {
             display: grid;
             grid-template-columns: 1.5fr 1fr 1.5fr 1.2fr 2fr auto 35px;
@@ -518,29 +581,29 @@
             <div>
                 <!-- KHỐI 1: BÁO CÁO -->
                 <div class="card-box">
-                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📊 Danh Sách Báo Cáo</h3>
+                    <h3 class="card-box-title">📊 Danh Sách Báo Cáo</h3>
                     <div id="reportListContainer"></div>
-                    <div style="text-align: right;">
+                    <div class="text-right">
                         <button class="btn-update" onclick="openReportEditModal()">Cập nhật</button>
                     </div>
                 </div>
 
-                <!-- BƯỚC 2: LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
+                <!-- LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
                 <div class="card-box" style="margin-bottom: 0;">
-                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📋 Lịch Đánh Giá SOP & Công tác</h3>
+                    <h3 class="card-box-title">📋 Lịch Đánh Giá SOP & Công tác</h3>
                     <div class="table-responsive">
                         <table id="sopTable">
                             <thead>
-                                <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
-                                    <th style="padding: 10px; font-size: 13px; border-radius: 6px 0 0 6px;">Ngày tháng</th>
-                                    <th style="padding: 10px; font-size: 13px; text-align: center;">Nội dung</th>
-                                    <th style="padding: 10px; font-size: 13px; text-align: center; border-radius: 0 6px 6px 0;">Checklist</th>
+                                <tr class="table-header-row">
+                                    <th class="table-header-cell" style="border-radius: 6px 0 0 6px;">Ngày tháng</th>
+                                    <th class="table-header-cell text-center">Nội dung</th>
+                                    <th class="table-header-cell text-center" style="border-radius: 0 6px 6px 0;">Checklist</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
                     </div>
-                    <div style="text-align: right;">
+                    <div class="text-right">
                         <button class="btn-update" onclick="openSopEditModal()">Cập nhật</button>
                     </div>
                 </div>
@@ -550,7 +613,7 @@
             <div>
                 <!-- KHỐI 2: TÀI LIỆU & HƯỚNG DẪN -->
                 <div class="card-box">
-                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📂 Tài Liệu & Hướng dẫn</h3>
+                    <h3 class="card-box-title">📂 Tài Liệu & Hướng dẫn</h3>
 
                     <!-- BẢNG 1: SỔ TAY QUY TRÌNH CÔNG VIỆC -->
                     <div class="table-responsive" style="margin-bottom: 10px;">
@@ -563,7 +626,7 @@
                             <tbody></tbody>
                         </table>
                     </div>
-                    <div style="text-align: right; margin-bottom: 25px;">
+                    <div class="text-right" style="margin-bottom: 25px;">
                         <button class="btn-update" onclick="alert('Bấm vào Xem để cập nhật từng bộ phận')">Cập nhật</button>
                     </div>
 
@@ -578,29 +641,29 @@
                             <tbody></tbody>
                         </table>
                     </div>
-                    <div style="text-align: right;">
+                    <div class="text-right">
                         <button class="btn-update" onclick="openInspEditModal()">Cập nhật</button>
                     </div>
                 </div>
 
-                <!-- BƯỚC 3: LỊCH KIỂM HÀNG & AUDIT -->
+                <!-- LỊCH KIỂM HÀNG & AUDIT -->
                 <div class="card-box" style="margin-bottom: 20px;">
-                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">📅 Lịch Kiểm Hàng & Audit</h3>
+                    <h3 class="card-box-title">📅 Lịch Kiểm Hàng & Audit</h3>
                     <div class="table-responsive">
                         <table id="auditTable">
                             <thead>
-                                <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
-                                    <th style="padding: 10px; font-size: 13px; border-radius: 6px 0 0 6px; width: 130px; white-space: nowrap;">Khách hàng</th>
-                                    <th style="padding: 10px; font-size: 13px;">Ngày</th>
-                                    <th style="padding: 10px; font-size: 13px;">Loại</th>
-                                    <th style="padding: 10px; font-size: 13px; text-align: center;">Nhà máy</th>
-                                    <th style="padding: 10px; font-size: 13px; text-align: center; border-radius: 0 6px 6px 0;">Tài liệu</th>
+                                <tr class="table-header-row">
+                                    <th class="table-header-cell text-nowrap" style="border-radius: 6px 0 0 6px; width: 130px;">Khách hàng</th>
+                                    <th class="table-header-cell">Ngày</th>
+                                    <th class="table-header-cell">Loại</th>
+                                    <th class="table-header-cell text-center">Nhà máy</th>
+                                    <th class="table-header-cell text-center" style="border-radius: 0 6px 6px 0;">Tài liệu</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
                     </div>
-                    <div style="text-align: right;">
+                    <div class="text-right">
                         <button class="btn-update" onclick="openEditModal()">Cập nhật</button>
                     </div>
                 </div>
@@ -644,7 +707,7 @@
         </div>
     </div>
 
-    <!-- BƯỚC 2: MODAL LỊCH ĐÁNH GIÁ SOP -->
+    <!-- MODAL LỊCH ĐÁNH GIÁ SOP -->
     <div class="modal-overlay" id="sopModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -690,7 +753,7 @@
         </div>
     </div>
 
-    <!-- BƯỚC 3: MODAL LỊCH KIỂM HÀNG & AUDIT -->
+    <!-- MODAL LỊCH KIỂM HÀNG & AUDIT -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -921,7 +984,7 @@
             }
         }
 
-        /* 1. Sửa hàm renderReports (Hiển thị ra giao diện) */
+        /* 1. Render Danh Sách Báo Cáo */
         function renderReports(data) {
             const container = document.getElementById('reportListContainer');
             container.innerHTML = '';
@@ -946,7 +1009,6 @@
             });
         }
 
-        /* 2. Sửa placeholder trong Modal Chỉnh sửa (Form cập nhật) */
         function addReportModalRow(title = '', author = '', link = '') {
             const container = document.getElementById('modalReportContainer');
             const rowDiv = document.createElement('div');
@@ -994,7 +1056,7 @@
         }
 
         // ==========================================
-        // BƯỚC 2: RENDER & XỬ LÝ DỮ LIỆU SOP
+        // RENDER & XỬ LÝ DỮ LIỆU SOP (ĐÃ ĐỐI SANG CLASS CSS RÊNG)
         // ==========================================
         function renderSop(data) {
             const tbody = document.querySelector('#sopTable tbody');
@@ -1002,15 +1064,15 @@
 
             data.forEach(item => {
                 const tr = document.createElement('tr');
-                tr.style.borderBottom = '1px solid #f1f3f5';
+                tr.className = 'table-row-border';
                 const linkCell = (item.checklistLink && item.checklistLink !== '#') 
                     ? `<span class="view-link" onclick="openDocument('${item.checklistLink.replace(/'/g, "\\'")}')">Xem</span>` 
-                    : `<span style="color: #94a3b8;">-</span>`;
+                    : `<span class="cell-subtext">-</span>`;
 
                 tr.innerHTML = `
-                    <td style="padding: 10px; font-size: 13px; color: #666; white-space: nowrap;">${formatDate(item.date)}</td>
-                    <td style="padding: 10px; font-size: 13px; text-align: left; font-weight: 600; color: #1e293b;">${item.factory || item.content || ''}</td>
-                    <td style="padding: 10px; font-size: 13px; text-align: center; white-space: nowrap;">${linkCell}</td>
+                    <td class="cell-date">${formatDate(item.date)}</td>
+                    <td class="cell-content text-left">${item.factory || item.content || ''}</td>
+                    <td class="cell-date text-center">${linkCell}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1062,22 +1124,22 @@
             saveToGoogleSheet('sop', newData, closeSopEditModal);
         }
 
-        /* Render Sổ tay quy trình */
+        /* Render Sổ tay quy trình (ĐÃ ĐỔI SANG CLASS CSS RIÊNG) */
         function renderProc(data) {
             const tbody = document.querySelector('#procTable tbody');
             tbody.innerHTML = '';
 
             data.forEach(item => {
                 const tr = document.createElement('tr');
-                tr.style.borderBottom = '1px solid #f1f3f5';
+                tr.className = 'table-row-border';
                 const linkCell = (item.link && item.link !== '#') 
                     ? `<span class="view-link" onclick="openDocument('${item.link.replace(/'/g, "\\'")}')">Xem</span>` 
-                    : `<span style="color: #94a3b8;">-</span>`;
+                    : `<span class="cell-subtext">-</span>`;
 
                 tr.innerHTML = `
-                    <td style="padding: 8px 10px 8px 15px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
-                    <td style="padding: 8px 10px; font-size: 13px; color: #666; white-space: nowrap;">${item.note}</td>
-                    <td style="padding: 8px 10px; text-align: center; white-space: nowrap;">${linkCell}</td>
+                    <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
+                    <td class="cell-note">${item.note}</td>
+                    <td class="cell-note text-center">${linkCell}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1111,22 +1173,22 @@
             saveToGoogleSheet('proc', newData, closeProcEditModal);
         }
 
-        /* Render Hướng Dẫn Kiểm Hàng */
+        /* Render Hướng Dẫn Kiểm Hàng (ĐÃ ĐỔI SANG CLASS CSS RIÊNG) */
         function renderInsp(data) {
             const tbody = document.querySelector('#inspTable tbody');
             tbody.innerHTML = '';
 
             data.forEach(item => {
                 const tr = document.createElement('tr');
-                tr.style.borderBottom = '1px solid #f1f3f5';
+                tr.className = 'table-row-border';
                 const linkCell = (item.link && item.link !== '#') 
                     ? `<span class="view-link" onclick="openDocument('${item.link.replace(/'/g, "\\'")}')">Xem</span>` 
-                    : `<span style="color: #94a3b8;">-</span>`;
+                    : `<span class="cell-subtext">-</span>`;
 
                 tr.innerHTML = `
-                    <td style="padding: 8px 10px 8px 15px; font-size: 13px;"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
-                    <td style="padding: 8px 10px; font-size: 13px; color: #666; white-space: nowrap;">${item.note}</td>
-                    <td style="padding: 8px 10px; text-align: center; white-space: nowrap;">${linkCell}</td>
+                    <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
+                    <td class="cell-note">${item.note}</td>
+                    <td class="cell-note text-center">${linkCell}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1232,7 +1294,7 @@
         }
 
         // ==========================================
-        // BƯỚC 3: RENDER & XỬ LÝ DỮ LIỆU AUDIT
+        // RENDER & XỬ LÝ DỮ LIỆU AUDIT (ĐÃ ĐỔI SANG CLASS CSS RIÊNG)
         // ==========================================
         function renderAudit(data) {
             const tbody = document.querySelector('#auditTable tbody');
@@ -1240,7 +1302,7 @@
 
             data.forEach(item => {
                 const tr = document.createElement('tr');
-                tr.style.borderBottom = '1px solid #f1f3f5';
+                tr.className = 'table-row-border';
                 
                 let typeColor = '#1a73e8';
                 if (item.type && item.type.toLowerCase().includes('audit')) typeColor = '#d93025';
@@ -1248,14 +1310,14 @@
 
                 const docCell = (item.docLink && item.docLink !== '#') 
                     ? `<span class="view-link" onclick="openDocument('${item.docLink.replace(/'/g, "\\'")}')">Xem</span>` 
-                    : `<span style="color: #94a3b8;">-</span>`;
+                    : `<span class="cell-subtext">-</span>`;
 
                 tr.innerHTML = `
-                    <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1e293b; white-space: nowrap;">${item.customer}</td>
-                    <td style="padding: 10px; font-size: 13px; color: #666; white-space: nowrap;">${formatDate(item.date)}</td>
-                    <td style="padding: 10px; font-size: 13px; color: ${typeColor}; font-weight: 600; white-space: nowrap;">${item.type}</td>
-                    <td style="padding: 10px; font-size: 13px; text-align: center; font-weight: 600; color: #1e293b; white-space: nowrap;">${item.factory}</td>
-                    <td style="padding: 10px; font-size: 13px; text-align: center; white-space: nowrap;">${docCell}</td>
+                    <td class="cell-text-bold">${item.customer}</td>
+                    <td class="cell-date">${formatDate(item.date)}</td>
+                    <td class="cell-date" style="color: ${typeColor}; font-weight: 600;">${item.type}</td>
+                    <td class="cell-text-bold text-center">${item.factory}</td>
+                    <td class="cell-date text-center">${docCell}</td>
                 `;
                 tbody.appendChild(tr);
             });
