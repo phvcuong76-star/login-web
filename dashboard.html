@@ -303,7 +303,7 @@
         .org-popover {
             visibility: hidden;
             opacity: 0;
-            width: 520px;
+            width: 480px;
             background-color: #ffffff;
             color: #333;
             text-align: left;
@@ -617,9 +617,8 @@
         }
         .org-table th, .org-table td {
             border: 1px solid #cbd5e1;
-            padding: 8px;
-            font-size: 12px;
-            text-align: center;
+            padding: 10px;
+            font-size: 13px;
         }
         .org-table th {
             background-color: #f1f5f9;
@@ -820,37 +819,31 @@
                             </div>
                         </div>
 
-                        <!-- Nút 2: Chi tiết nhân sự QA (QA Team) - ĐÃ BỔ SUNG POPOVER HOVER -->
+                        <!-- Nút 2: QA Team -->
                         <div class="org-btn-wrapper">
-                            <button class="btn-org" onclick="openOrgChart('qa')">Chi tiết nhân sự QA</button>
+                            <button class="btn-org" onclick="openOrgChart('qa')">QA Team</button>
                             <div class="org-popover">
-                                <h4>👥 Tình hình nhân sự Phòng chất lượng (QA Team)</h4>
-                                <div class="table-responsive">
-                                    <table class="org-table" style="margin-top: 0;">
-                                        <thead>
-                                            <tr>
-                                                <th>Tổng QA</th>
-                                                <th>QA Leader</th>
-                                                <th>QA Officer</th>
-                                                <th>Inline QA</th>
-                                                <th>Pre-final QA</th>
-                                                <th>QA Nguyên Phụ Liệu</th>
-                                                <th>QA Outsource</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>đang cập nhật</td>
-                                                <td>đang cập nhật</td>
-                                                <td>đang cập nhật</td>
-                                                <td>đang cập nhật</td>
-                                                <td>đang cập nhật</td>
-                                                <td>đang cập nhật</td>
-                                                <td>đang cập nhật</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <h4>👥 Tình hình nhân sự Phòng chất lượng</h4>
+                                <table class="org-table" style="margin-top: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th>Tổng số QA</th>
+                                            <th>QA leader</th>
+                                            <th>QA Officer</th>
+                                            <th>Inline QA</th>
+                                            <th>Pre-final QA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>đang cập nhật</td>
+                                            <td>đang cập nhật</td>
+                                            <td>đang cập nhật</td>
+                                            <td>đang cập nhật</td>
+                                            <td>đang cập nhật</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
@@ -1000,19 +993,15 @@
                     <table class="org-table">
                         <thead>
                             <tr>
-                                <th>Tổng QA</th>
-                                <th>QA Leader</th>
+                                <th>Tổng số QA</th>
+                                <th>QA leader</th>
                                 <th>QA Officer</th>
                                 <th>Inline QA</th>
                                 <th>Pre-final QA</th>
-                                <th>QA Nguyên Phụ Liệu</th>
-                                <th>QA Outsource</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>đang cập nhật</td>
-                                <td>đang cập nhật</td>
                                 <td>đang cập nhật</td>
                                 <td>đang cập nhật</td>
                                 <td>đang cập nhật</td>
