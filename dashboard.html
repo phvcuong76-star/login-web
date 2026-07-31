@@ -133,7 +133,7 @@
         .map-container {
             position: relative;
             width: 100%;
-            height: 295px; /* Chiều cao cân xứng vừa khít với khối Lịch đánh giá bên cạnh */
+            height: 295px;
             border-radius: 12px;
             overflow: hidden;
         }
@@ -143,18 +143,27 @@
             border: 0;
         }
 
-        /* THẺ LIÊN KẾT BÁO CÁO */
+        /* THẺ LIÊN KẾT BÁO CÁO & POPOVER TOOLTIP */
+        .report-card-wrapper {
+            position: relative;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .report-card-wrapper:last-child {
+            margin-bottom: 0;
+        }
+
         .link-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 12px 15px;
-            margin-bottom: 10px;
             border-radius: 8px;
             text-decoration: none;
             transition: all 0.2s ease;
             word-break: break-word;
             gap: 10px;
+            width: 100%;
         }
         .link-card-main {
             font-weight: 700;
@@ -190,6 +199,54 @@
         }
         .appsheet-link .link-card-sub {
             color: #1565c0;
+        }
+
+        /* POPOVER CHO DANH SÁCH BÁO CÁO */
+        .report-popover {
+            visibility: hidden;
+            opacity: 0;
+            width: 320px;
+            background-color: #ffffff;
+            color: #333;
+            text-align: left;
+            border-radius: 10px;
+            padding: 12px 15px;
+            position: absolute;
+            z-index: 100;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%) translateY(8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+            border: 1px solid #cbd5e1;
+            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+            pointer-events: none;
+        }
+        .report-popover::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -7px;
+            border-width: 7px;
+            border-style: solid;
+            border-color: #ffffff transparent transparent transparent;
+        }
+        .report-card-wrapper:hover .report-popover {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .report-popover h5 {
+            margin: 0 0 6px 0;
+            font-size: 13px;
+            color: #1a73e8;
+            font-weight: 700;
+        }
+        .report-popover p {
+            margin: 3px 0;
+            font-size: 12px;
+            color: #475569;
+            line-height: 1.4;
         }
 
         .btn-update {
@@ -237,7 +294,7 @@
             box-shadow: 0 4px 10px rgba(26, 115, 232, 0.25);
         }
 
-        /* BƯỚC 1: CSS CHO HOVER POPOVER TRÊN NÚT NHÂN SỰ */
+        /* CSS CHO HOVER POPOVER TRÊN NÚT NHÂN SỰ */
         .org-btn-wrapper {
             position: relative;
             display: inline-block;
@@ -254,7 +311,7 @@
             padding: 15px;
             position: absolute;
             z-index: 100;
-            bottom: 125%; /* Hiện bảng nằm phía trên nút bấm */
+            bottom: 125%;
             left: 50%;
             transform: translateX(-50%) translateY(10px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
@@ -263,7 +320,6 @@
             pointer-events: none;
         }
 
-        /* Mũi tên nhỏ bên dưới hộp thông tin */
         .org-popover::after {
             content: "";
             position: absolute;
@@ -311,17 +367,10 @@
             padding: 10px;
             font-size: 13px;
         }
-        .text-center {
-            text-align: center;
-        }
-        .text-left {
-            text-align: left;
-        }
-        .text-nowrap {
-            white-space: nowrap;
-        }
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-nowrap { white-space: nowrap; }
 
-        /* CLASS ĐỊNH DẠNG CÁC Ô TRONG BẢNG (TD) */
         .cell-date {
             padding: 10px;
             font-size: 13px;
@@ -421,7 +470,6 @@
             align-items: center;
         }
 
-        /* Layout Modal SOP */
         .edit-row-sop {
             display: grid;
             grid-template-columns: 1.5fr 1.5fr 2fr auto 35px;
@@ -430,7 +478,6 @@
             align-items: center;
         }
 
-        /* Layout Modal Audit */
         .edit-row-audit {
             display: grid;
             grid-template-columns: 1.5fr 1fr 1.5fr 1.2fr 2fr auto 35px;
@@ -563,7 +610,6 @@
             color: #94a3b8;
         }
 
-        /* Style Bảng Tổ Chức Trong Modal */
         .org-table {
             width: 100%;
             border-collapse: collapse;
@@ -603,6 +649,7 @@
             .btn-delete-row { width: 100%; margin-top: 5px; }
             .btn-pdf-upload { width: 100%; padding: 8px; }
             .org-popover { width: 290px; }
+            .report-popover { width: 260px; }
         }
     </style>
 </head>
@@ -644,7 +691,7 @@
         <div class="dashboard-grid">
             <!-- CỘT BÊN TRÁI -->
             <div>
-                <!-- KHỐI 1: BÁO CÁO -->
+                <!-- KHỐI 1: BÁO CÁO (ĐÃ THÊM POPOVER HOVER) -->
                 <div class="card-box">
                     <h3 class="card-box-title">📊 Danh Sách Báo Cáo</h3>
                     <div id="reportListContainer"></div>
@@ -733,16 +780,15 @@
                     </div>
                 </div>
 
-                <!-- KHỐI MỚI: BẢN ĐỒ GOOGLE MAPS (ĐÃ CHÈN VÀO KHU VỰC ĐÁNH DẤU ĐỎ) -->
+                <!-- KHỐI BẢN ĐỒ GOOGLE MAPS -->
                 <div class="card-box" style="margin-bottom: 20px;">
                     <h3 class="card-box-title">📍 Vị Trí Công Ty (Google Maps)</h3>
                     <div class="map-container">
-                        <!-- Đã nhúng vị trí bản đồ Công ty TNHH Hai Vina (Gia Lộc, Hải Dương / Hải Phòng) -->
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.818167888874!2d106.2917!3d20.8784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31358d341076ee2b%3A0xc33a11029c546db9!2zQ29uZyB0eSBUSlNIIEhhaSBWaW5h!5e0!3m2!1svi!2svn!4v1700000000000!5m2!1svi!2svn" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
 
-                <!-- BƯỚC 2: KHỐI 4: THÔNG TIN VÀ NHÂN SỰ (ĐÃ BỔ SUNG HOVER POPOVER) -->
+                <!-- KHỐI 4: THÔNG TIN VÀ NHÂN SỰ -->
                 <div class="card-box" style="margin-bottom: 0;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
                     <div style="display: flex; gap: 12px;">
@@ -903,9 +949,7 @@
                 <h3 id="orgModalTitle">🏢 Sơ Đồ Tổ Chức</h3>
                 <button class="close-btn" onclick="closeOrgChartModal()">&times;</button>
             </div>
-            <div id="orgModalBody" class="table-responsive">
-                <!-- Nội dung bảng/sơ đồ sẽ được đổ động vào đây -->
-            </div>
+            <div id="orgModalBody" class="table-responsive"></div>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
             </div>
@@ -917,7 +961,6 @@
     <script type="text/javascript">
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
 
-        // === HÀM XỬ LÝ MỞ/ĐÓNG MODAL THÔNG TIN VÀ NHÂN SỰ ===
         function openOrgChart(type) {
             const titleEl = document.getElementById('orgModalTitle');
             const bodyEl = document.getElementById('orgModalBody');
@@ -1111,7 +1154,7 @@
             }
         }
 
-        /* 1. Render Danh Sách Báo Cáo */
+        /* 1. Render Danh Sách Báo Cáo có hỗ trợ Popover Hover */
         function renderReports(data) {
             const container = document.getElementById('reportListContainer');
             container.innerHTML = '';
@@ -1119,20 +1162,27 @@
             const appsheetReports = data.filter(item => item.title.toLowerCase().includes('appsheet'));
             const sortedData = [...normalReports, ...appsheetReports];
 
-            sortedData.forEach((item, index) => {
-                const a = document.createElement('a');
-                a.href = item.link;
-                a.target = '_blank';
-                a.className = item.title.toLowerCase().includes('appsheet') ? 'link-card appsheet-link' : 'link-card sheet-link';
-                if (index === sortedData.length - 1) a.style.marginBottom = '0';
-                
+            sortedData.forEach((item) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'report-card-wrapper';
+
+                const isAppSheet = item.title.toLowerCase().includes('appsheet');
+                const cardClass = isAppSheet ? 'link-card appsheet-link' : 'link-card sheet-link';
                 const authorText = item.author ? item.author : '';
-                
-                a.innerHTML = `
-                    <div class="link-card-main" title="${item.title}">${item.title}</div>
-                    ${authorText ? `<div class="link-card-sub">${authorText}</div>` : ''}
+
+                wrapper.innerHTML = `
+                    <a href="${item.link}" target="_blank" class="${cardClass}">
+                        <div class="link-card-main" title="${item.title}">${item.title}</div>
+                        ${authorText ? `<div class="link-card-sub">${authorText}</div>` : ''}
+                    </a>
+                    <div class="report-popover">
+                        <h5>📋 ${item.title}</h5>
+                        <p><strong>Người nhập/Phụ trách:</strong> ${authorText || 'Chưa cập nhật'}</p>
+                        <p><strong>Nền tảng:</strong> ${isAppSheet ? 'AppSheet System' : 'Google Sheets'}</p>
+                        <p><strong>Liên kết:</strong> ${item.link !== '#' ? 'Sẵn sàng truy cập' : 'Chưa thiết lập'}</p>
+                    </div>
                 `;
-                container.appendChild(a);
+                container.appendChild(wrapper);
             });
         }
 
@@ -1182,9 +1232,7 @@
             saveToGoogleSheet('reports', newData, closeReportEditModal);
         }
 
-        // ==========================================
-        // RENDER & XỬ LÝ DỮ LIỆU SOP
-        // ==========================================
+        /* Render SOP */
         function renderSop(data) {
             const tbody = document.querySelector('#sopTable tbody');
             tbody.innerHTML = '';
@@ -1420,9 +1468,7 @@
             saveToGoogleSheet('insp', newData, closeInspEditModal);
         }
 
-        // ==========================================
-        // RENDER & XỬ LÝ DỮ LIỆU AUDIT
-        // ==========================================
+        /* Render Audit */
         function renderAudit(data) {
             const tbody = document.querySelector('#auditTable tbody');
             tbody.innerHTML = '';
