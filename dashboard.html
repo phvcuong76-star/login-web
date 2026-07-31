@@ -272,7 +272,7 @@
             box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
         }
 
-        /* NÚT BẤM CHO SƠ ĐỒ TỔ CHỨC */
+        /* NÚT BẤM CHO SƠ ĐỒ TỔ CHỨC & NÚT CHI TIẾT */
         .btn-org {
             padding: 10px 20px;
             font-size: 14px;
@@ -292,6 +292,22 @@
             color: #ffffff;
             border-color: #1a73e8;
             box-shadow: 0 4px 10px rgba(26, 115, 232, 0.25);
+        }
+
+        .btn-detail-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #1a73e8;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+        .btn-detail-link:hover {
+            background-color: #1557b0;
         }
 
         /* CSS CHO HOVER POPOVER TRÊN NÚT NHÂN SỰ */
@@ -317,7 +333,6 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
             border: 1px solid #cbd5e1;
             transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
-            pointer-events: none;
         }
 
         .org-popover::after {
@@ -816,6 +831,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
                             </div>
                         </div>
 
@@ -844,6 +860,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
                             </div>
                         </div>
 
@@ -960,6 +977,7 @@
 
     <script type="text/javascript">
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
+        const DETAIL_SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421";
 
         function openOrgChart(type) {
             const titleEl = document.getElementById('orgModalTitle');
@@ -986,6 +1004,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
                 `;
             } else if (type === 'qa') {
                 titleEl.innerText = "👥 Tình hình nhân sự Phòng chất lượng";
@@ -1010,6 +1029,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
                 `;
             }
 
