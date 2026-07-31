@@ -286,7 +286,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            text-decoration: none;
         }
         .btn-org:hover {
             background-color: #1a73e8;
@@ -304,7 +303,7 @@
         .org-popover {
             visibility: hidden;
             opacity: 0;
-            width: 480px;
+            width: 520px;
             background-color: #ffffff;
             color: #333;
             text-align: left;
@@ -618,8 +617,9 @@
         }
         .org-table th, .org-table td {
             border: 1px solid #cbd5e1;
-            padding: 10px;
-            font-size: 13px;
+            padding: 8px;
+            font-size: 12px;
+            text-align: center;
         }
         .org-table th {
             background-color: #f1f5f9;
@@ -792,7 +792,7 @@
                 <!-- KHỐI 4: THÔNG TIN VÀ NHÂN SỰ -->
                 <div class="card-box" style="margin-bottom: 0;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
-                    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+                    <div style="display: flex; gap: 12px;">
                         
                         <!-- Nút 1: Công ty -->
                         <div class="org-btn-wrapper">
@@ -820,36 +820,39 @@
                             </div>
                         </div>
 
-                        <!-- Nút 2: QA Team -->
+                        <!-- Nút 2: Chi tiết nhân sự QA (QA Team) - ĐÃ BỔ SUNG POPOVER HOVER -->
                         <div class="org-btn-wrapper">
-                            <button class="btn-org" onclick="openOrgChart('qa')">QA Team</button>
+                            <button class="btn-org" onclick="openOrgChart('qa')">Chi tiết nhân sự QA</button>
                             <div class="org-popover">
-                                <h4>👥 Tình hình nhân sự Phòng chất lượng</h4>
-                                <table class="org-table" style="margin-top: 0;">
-                                    <thead>
-                                        <tr>
-                                            <th>Tổng số QA</th>
-                                            <th>QA leader</th>
-                                            <th>QA Officer</th>
-                                            <th>Inline QA</th>
-                                            <th>Pre-final QA</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>đang cập nhật</td>
-                                            <td>đang cập nhật</td>
-                                            <td>đang cập nhật</td>
-                                            <td>đang cập nhật</td>
-                                            <td>đang cập nhật</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <h4>👥 Tình hình nhân sự Phòng chất lượng (QA Team)</h4>
+                                <div class="table-responsive">
+                                    <table class="org-table" style="margin-top: 0;">
+                                        <thead>
+                                            <tr>
+                                                <th>Tổng QA</th>
+                                                <th>QA Leader</th>
+                                                <th>QA Officer</th>
+                                                <th>Inline QA</th>
+                                                <th>Pre-final QA</th>
+                                                <th>QA Nguyên Phụ Liệu</th>
+                                                <th>QA Outsource</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>đang cập nhật</td>
+                                                <td>đang cập nhật</td>
+                                                <td>đang cập nhật</td>
+                                                <td>đang cập nhật</td>
+                                                <td>đang cập nhật</td>
+                                                <td>đang cập nhật</td>
+                                                <td>đang cập nhật</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-
-                        <!-- Nút 3: Chi tiết nhân sự QA team (MỚI THÊM VÀO ĐÂY) -->
-                        <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-org">Chi tiết nhân sự QA team</a>
 
                     </div>
                 </div>
@@ -997,15 +1000,19 @@
                     <table class="org-table">
                         <thead>
                             <tr>
-                                <th>Tổng số QA</th>
-                                <th>QA leader</th>
+                                <th>Tổng QA</th>
+                                <th>QA Leader</th>
                                 <th>QA Officer</th>
                                 <th>Inline QA</th>
                                 <th>Pre-final QA</th>
+                                <th>QA Nguyên Phụ Liệu</th>
+                                <th>QA Outsource</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
+                                <td>đang cập nhật</td>
+                                <td>đang cập nhật</td>
                                 <td>đang cập nhật</td>
                                 <td>đang cập nhật</td>
                                 <td>đang cập nhật</td>
