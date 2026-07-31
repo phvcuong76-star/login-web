@@ -125,23 +125,31 @@
         /* THẺ LIÊN KẾT BÁO CÁO */
         .link-card {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between; /* Đẩy tên báo cáo sang trái, người nhập sang phải[cite: 4] */
+            align-items: center;
             padding: 12px 15px;
             margin-bottom: 10px;
             border-radius: 8px;
             text-decoration: none;
             transition: all 0.2s ease;
             word-break: break-word;
+            gap: 10px;
         }
         .link-card-main {
             font-weight: 700;
             font-size: 14px;
-            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; /* Cắt bớt tên bằng dấu ba chấm nếu quá dài[cite: 4] */
+            flex: 1;
+            min-width: 0;
         }
         .link-card-sub {
             font-size: 12px;
             font-weight: 400;
             opacity: 0.8;
+            white-space: nowrap; /* Giữ chữ Người nhập trên cùng 1 hàng */
+            flex-shrink: 0;
         }
         .sheet-link {
             background-color: #e6f4ea;
@@ -913,7 +921,7 @@
             }
         }
 
-        /* Render Báo Cáo */
+        /* Render Báo Cáo ngang hàng, căn trái/phải */
         function renderReports(data) {
             const container = document.getElementById('reportListContainer');
             container.innerHTML = '';
@@ -931,7 +939,7 @@
                 const authorText = item.author ? `Người nhập: ${item.author}` : '';
                 
                 a.innerHTML = `
-                    <div class="link-card-main">${item.title}</div>
+                    <div class="link-card-main" title="${item.title}">${item.title}</div>
                     ${authorText ? `<div class="link-card-sub">${authorText}</div>` : ''}
                 `;
                 container.appendChild(a);
