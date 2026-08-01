@@ -1201,7 +1201,7 @@
             document.getElementById('qaEditModal').style.display = 'none';
         }
 
-        /* BƯỚC 1: ĐÃ SỬA - Hàm saveQaData() gửi đúng Tên Tiêu Đề Cột Tiếng Việt khớp 100% Google Sheet 'qa_headcount' */
+        /* BƯỚC 1: Hàm saveQaData() gửi đúng Tên Tiêu Đề Cột Tiếng Việt khớp 100% Google Sheet 'qa_headcount' */
         function saveQaData() {
             const totalVal = document.getElementById('qa_total').value.trim() || '0';
             const leaderVal = document.getElementById('qa_leader').value.trim() || '0';
@@ -1288,7 +1288,7 @@
             container.appendChild(rowDiv);
         }
 
-        /* Cập nhật hàm lưu dữ liệu có hiệu ứng Loading trên nút Lưu */
+        /* HÀM SAVE TO GOOGLE SHEET ĐÃ ĐƯỢC TỐI ƯU CẬP NHẬT TRỰC TIẾP VÀ TĂNG TIMEOUT */
         async function saveToGoogleSheet(sheetName, data, callbackClose, btnId) {
             const btn = btnId ? document.getElementById(btnId) : null;
             let originalText = "";
@@ -1299,6 +1299,7 @@
             }
 
             try {
+                // Cập nhật giao diện HTML ngay lập tức bằng dữ liệu mới nhập
                 renderReports(globalData.reports);
                 renderSop(globalData.sop);
                 renderProc(globalData.proc);
@@ -1306,6 +1307,7 @@
                 renderAudit(globalData.audit);
                 renderQaTeam(globalData.qaTeam);
 
+                // Gửi dữ liệu cập nhật tới Google Apps Script
                 await fetch(API_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -1317,15 +1319,17 @@
                     })
                 });
 
-                alert("Cập nhật thành công lên hệ thống chung!");
+                alert("Đã gửi dữ liệu thành công! Đang đồng bộ...");
                 if (callbackClose) callbackClose();
 
+                // Chờ 3 giây để Google Sheet hoàn tất ghi dữ liệu rồi mới tải lại dữ liệu từ Server
                 setTimeout(() => { 
                     loadAllDataFromGoogleSheet(); 
-                }, 2000);
+                }, 3000);
 
             } catch (e) {
                 alert("Có lỗi xảy ra khi lưu dữ liệu lên Google Sheets!");
+                console.error(e);
             } finally {
                 if (btn) {
                     btn.innerText = originalText;
@@ -1375,7 +1379,7 @@
             `;
         }
 
-        /* BƯỚC 2: ĐÃ SỬA - Hàm loadAllDataFromGoogleSheet() hỗ trợ đọc chính xác các tiêu đề Tiếng Việt từ sheet qa_headcount */
+        /* Hàm loadAllDataFromGoogleSheet() hỗ trợ đọc chính xác các tiêu đề Tiếng Việt từ sheet qa_headcount */
         async function loadAllDataFromGoogleSheet() {
             if (!API_URL) return;
 
