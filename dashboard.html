@@ -559,15 +559,19 @@
             align-items: center;
         }
 
-        .edit-row-qa {
+        .edit-row-qa, .edit-row-hai {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
             margin-bottom: 10px;
             align-items: center;
         }
 
-        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input {
+        .edit-row-qa {
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input, .edit-row-hai input {
             padding: 8px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
@@ -727,10 +731,10 @@
             .footer-info { flex-direction: column; align-items: flex-start; gap: 10px; }
             .footer-info div:last-child { white-space: normal; }
             .modal-content { padding: 15px; }
-            .edit-row, .edit-row-insp, .edit-row-report, .edit-row-audit, .edit-row-sop, .edit-row-qa {
+            .edit-row, .edit-row-insp, .edit-row-report, .edit-row-audit, .edit-row-sop, .edit-row-qa, .edit-row-hai {
                 display: flex; flex-direction: column; background: #f8fafc; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; position: relative;
             }
-            .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input { width: 100%; }
+            .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input, .edit-row-hai input { width: 100%; }
             .btn-delete-row { width: 100%; margin-top: 5px; }
             .btn-pdf-upload { width: 100%; padding: 8px; }
             .org-popover { width: 290px; }
@@ -893,7 +897,7 @@
                                             <th>Quản lý Hàn Quốc</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="haiPopoverBody">
                                         <tr>
                                             <td>-</td>
                                             <td>-</td>
@@ -1064,6 +1068,21 @@
         </div>
     </div>
 
+    <!-- MODAL SỬA DỮ LIỆU CÔNG TY (HAI HEADCOUNT) -->
+    <div class="modal-overlay" id="haiEditModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Nhân Sự Công Ty</h3>
+                <button class="close-btn" onclick="closeHaiEditModal()">&times;</button>
+            </div>
+            <div id="modalHaiContainer"></div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeHaiEditModal()">Hủy</button>
+                <button class="btn-save" id="btnSaveHai" onclick="saveHaiData()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
@@ -1117,6 +1136,7 @@
 
             if (type === 'company') {
                 titleEl.innerText = "👥 Tình hình nhân sự công ty";
+                const hai = globalData.haiHeadcount || defaultHaiHeadcount;
                 bodyEl.innerHTML = `
                     <table class="org-table">
                         <thead>
@@ -1129,16 +1149,19 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
+                                <td>${escapeHtml(hai.vanphong)}</td>
+                                <td>${escapeHtml(hai.congnhan)}</td>
+                                <td>${escapeHtml(hai.qckiemhang)}</td>
+                                <td>${escapeHtml(hai.quanlyhanquoc)}</td>
                             </tr>
                         </tbody>
                     </table>
                     <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
                 `;
-                footerEl.innerHTML = `<button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>`;
+                footerEl.innerHTML = `
+                    <button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openHaiEditModal();">✏️ Cập nhật số lượng</button>
+                    <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
+                `;
             } else if (type === 'qa') {
                 titleEl.innerText = "👥 Tình hình nhân sự Phòng chất lượng";
                 const qa = globalData.qaTeam || defaultQaTeam;
@@ -1180,6 +1203,51 @@
             document.getElementById('orgChartModal').style.display = 'none';
         }
 
+        /* Dữ liệu và Modal chỉnh sửa Công ty (hai_headcount) */
+        function openHaiEditModal() {
+            const container = document.getElementById('modalHaiContainer');
+            const hai = globalData.haiHeadcount || defaultHaiHeadcount;
+            container.innerHTML = `
+                <div class="edit-row-hai">
+                    <div><label style="font-size:12px;font-weight:600;">Văn phòng</label><input type="number" id="hai_vanphong" value="${escapeHtml(hai.vanphong)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">Công nhân</label><input type="number" id="hai_congnhan" value="${escapeHtml(hai.congnhan)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">QC kiểm hàng</label><input type="number" id="hai_qckiemhang" value="${escapeHtml(hai.qckiemhang)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">Quản lý Hàn Quốc</label><input type="number" id="hai_quanlyhanquoc" value="${escapeHtml(hai.quanlyhanquoc)}"></div>
+                </div>
+            `;
+            document.getElementById('haiEditModal').style.display = 'flex';
+        }
+
+        function closeHaiEditModal() {
+            document.getElementById('haiEditModal').style.display = 'none';
+        }
+
+        function saveHaiData() {
+            const vanphongVal = document.getElementById('hai_vanphong').value.trim() || '0';
+            const congnhanVal = document.getElementById('hai_congnhan').value.trim() || '0';
+            const qckiemhangVal = document.getElementById('hai_qckiemhang').value.trim() || '0';
+            const quanlyhanquocVal = document.getElementById('hai_quanlyhanquoc').value.trim() || '0';
+
+            // Cập nhật bộ nhớ tạm
+            globalData.haiHeadcount = {
+                vanphong: vanphongVal,
+                congnhan: congnhanVal,
+                qckiemhang: qckiemhangVal,
+                quanlyhanquoc: quanlyhanquocVal
+            };
+            renderHaiHeadcount(globalData.haiHeadcount);
+
+            // Gửi dữ liệu theo đúng tên tiêu đề cột trong Google Sheet hai_headcount
+            const dataToSave = [{
+                "Văn phòng": vanphongVal,
+                "Công nhân": congnhanVal,
+                "QC kiểm hàng": qckiemhangVal,
+                "Quản lý Hàn Quốc": quanlyhanquocVal
+            }];
+
+            saveToGoogleSheet('hai_headcount', dataToSave, closeHaiEditModal, 'btnSaveHai');
+        }
+
         /* Dữ liệu và Modal chỉnh sửa QA Team */
         function openQaEditModal() {
             const container = document.getElementById('modalQaContainer');
@@ -1201,7 +1269,6 @@
             document.getElementById('qaEditModal').style.display = 'none';
         }
 
-        /* BƯỚC 1: Hàm saveQaData() gửi đúng Tên Tiêu Đề Cột Tiếng Việt khớp 100% Google Sheet 'qa_headcount' */
         function saveQaData() {
             const totalVal = document.getElementById('qa_total').value.trim() || '0';
             const leaderVal = document.getElementById('qa_leader').value.trim() || '0';
@@ -1210,7 +1277,6 @@
             const prefinalVal = document.getElementById('qa_prefinal').value.trim() || '0';
             const giacongVal = document.getElementById('qa_giacong').value.trim() || '0';
 
-            // 1. Cập nhật biến bộ nhớ tạm trên Frontend
             globalData.qaTeam = {
                 total: totalVal,
                 leader: leaderVal,
@@ -1221,7 +1287,6 @@
             };
             renderQaTeam(globalData.qaTeam);
 
-            // 2. Tạo đối tượng dữ liệu gửi đi khớp đúng tiêu đề các cột ở Dòng 1 trên Google Sheet
             const dataToSave = [{
                 "Tổng số QA": totalVal,
                 "QA leader": leaderVal,
@@ -1231,7 +1296,6 @@
                 "QA gia công": giacongVal
             }];
 
-            // 3. Thực hiện lưu vào Sheet 'qa_headcount'
             saveToGoogleSheet('qa_headcount', dataToSave, closeQaEditModal, 'btnSaveQa');
         }
 
@@ -1288,7 +1352,6 @@
             container.appendChild(rowDiv);
         }
 
-        /* HÀM SAVE TO GOOGLE SHEET ĐÃ ĐƯỢC TỐI ƯU CẬP NHẬT TRỰC TIẾP VÀ TĂNG TIMEOUT */
         async function saveToGoogleSheet(sheetName, data, callbackClose, btnId) {
             const btn = btnId ? document.getElementById(btnId) : null;
             let originalText = "";
@@ -1299,15 +1362,14 @@
             }
 
             try {
-                // Cập nhật giao diện HTML ngay lập tức bằng dữ liệu mới nhập
                 renderReports(globalData.reports);
                 renderSop(globalData.sop);
                 renderProc(globalData.proc);
                 renderInsp(globalData.insp);
                 renderAudit(globalData.audit);
                 renderQaTeam(globalData.qaTeam);
+                renderHaiHeadcount(globalData.haiHeadcount);
 
-                // Gửi dữ liệu cập nhật tới Google Apps Script
                 await fetch(API_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -1322,7 +1384,6 @@
                 alert("Đã gửi dữ liệu thành công! Đang đồng bộ...");
                 if (callbackClose) callbackClose();
 
-                // Chờ 3 giây để Google Sheet hoàn tất ghi dữ liệu rồi mới tải lại dữ liệu từ Server
                 setTimeout(() => { 
                     loadAllDataFromGoogleSheet(); 
                 }, 3000);
@@ -1352,6 +1413,7 @@
         const defaultInsp = [];
         const defaultAudit = [];
         const defaultQaTeam = { total: "0", leader: "0", officer: "0", inline: "0", prefinal: "0", giacong: "0" };
+        const defaultHaiHeadcount = { vanphong: "0", congnhan: "0", qckiemhang: "0", quanlyhanquoc: "0" };
 
         let globalData = {
             reports: defaultReports,
@@ -1359,7 +1421,8 @@
             proc: defaultProc,
             insp: defaultInsp,
             audit: defaultAudit,
-            qaTeam: defaultQaTeam
+            qaTeam: defaultQaTeam,
+            haiHeadcount: defaultHaiHeadcount
         };
 
         /* Render Popover Nhân sự QA Team */
@@ -1379,7 +1442,22 @@
             `;
         }
 
-        /* Hàm loadAllDataFromGoogleSheet() hỗ trợ đọc chính xác các tiêu đề Tiếng Việt từ sheet qa_headcount */
+        /* Render Popover Nhân sự Công ty Hai Vina */
+        function renderHaiHeadcount(hai) {
+            const container = document.getElementById('haiPopoverBody');
+            if (!container) return;
+            const data = hai || defaultHaiHeadcount;
+            container.innerHTML = `
+                <tr>
+                    <td>${escapeHtml(data.vanphong || '0')}</td>
+                    <td>${escapeHtml(data.congnhan || '0')}</td>
+                    <td>${escapeHtml(data.qckiemhang || '0')}</td>
+                    <td>${escapeHtml(data.quanlyhanquoc || '0')}</td>
+                </tr>
+            `;
+        }
+
+        /* Load toàn bộ dữ liệu từ Google Sheet */
         async function loadAllDataFromGoogleSheet() {
             if (!API_URL) return;
 
@@ -1412,12 +1490,27 @@
                     }
                 }
 
+                // Lấy mảng dữ liệu từ sheet hai_headcount
+                const rawHaiData = data.hai_headcount || data.haiHeadcount;
+                if (rawHaiData) {
+                    const rawHai = Array.isArray(rawHaiData) ? rawHaiData[0] : rawHaiData;
+                    if (rawHai) {
+                        globalData.haiHeadcount = {
+                            vanphong: rawHai["Văn phòng"] || rawHai.vanphong || rawHai[0] || '0',
+                            congnhan: rawHai["Công nhân"] || rawHai.congnhan || rawHai[1] || '0',
+                            qckiemhang: rawHai["QC kiểm hàng"] || rawHai.qckiemhang || rawHai[2] || '0',
+                            quanlyhanquoc: rawHai["Quản lý Hàn Quốc"] || rawHai.quanlyhanquoc || rawHai[3] || '0'
+                        };
+                    }
+                }
+
                 renderReports(globalData.reports);
                 renderSop(globalData.sop);
                 renderProc(globalData.proc);
                 renderInsp(globalData.insp);
                 renderAudit(globalData.audit);
                 renderQaTeam(globalData.qaTeam);
+                renderHaiHeadcount(globalData.haiHeadcount);
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
             } finally {
@@ -1811,6 +1904,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             renderQaTeam(defaultQaTeam);
+            renderHaiHeadcount(defaultHaiHeadcount);
             loadAllDataFromGoogleSheet();
         });
 
