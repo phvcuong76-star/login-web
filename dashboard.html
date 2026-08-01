@@ -51,12 +51,78 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .company-logo {
             height: 70px;
             width: auto;
             object-fit: contain;
+        }
+
+        .header-right-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* WIDGET THỜI TIẾT & NGÀY THÁNG */
+        .weather-date-widget {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #ffffff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+            font-size: 13px;
+        }
+
+        .weather-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .location-select {
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            color: #1e293b;
+            cursor: pointer;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .weather-detail {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .weather-icon {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .temp {
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .widget-divider {
+            width: 1px;
+            height: 14px;
+            background-color: #cbd5e1;
+        }
+
+        .date-info {
+            color: #475569;
+            font-weight: 500;
+            white-space: nowrap;
         }
 
         /* DÒNG THÔNG BÁO TẢI DỮ LIỆU PHÍA TRÊN BANNER */
@@ -559,19 +625,15 @@
             align-items: center;
         }
 
-        .edit-row-qa, .edit-row-hai {
+        .edit-row-qa {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
             gap: 10px;
             margin-bottom: 10px;
             align-items: center;
         }
 
-        .edit-row-qa {
-            grid-template-columns: repeat(6, 1fr);
-        }
-
-        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input, .edit-row-hai input {
+        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input {
             padding: 8px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
@@ -722,6 +784,8 @@
         @media (max-width: 768px) {
             body { padding: 12px 10px; }
             .company-logo { height: 50px; }
+            .header-top-bar { justify-content: center; }
+            .header-right-group { justify-content: center; width: 100%; }
             .main-title-box { margin: 0 auto 15px auto; padding: 12px 20px; border-radius: 30px; }
             .main-title-box h2 { font-size: 15px; letter-spacing: 0.5px; }
             .dashboard-grid { grid-template-columns: 1fr; }
@@ -731,10 +795,10 @@
             .footer-info { flex-direction: column; align-items: flex-start; gap: 10px; }
             .footer-info div:last-child { white-space: normal; }
             .modal-content { padding: 15px; }
-            .edit-row, .edit-row-insp, .edit-row-report, .edit-row-audit, .edit-row-sop, .edit-row-qa, .edit-row-hai {
+            .edit-row, .edit-row-insp, .edit-row-report, .edit-row-audit, .edit-row-sop, .edit-row-qa {
                 display: flex; flex-direction: column; background: #f8fafc; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; position: relative;
             }
-            .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input, .edit-row-hai input { width: 100%; }
+            .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input { width: 100%; }
             .btn-delete-row { width: 100%; margin-top: 5px; }
             .btn-pdf-upload { width: 100%; padding: 8px; }
             .org-popover { width: 290px; }
@@ -760,11 +824,35 @@
                 <img src="QA APPROVED.png" alt="Logo Công ty" class="company-logo">
             </div>
 
-            <div class="lang-switch-container notranslate" translate="no">
-                <div class="lang-switch">
-                    <button class="lang-btn" onclick="translatePage('ko', this)">KR</button>
-                    <button class="lang-btn" onclick="translatePage('en', this)">EN</button>
-                    <button class="lang-btn active" onclick="translatePage('vi', this)">VN</button>
+            <!-- CỤM BÊN PHẢI: THỜI TIẾT, NGÀY THÁNG & CHỌN NGÔN NGỮ -->
+            <div class="header-right-group">
+                <!-- WIDGET THỜI TIẾT & NGÀY THÁNG -->
+                <div class="weather-date-widget">
+                    <div class="weather-info">
+                        <select class="location-select" id="locationSelect" onchange="fetchWeatherData()">
+                            <option value="haiphong" selected>Hải Phòng</option>
+                            <option value="hanoi">Hà Nội</option>
+                        </select>
+                        <div class="weather-detail">
+                            <span class="weather-icon" id="weatherIcon">☀️</span>
+                            <span class="temp" id="weatherTemp">30°C</span>
+                        </div>
+                    </div>
+
+                    <div class="widget-divider"></div>
+
+                    <div class="date-info">
+                        <span id="currentDateDisplay">Thứ bảy, 1/8/2026</span>
+                    </div>
+                </div>
+
+                <!-- CHUYỂN ĐỔI NGÔN NGỮ -->
+                <div class="lang-switch-container notranslate" translate="no">
+                    <div class="lang-switch">
+                        <button class="lang-btn" onclick="translatePage('ko', this)">KR</button>
+                        <button class="lang-btn" onclick="translatePage('en', this)">EN</button>
+                        <button class="lang-btn active" onclick="translatePage('vi', this)">VN</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -897,7 +985,7 @@
                                             <th>Quản lý Hàn Quốc</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="haiPopoverBody">
+                                    <tbody>
                                         <tr>
                                             <td>-</td>
                                             <td>-</td>
@@ -1068,26 +1156,65 @@
         </div>
     </div>
 
-    <!-- MODAL SỬA DỮ LIỆU CÔNG TY (HAI HEADCOUNT) -->
-    <div class="modal-overlay" id="haiEditModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>✏️ Cập Nhật Nhân Sự Công Ty</h3>
-                <button class="close-btn" onclick="closeHaiEditModal()">&times;</button>
-            </div>
-            <div id="modalHaiContainer"></div>
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeHaiEditModal()">Hủy</button>
-                <button class="btn-save" id="btnSaveHai" onclick="saveHaiData()">Lưu thay đổi</button>
-            </div>
-        </div>
-    </div>
-
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
         const DETAIL_SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421";
+
+        /* HÀM KHỞI TẠO VÀ CẬP NHẬT NGÀY THÁNG, THỜI TIẾT TỰ ĐỘNG */
+        function initWeatherAndDate() {
+            // 1. Cập nhật ngày tháng hiện tại
+            const now = new Date();
+            const days = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+            const dayName = days[now.getDay()];
+            const dateStr = `${dayName}, ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
+            document.getElementById('currentDateDisplay').textContent = dateStr;
+
+            // 2. Lấy dữ liệu thời tiết
+            fetchWeatherData();
+        }
+
+        async function fetchWeatherData() {
+            const locSelect = document.getElementById('locationSelect');
+            const selectedLoc = locSelect.value;
+            
+            // Tọa độ tương ứng Hải Phòng và Hà Nội
+            const coords = {
+                haiphong: { lat: 20.8651, lon: 106.6838 },
+                hanoi: { lat: 21.0285, lon: 105.8542 }
+            };
+
+            const target = coords[selectedLoc] || coords.haiphong;
+
+            try {
+                // Gọi API thời tiết miễn phí Open-Meteo
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${target.lat}&longitude=${target.lon}&current_weather=true`);
+                const data = await res.json();
+                
+                if (data && data.current_weather) {
+                    const temp = Math.round(data.current_weather.temperature);
+                    const code = data.current_weather.weathercode;
+                    
+                    document.getElementById('weatherTemp').textContent = `${temp}°C`;
+                    document.getElementById('weatherIcon').textContent = getWeatherIcon(code);
+                }
+            } catch (err) {
+                console.error("Không thể lấy dữ liệu thời tiết:", err);
+                document.getElementById('weatherTemp').textContent = "30°C";
+            }
+        }
+
+        // Đổi mã thời tiết Open-Meteo sang icon Emoji
+        function getWeatherIcon(code) {
+            if (code === 0) return '☀️'; // Nắng
+            if (code >= 1 && code <= 3) return '⛅'; // Có mây
+            if (code >= 45 && code <= 48) return '🌫️'; // Sương mù
+            if (code >= 51 && code <= 67) return '🌧️'; // Mưa
+            if (code >= 80 && code <= 82) return '🌦️'; // Mưa rào
+            if (code >= 95) return '⛈️'; // Dông
+            return '☀️';
+        }
 
         /* Helper chống lỗi XSS & Lỗi chuỗi HTML khi chứa ký tự đặc biệt */
         function escapeHtml(str) {
@@ -1136,7 +1263,6 @@
 
             if (type === 'company') {
                 titleEl.innerText = "👥 Tình hình nhân sự công ty";
-                const hai = globalData.haiHeadcount || defaultHaiHeadcount;
                 bodyEl.innerHTML = `
                     <table class="org-table">
                         <thead>
@@ -1149,19 +1275,16 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>${escapeHtml(hai.vanphong)}</td>
-                                <td>${escapeHtml(hai.congnhan)}</td>
-                                <td>${escapeHtml(hai.qckiemhang)}</td>
-                                <td>${escapeHtml(hai.quanlyhanquoc)}</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
                             </tr>
                         </tbody>
                     </table>
                     <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
                 `;
-                footerEl.innerHTML = `
-                    <button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openHaiEditModal();">✏️ Cập nhật số lượng</button>
-                    <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
-                `;
+                footerEl.innerHTML = `<button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>`;
             } else if (type === 'qa') {
                 titleEl.innerText = "👥 Tình hình nhân sự Phòng chất lượng";
                 const qa = globalData.qaTeam || defaultQaTeam;
@@ -1203,51 +1326,6 @@
             document.getElementById('orgChartModal').style.display = 'none';
         }
 
-        /* Dữ liệu và Modal chỉnh sửa Công ty (hai_headcount) */
-        function openHaiEditModal() {
-            const container = document.getElementById('modalHaiContainer');
-            const hai = globalData.haiHeadcount || defaultHaiHeadcount;
-            container.innerHTML = `
-                <div class="edit-row-hai">
-                    <div><label style="font-size:12px;font-weight:600;">Văn phòng</label><input type="number" id="hai_vanphong" value="${escapeHtml(hai.vanphong)}"></div>
-                    <div><label style="font-size:12px;font-weight:600;">Công nhân</label><input type="number" id="hai_congnhan" value="${escapeHtml(hai.congnhan)}"></div>
-                    <div><label style="font-size:12px;font-weight:600;">QC kiểm hàng</label><input type="number" id="hai_qckiemhang" value="${escapeHtml(hai.qckiemhang)}"></div>
-                    <div><label style="font-size:12px;font-weight:600;">Quản lý Hàn Quốc</label><input type="number" id="hai_quanlyhanquoc" value="${escapeHtml(hai.quanlyhanquoc)}"></div>
-                </div>
-            `;
-            document.getElementById('haiEditModal').style.display = 'flex';
-        }
-
-        function closeHaiEditModal() {
-            document.getElementById('haiEditModal').style.display = 'none';
-        }
-
-        function saveHaiData() {
-            const vanphongVal = document.getElementById('hai_vanphong').value.trim() || '0';
-            const congnhanVal = document.getElementById('hai_congnhan').value.trim() || '0';
-            const qckiemhangVal = document.getElementById('hai_qckiemhang').value.trim() || '0';
-            const quanlyhanquocVal = document.getElementById('hai_quanlyhanquoc').value.trim() || '0';
-
-            // Cập nhật bộ nhớ tạm
-            globalData.haiHeadcount = {
-                vanphong: vanphongVal,
-                congnhan: congnhanVal,
-                qckiemhang: qckiemhangVal,
-                quanlyhanquoc: quanlyhanquocVal
-            };
-            renderHaiHeadcount(globalData.haiHeadcount);
-
-            // Gửi dữ liệu theo đúng tên tiêu đề cột trong Google Sheet hai_headcount
-            const dataToSave = [{
-                "Văn phòng": vanphongVal,
-                "Công nhân": congnhanVal,
-                "QC kiểm hàng": qckiemhangVal,
-                "Quản lý Hàn Quốc": quanlyhanquocVal
-            }];
-
-            saveToGoogleSheet('hai_headcount', dataToSave, closeHaiEditModal, 'btnSaveHai');
-        }
-
         /* Dữ liệu và Modal chỉnh sửa QA Team */
         function openQaEditModal() {
             const container = document.getElementById('modalQaContainer');
@@ -1269,6 +1347,7 @@
             document.getElementById('qaEditModal').style.display = 'none';
         }
 
+        /* BƯỚC 1: Hàm saveQaData() gửi đúng Tên Tiêu Đề Cột Tiếng Việt khớp 100% Google Sheet 'qa_headcount' */
         function saveQaData() {
             const totalVal = document.getElementById('qa_total').value.trim() || '0';
             const leaderVal = document.getElementById('qa_leader').value.trim() || '0';
@@ -1277,6 +1356,7 @@
             const prefinalVal = document.getElementById('qa_prefinal').value.trim() || '0';
             const giacongVal = document.getElementById('qa_giacong').value.trim() || '0';
 
+            // 1. Cập nhật biến bộ nhớ tạm trên Frontend
             globalData.qaTeam = {
                 total: totalVal,
                 leader: leaderVal,
@@ -1287,6 +1367,7 @@
             };
             renderQaTeam(globalData.qaTeam);
 
+            // 2. Tạo đối tượng dữ liệu gửi đi khớp đúng tiêu đề các cột ở Dòng 1 trên Google Sheet
             const dataToSave = [{
                 "Tổng số QA": totalVal,
                 "QA leader": leaderVal,
@@ -1296,6 +1377,7 @@
                 "QA gia công": giacongVal
             }];
 
+            // 3. Thực hiện lưu vào Sheet 'qa_headcount'
             saveToGoogleSheet('qa_headcount', dataToSave, closeQaEditModal, 'btnSaveQa');
         }
 
@@ -1352,6 +1434,7 @@
             container.appendChild(rowDiv);
         }
 
+        /* HÀM SAVE TO GOOGLE SHEET ĐÃ ĐƯỢC TỐI ƯU CẬP NHẬT TRỰC TIẾP VÀ TĂNG TIMEOUT */
         async function saveToGoogleSheet(sheetName, data, callbackClose, btnId) {
             const btn = btnId ? document.getElementById(btnId) : null;
             let originalText = "";
@@ -1362,14 +1445,15 @@
             }
 
             try {
+                // Cập nhật giao diện HTML ngay lập tức bằng dữ liệu mới nhập
                 renderReports(globalData.reports);
                 renderSop(globalData.sop);
                 renderProc(globalData.proc);
                 renderInsp(globalData.insp);
                 renderAudit(globalData.audit);
                 renderQaTeam(globalData.qaTeam);
-                renderHaiHeadcount(globalData.haiHeadcount);
 
+                // Gửi dữ liệu cập nhật tới Google Apps Script
                 await fetch(API_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -1384,6 +1468,7 @@
                 alert("Đã gửi dữ liệu thành công! Đang đồng bộ...");
                 if (callbackClose) callbackClose();
 
+                // Chờ 3 giây để Google Sheet hoàn tất ghi dữ liệu rồi mới tải lại dữ liệu từ Server
                 setTimeout(() => { 
                     loadAllDataFromGoogleSheet(); 
                 }, 3000);
@@ -1413,7 +1498,6 @@
         const defaultInsp = [];
         const defaultAudit = [];
         const defaultQaTeam = { total: "0", leader: "0", officer: "0", inline: "0", prefinal: "0", giacong: "0" };
-        const defaultHaiHeadcount = { vanphong: "0", congnhan: "0", qckiemhang: "0", quanlyhanquoc: "0" };
 
         let globalData = {
             reports: defaultReports,
@@ -1421,8 +1505,7 @@
             proc: defaultProc,
             insp: defaultInsp,
             audit: defaultAudit,
-            qaTeam: defaultQaTeam,
-            haiHeadcount: defaultHaiHeadcount
+            qaTeam: defaultQaTeam
         };
 
         /* Render Popover Nhân sự QA Team */
@@ -1442,22 +1525,7 @@
             `;
         }
 
-        /* Render Popover Nhân sự Công ty Hai Vina */
-        function renderHaiHeadcount(hai) {
-            const container = document.getElementById('haiPopoverBody');
-            if (!container) return;
-            const data = hai || defaultHaiHeadcount;
-            container.innerHTML = `
-                <tr>
-                    <td>${escapeHtml(data.vanphong || '0')}</td>
-                    <td>${escapeHtml(data.congnhan || '0')}</td>
-                    <td>${escapeHtml(data.qckiemhang || '0')}</td>
-                    <td>${escapeHtml(data.quanlyhanquoc || '0')}</td>
-                </tr>
-            `;
-        }
-
-        /* Load toàn bộ dữ liệu từ Google Sheet */
+        /* Hàm loadAllDataFromGoogleSheet() hỗ trợ đọc chính xác các tiêu đề Tiếng Việt từ sheet qa_headcount */
         async function loadAllDataFromGoogleSheet() {
             if (!API_URL) return;
 
@@ -1490,27 +1558,12 @@
                     }
                 }
 
-                // Lấy mảng dữ liệu từ sheet hai_headcount
-                const rawHaiData = data.hai_headcount || data.haiHeadcount;
-                if (rawHaiData) {
-                    const rawHai = Array.isArray(rawHaiData) ? rawHaiData[0] : rawHaiData;
-                    if (rawHai) {
-                        globalData.haiHeadcount = {
-                            vanphong: rawHai["Văn phòng"] || rawHai.vanphong || rawHai[0] || '0',
-                            congnhan: rawHai["Công nhân"] || rawHai.congnhan || rawHai[1] || '0',
-                            qckiemhang: rawHai["QC kiểm hàng"] || rawHai.qckiemhang || rawHai[2] || '0',
-                            quanlyhanquoc: rawHai["Quản lý Hàn Quốc"] || rawHai.quanlyhanquoc || rawHai[3] || '0'
-                        };
-                    }
-                }
-
                 renderReports(globalData.reports);
                 renderSop(globalData.sop);
                 renderProc(globalData.proc);
                 renderInsp(globalData.insp);
                 renderAudit(globalData.audit);
                 renderQaTeam(globalData.qaTeam);
-                renderHaiHeadcount(globalData.haiHeadcount);
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
             } finally {
@@ -1903,8 +1956,8 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            initWeatherAndDate();
             renderQaTeam(defaultQaTeam);
-            renderHaiHeadcount(defaultHaiHeadcount);
             loadAllDataFromGoogleSheet();
         });
 
