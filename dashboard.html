@@ -788,7 +788,7 @@
 
                 <!-- KHỐI 2: TÀI LIỆU & HƯỚNG DẪN -->
                 <div class="card-box" style="background-color: #faf5ff; margin-bottom: 0;">
-                    <h3 class="card-box-title">📂 Tài Liệu & Hướng dẫn</h3>
+                    <h3 class="card-box-title">📂 Tài Liệu & HƯỚNG DẪN</h3>
 
                     <!-- BẢNG 1: SỔ TAY QUY TRÌNH CÔNG VIỆC -->
                     <div class="table-responsive" style="margin-bottom: 10px;">
@@ -1201,20 +1201,38 @@
             document.getElementById('qaEditModal').style.display = 'none';
         }
 
-        /* ĐÃ SỬA: Hàm saveQaData gửi đúng tên sheet 'qa_headcount' lên Google Sheet */
+        /* BƯỚC 1: ĐÃ SỬA - Hàm saveQaData() gửi đúng Tên Tiêu Đề Cột Tiếng Việt khớp 100% Google Sheet 'qa_headcount' */
         function saveQaData() {
-            const newQa = {
-                total: document.getElementById('qa_total').value.trim() || '0',
-                leader: document.getElementById('qa_leader').value.trim() || '0',
-                officer: document.getElementById('qa_officer').value.trim() || '0',
-                inline: document.getElementById('qa_inline').value.trim() || '0',
-                prefinal: document.getElementById('qa_prefinal').value.trim() || '0',
-                giacong: document.getElementById('qa_giacong').value.trim() || '0'
-            };
+            const totalVal = document.getElementById('qa_total').value.trim() || '0';
+            const leaderVal = document.getElementById('qa_leader').value.trim() || '0';
+            const officerVal = document.getElementById('qa_officer').value.trim() || '0';
+            const inlineVal = document.getElementById('qa_inline').value.trim() || '0';
+            const prefinalVal = document.getElementById('qa_prefinal').value.trim() || '0';
+            const giacongVal = document.getElementById('qa_giacong').value.trim() || '0';
 
-            globalData.qaTeam = newQa;
-            renderQaTeam(newQa);
-            saveToGoogleSheet('qa_headcount', [newQa], closeQaEditModal, 'btnSaveQa');
+            // 1. Cập nhật biến bộ nhớ tạm trên Frontend
+            globalData.qaTeam = {
+                total: totalVal,
+                leader: leaderVal,
+                officer: officerVal,
+                inline: inlineVal,
+                prefinal: prefinalVal,
+                giacong: giacongVal
+            };
+            renderQaTeam(globalData.qaTeam);
+
+            // 2. Tạo đối tượng dữ liệu gửi đi khớp đúng tiêu đề các cột ở Dòng 1 trên Google Sheet
+            const dataToSave = [{
+                "Tổng số QA": totalVal,
+                "QA leader": leaderVal,
+                "QA Officer": officerVal,
+                "Inline QA": inlineVal,
+                "Pre-final QA": prefinalVal,
+                "QA gia công": giacongVal
+            }];
+
+            // 3. Thực hiện lưu vào Sheet 'qa_headcount'
+            saveToGoogleSheet('qa_headcount', dataToSave, closeQaEditModal, 'btnSaveQa');
         }
 
         function formatDate(dateString) {
@@ -1357,6 +1375,7 @@
             `;
         }
 
+        /* BƯỚC 2: ĐÃ SỬA - Hàm loadAllDataFromGoogleSheet() hỗ trợ đọc chính xác các tiêu đề Tiếng Việt từ sheet qa_headcount */
         async function loadAllDataFromGoogleSheet() {
             if (!API_URL) return;
 
@@ -1373,18 +1392,18 @@
                 if (data.insp && data.insp.length > 0) globalData.insp = data.insp;
                 if (data.audit && data.audit.length > 0) globalData.audit = data.audit;
                 
-                /* ĐÃ SỬA: Ép kiểu đối tượng QA Team an toàn từ cả qa_headcount hoặc qaTeam */
+                // Lấy mảng dữ liệu từ sheet qa_headcount
                 const rawQaData = data.qa_headcount || data.qaTeam;
                 if (rawQaData) {
                     const rawQa = Array.isArray(rawQaData) ? rawQaData[0] : rawQaData;
                     if (rawQa) {
                         globalData.qaTeam = {
-                            total: rawQa.total || rawQa[0] || '0',
-                            leader: rawQa.leader || rawQa[1] || '0',
-                            officer: rawQa.officer || rawQa[2] || '0',
-                            inline: rawQa.inline || rawQa[3] || '0',
-                            prefinal: rawQa.prefinal || rawQa[4] || '0',
-                            giacong: rawQa.giacong || rawQa.gia_cong || rawQa[5] || '0'
+                            total: rawQa["Tổng số QA"] || rawQa.total || rawQa[0] || '0',
+                            leader: rawQa["QA leader"] || rawQa.leader || rawQa[1] || '0',
+                            officer: rawQa["QA Officer"] || rawQa.officer || rawQa[2] || '0',
+                            inline: rawQa["Inline QA"] || rawQa.inline || rawQa[3] || '0',
+                            prefinal: rawQa["Pre-final QA"] || rawQa.prefinal || rawQa[4] || '0',
+                            giacong: rawQa["QA gia công"] || rawQa.giacong || rawQa.gia_cong || rawQa[5] || '0'
                         };
                     }
                 }
