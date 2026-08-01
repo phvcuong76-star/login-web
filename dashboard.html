@@ -129,7 +129,7 @@
             font-size: 18px;
         }
 
-        /* CSS CHO KHUNG BẢN ĐỒ GOOGLE MAPS */
+        /* KHUNG BẢN ĐỒ GOOGLE MAPS */
         .map-container {
             position: relative;
             width: 100%;
@@ -249,7 +249,7 @@
             line-height: 1.4;
         }
 
-        /* CSS TOOLTIP POPOVER CHO NÚT "XEM" */
+        /* POPOVER XEM TRƯỚC HÌNH ẢNH DÀNH CHO NÚT "XEM" */
         .doc-popover-wrapper {
             position: relative;
             display: inline-block;
@@ -258,18 +258,18 @@
         .doc-popover {
             visibility: hidden;
             opacity: 0;
-            width: 260px;
+            width: 240px;
             background-color: #ffffff;
             color: #333;
-            text-align: left;
-            border-radius: 8px;
-            padding: 10px 12px;
+            text-align: center;
+            border-radius: 10px;
+            padding: 8px;
             position: absolute;
             z-index: 1000;
             bottom: 125%;
             left: 50%;
             transform: translateX(-50%) translateY(6px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             border: 1px solid #cbd5e1;
             transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
             pointer-events: none;
@@ -280,8 +280,8 @@
             position: absolute;
             top: 100%;
             left: 50%;
-            margin-left: -6px;
-            border-width: 6px;
+            margin-left: -7px;
+            border-width: 7px;
             border-style: solid;
             border-color: #ffffff transparent transparent transparent;
         }
@@ -296,14 +296,52 @@
             font-size: 12px;
             font-weight: 700;
             color: #1a73e8;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: left;
+            padding: 0 2px;
         }
 
-        .doc-popover-body {
+        /* KHUNG CHỨA BẢN XEM TRƯỚC HÌNH ẢNH */
+        .doc-preview-container {
+            width: 100%;
+            height: 150px;
+            background-color: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .doc-preview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .doc-preview-fallback {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #64748b;
             font-size: 11px;
-            color: #475569;
-            word-break: break-all;
-            line-height: 1.3;
+            height: 100%;
+            padding: 10px;
+        }
+
+        .doc-popover-footer {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 6px;
+            text-align: center;
         }
 
         .btn-update {
@@ -329,7 +367,7 @@
             box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
         }
 
-        /* NÚT BẤM CHO SƠ ĐỒ TỔ CHỨC & NÚT CHI TIẾT */
+        /* NÚT BẤM CÔNG TY & QA TEAM */
         .btn-org {
             padding: 10px 20px;
             font-size: 14px;
@@ -367,7 +405,7 @@
             background-color: #1557b0;
         }
 
-        /* CSS CHO HOVER POPOVER TRÊN NÚT NHÂN SỰ */
+        /* CSS HOVER POPOVER TRÊN NÚT NHÂN SỰ */
         .org-btn-wrapper {
             position: relative;
             display: inline-block;
@@ -427,7 +465,6 @@
             text-align: left;
         }
 
-        /* CLASS DÙNG CHUNG CHO BẢNG DỮ LIỆU DỄ BẢO TRÌ */
         .table-row-border {
             border-bottom: 1px solid #f1f3f5;
         }
@@ -722,13 +759,13 @@
             .btn-pdf-upload { width: 100%; padding: 8px; }
             .org-popover { width: 290px; }
             .report-popover { width: 260px; }
-            .doc-popover { width: 220px; }
+            .doc-popover { width: 200px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- BÁO BANNER HAI BÊN -->
+    <!-- BANNER HAI BÊN -->
     <div class="side-banner banner-left">
         <img src="images nha may 2.jpg" alt="Nhà máy 2">
     </div>
@@ -736,7 +773,7 @@
         <img src="images nha may 3.jpg" alt="Nhà máy 3">
     </div>
 
-    <!-- TOÀN BỘ NỘI DUNG CHÍNH -->
+    <!-- MAIN WRAPPER -->
     <div class="main-wrapper">
         <div class="header-top-bar">
             <div class="logo-box">
@@ -752,7 +789,7 @@
             </div>
         </div>
 
-        <!-- DÒNG CHỮ THÔNG BÁO TẢI DỮ LIỆU PHÍA TRÊN BANNER -->
+        <!-- THÔNG BÁO TẢI DỮ LIỆU -->
         <div id="loading-notice">
             ⏳ Đang tải dữ liệu, xin chờ một lát...
         </div>
@@ -955,7 +992,6 @@
         </div>
     </div>
 
-    <!-- MODAL LỊCH ĐÁNH GIÁ SOP -->
     <div class="modal-overlay" id="sopModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1001,7 +1037,6 @@
         </div>
     </div>
 
-    <!-- MODAL LỊCH KIỂM HÀNG & AUDIT -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1017,7 +1052,6 @@
         </div>
     </div>
 
-    <!-- MODAL THÔNG TIN VÀ NHÂN SỰ -->
     <div class="modal-overlay" id="orgChartModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1037,17 +1071,40 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
         const DETAIL_SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421";
 
-        /* Helper tạo HTML cho Nút Xem có Tooltip Popover */
-        function createViewLinkWithPopover(url, previewTitle, previewInfo) {
+        /* HÀM TẠO NÚT XEM VỚI POPOVER HIỂN THỊ HÌNH ẢNH XEM TRƯỚC */
+        function createViewLinkWithPopover(url, previewTitle) {
             if (!url || url === '#') return `<span class="cell-subtext">-</span>`;
+
+            let previewHTML = '';
             
-            let typeLabel = "🔗 Liên kết tài liệu";
-            if (url.startsWith('data:application/pdf')) {
-                typeLabel = "📄 File PDF đính kèm";
-            } else if (url.includes('drive.google.com')) {
-                typeLabel = "☁️ Google Drive";
-            } else if (url.endsWith('.html')) {
-                typeLabel = "📄 Trang quy trình nội bộ";
+            // 1. Kiểm tra nếu là file ảnh trực tiếp
+            if (url.match(/\.(jpeg|jpg|gif|png|webp)$/i) || url.startsWith('data:image/')) {
+                previewHTML = `<img src="${url}" class="doc-preview-img" alt="Xem trước" onerror="this.outerHTML='<div class=\\'doc-preview-fallback\\'>🖼️ Không thể xem trước ảnh</div>'">`;
+            } 
+            // 2. Kiểm tra nếu là link Google Drive (Docs, Sheets, PDF, Image...)
+            else if (url.includes('drive.google.com') || url.includes('docs.google.com')) {
+                let fileId = '';
+                const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    fileId = match[1];
+                    // Sử dụng dịch vụ lấy thumbnail chính thức của Google Drive
+                    const thumbnailUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`;
+                    previewHTML = `<img src="${thumbnailUrl}" class="doc-preview-img" alt="Xem trước Drive" onerror="this.outerHTML='<div class=\\'doc-preview-fallback\\'>📄 File Google Drive</div>'">`;
+                } else {
+                    previewHTML = `<div class="doc-preview-fallback">📂 Tài liệu Google Drive</div>`;
+                }
+            } 
+            // 3. Nếu là file PDF Base64
+            else if (url.startsWith('data:application/pdf')) {
+                previewHTML = `<div class="doc-preview-fallback"><span style="font-size: 24px;">📄</span><span>File PDF đính kèm</span></div>`;
+            } 
+            // 4. Nếu là đường dẫn HTML / Trang nội bộ
+            else if (url.endsWith('.html') || !url.startsWith('http')) {
+                previewHTML = `<div class="doc-preview-fallback"><span style="font-size: 24px;">🌐</span><span>Quy trình nội bộ</span></div>`;
+            } 
+            // 5. Trường hợp link Web khác
+            else {
+                previewHTML = `<div class="doc-preview-fallback"><span style="font-size: 24px;">🔗</span><span>Liên kết tài liệu</span></div>`;
             }
 
             return `
@@ -1055,11 +1112,10 @@
                     <span class="view-link" onclick="openDocument('${url.replace(/'/g, "\\'")}')">Xem</span>
                     <div class="doc-popover">
                         <div class="doc-popover-title">${previewTitle}</div>
-                        <div class="doc-popover-body">
-                            <p style="margin: 2px 0;"><strong>Loại:</strong> ${typeLabel}</p>
-                            ${previewInfo ? `<p style="margin: 2px 0;"><strong>Chi tiết:</strong> ${previewInfo}</p>` : ''}
-                            <p style="margin: 4px 0 0 0; font-size: 10px; color: #94a3b8;">Nhấp để mở xem tài liệu</p>
+                        <div class="doc-preview-container">
+                            ${previewHTML}
                         </div>
+                        <div class="doc-popover-footer">Nhấp để mở xem chi tiết</div>
                     </div>
                 </div>
             `;
@@ -1336,7 +1392,7 @@
             saveToGoogleSheet('reports', newData, closeReportEditModal);
         }
 
-        /* Render SOP (Có Tooltip Popover) */
+        /* Render SOP (Có Popover Xem Trước Ảnh) */
         function renderSop(data) {
             const tbody = document.querySelector('#sopTable tbody');
             tbody.innerHTML = '';
@@ -1345,7 +1401,7 @@
                 const tr = document.createElement('tr');
                 tr.className = 'table-row-border';
                 const content = item.factory || item.content || '';
-                const linkCell = createViewLinkWithPopover(item.checklistLink, "📋 Checklist SOP", content);
+                const linkCell = createViewLinkWithPopover(item.checklistLink, `📋 Checklist - ${content}`);
 
                 tr.innerHTML = `
                     <td class="cell-date">${formatDate(item.date)}</td>
@@ -1402,7 +1458,7 @@
             saveToGoogleSheet('sop', newData, closeSopEditModal);
         }
 
-        /* Render Sổ tay quy trình (Có Tooltip Popover) */
+        /* Render Sổ tay quy trình (Có Popover Xem Trước Ảnh) */
         function renderProc(data) {
             const tbody = document.querySelector('#procTable tbody');
             tbody.innerHTML = '';
@@ -1410,7 +1466,7 @@
             data.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.className = 'table-row-border';
-                const linkCell = createViewLinkWithPopover(item.link, `📖 ${item.name}`, item.note);
+                const linkCell = createViewLinkWithPopover(item.link, `📖 ${item.name}`);
 
                 tr.innerHTML = `
                     <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
@@ -1449,7 +1505,7 @@
             saveToGoogleSheet('proc', newData, closeProcEditModal);
         }
 
-        /* Render Hướng Dẫn Kiểm Hàng (Có Tooltip Popover) */
+        /* Render Hướng Dẫn Kiểm Hàng (Có Popover Xem Trước Ảnh) */
         function renderInsp(data) {
             const tbody = document.querySelector('#inspTable tbody');
             tbody.innerHTML = '';
@@ -1457,7 +1513,7 @@
             data.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.className = 'table-row-border';
-                const linkCell = createViewLinkWithPopover(item.link, `🔍 ${item.name}`, item.note);
+                const linkCell = createViewLinkWithPopover(item.link, `🔍 ${item.name}`);
 
                 tr.innerHTML = `
                     <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
@@ -1567,7 +1623,7 @@
             saveToGoogleSheet('insp', newData, closeInspEditModal);
         }
 
-        /* Render Audit (Có Tooltip Popover) */
+        /* Render Audit (Có Popover Xem Trước Ảnh) */
         function renderAudit(data) {
             const tbody = document.querySelector('#auditTable tbody');
             tbody.innerHTML = '';
@@ -1580,8 +1636,7 @@
                 if (item.type && item.type.toLowerCase().includes('audit')) typeColor = '#d93025';
                 if (item.type && item.type.toLowerCase().includes('pre')) typeColor = '#137333';
 
-                const info = `Khách hàng: ${item.customer} | Loại: ${item.type} | Nhà máy: ${item.factory}`;
-                const docCell = createViewLinkWithPopover(item.docLink, `📂 Tài liệu Audit/Kiểm hàng`, info);
+                const docCell = createViewLinkWithPopover(item.docLink, `📂 ${item.customer} - ${item.type}`);
 
                 tr.innerHTML = `
                     <td class="cell-text-bold">${item.customer}</td>
