@@ -558,7 +558,15 @@
             align-items: center;
         }
 
-        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input {
+        .edit-row-qa {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input {
             padding: 8px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
@@ -714,10 +722,10 @@
             .footer-info { flex-direction: column; align-items: flex-start; gap: 10px; }
             .footer-info div:last-child { white-space: normal; }
             .modal-content { padding: 15px; }
-            .edit-row, .edit-row-insp, .edit-row-report, .edit-row-audit, .edit-row-sop {
+            .edit-row, .edit-row-insp, .edit-row-report, .edit-row-audit, .edit-row-sop, .edit-row-qa {
                 display: flex; flex-direction: column; background: #f8fafc; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; position: relative;
             }
-            .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input { width: 100%; }
+            .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input { width: 100%; }
             .btn-delete-row { width: 100%; margin-top: 5px; }
             .btn-pdf-upload { width: 100%; padding: 8px; }
             .org-popover { width: 290px; }
@@ -906,15 +914,17 @@
                                             <th>QA Officer</th>
                                             <th>Inline QA</th>
                                             <th>Pre-final QA</th>
+                                            <th>QA gia công</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="qaPopoverBody">
                                         <tr>
-                                            <td>đang cập nhật</td>
-                                            <td>đang cập nhật</td>
-                                            <td>đang cập nhật</td>
-                                            <td>đang cập nhật</td>
-                                            <td>đang cập nhật</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1025,8 +1035,23 @@
                 <button class="close-btn" onclick="closeOrgChartModal()">&times;</button>
             </div>
             <div id="orgModalBody" class="table-responsive"></div>
-            <div class="modal-footer">
+            <div class="modal-footer" id="orgModalFooter">
                 <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL SỬA DỮ LIỆU QA TEAM -->
+    <div class="modal-overlay" id="qaEditModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Nhân Sự QA Team</h3>
+                <button class="close-btn" onclick="closeQaEditModal()">&times;</button>
+            </div>
+            <div id="modalQaContainer"></div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeQaEditModal()">Hủy</button>
+                <button class="btn-save" onclick="saveQaData()">Lưu thay đổi</button>
             </div>
         </div>
     </div>
@@ -1068,6 +1093,7 @@
         function openOrgChart(type) {
             const titleEl = document.getElementById('orgModalTitle');
             const bodyEl = document.getElementById('orgModalBody');
+            const footerEl = document.getElementById('orgModalFooter');
 
             if (type === 'company') {
                 titleEl.innerText = "👥 Tình hình nhân sự công ty";
@@ -1092,8 +1118,10 @@
                     </table>
                     <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
                 `;
+                footerEl.innerHTML = `<button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>`;
             } else if (type === 'qa') {
                 titleEl.innerText = "👥 Tình hình nhân sự Phòng chất lượng";
+                const qa = globalData.qaTeam || defaultQaTeam;
                 bodyEl.innerHTML = `
                     <table class="org-table">
                         <thead>
@@ -1108,16 +1136,20 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>22</td>
-                                <td>4</td>
-                                <td>3</td>
-                                <td>9</td>
-                                <td>4</td>
-                                <td>1</td>
+                                <td>${qa.total || '0'}</td>
+                                <td>${qa.leader || '0'}</td>
+                                <td>${qa.officer || '0'}</td>
+                                <td>${qa.inline || '0'}</td>
+                                <td>${qa.prefinal || '0'}</td>
+                                <td>${qa.giacong || '0'}</td>
                             </tr>
                         </tbody>
                     </table>
                     <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
+                `;
+                footerEl.innerHTML = `
+                    <button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openQaEditModal();">✏️ Cập nhật số lượng</button>
+                    <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
                 `;
             }
 
@@ -1126,6 +1158,42 @@
 
         function closeOrgChartModal() {
             document.getElementById('orgChartModal').style.display = 'none';
+        }
+
+        /* Dữ liệu và Modal chỉnh sửa QA Team */
+        function openQaEditModal() {
+            const container = document.getElementById('modalQaContainer');
+            const qa = globalData.qaTeam || defaultQaTeam;
+            container.innerHTML = `
+                <div class="edit-row-qa">
+                    <div><label style="font-size:12px;font-weight:600;">Tổng số QA</label><input type="number" id="qa_total" value="${qa.total}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">QA Leader</label><input type="number" id="qa_leader" value="${qa.leader}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">QA Officer</label><input type="number" id="qa_officer" value="${qa.officer}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">Inline QA</label><input type="number" id="qa_inline" value="${qa.inline}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">Pre-final QA</label><input type="number" id="qa_prefinal" value="${qa.prefinal}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">QA gia công</label><input type="number" id="qa_giacong" value="${qa.giacong}"></div>
+                </div>
+            `;
+            document.getElementById('qaEditModal').style.display = 'flex';
+        }
+
+        function closeQaEditModal() {
+            document.getElementById('qaEditModal').style.display = 'none';
+        }
+
+        function saveQaData() {
+            const newQa = {
+                total: document.getElementById('qa_total').value || '0',
+                leader: document.getElementById('qa_leader').value || '0',
+                officer: document.getElementById('qa_officer').value || '0',
+                inline: document.getElementById('qa_inline').value || '0',
+                prefinal: document.getElementById('qa_prefinal').value || '0',
+                giacong: document.getElementById('qa_giacong').value || '0'
+            };
+
+            globalData.qaTeam = newQa;
+            renderQaTeam(newQa);
+            saveToGoogleSheet('qaTeam', [newQa], closeQaEditModal);
         }
 
         function formatDate(dateString) {
@@ -1188,6 +1256,7 @@
                 renderProc(globalData.proc);
                 renderInsp(globalData.insp);
                 renderAudit(globalData.audit);
+                renderQaTeam(globalData.qaTeam);
 
                 await fetch(API_URL, {
                     method: 'POST',
@@ -1225,14 +1294,33 @@
         ];
         const defaultInsp = [];
         const defaultAudit = [];
+        const defaultQaTeam = { total: "22", leader: "4", officer: "3", inline: "9", prefinal: "4", giacong: "1" };
 
         let globalData = {
             reports: defaultReports,
             sop: defaultSop,
             proc: defaultProc,
             insp: defaultInsp,
-            audit: defaultAudit
+            audit: defaultAudit,
+            qaTeam: defaultQaTeam
         };
+
+        /* Render Popover Nhân sự QA Team */
+        function renderQaTeam(qa) {
+            const container = document.getElementById('qaPopoverBody');
+            if (!container) return;
+            const data = qa || defaultQaTeam;
+            container.innerHTML = `
+                <tr>
+                    <td>${data.total || '0'}</td>
+                    <td>${data.leader || '0'}</td>
+                    <td>${data.officer || '0'}</td>
+                    <td>${data.inline || '0'}</td>
+                    <td>${data.prefinal || '0'}</td>
+                    <td>${data.giacong || '0'}</td>
+                </tr>
+            `;
+        }
 
         async function loadAllDataFromGoogleSheet() {
             if (!API_URL) return;
@@ -1249,12 +1337,16 @@
                 if (data.proc && data.proc.length > 0) globalData.proc = data.proc;
                 if (data.insp && data.insp.length > 0) globalData.insp = data.insp;
                 if (data.audit && data.audit.length > 0) globalData.audit = data.audit;
+                if (data.qaTeam) {
+                    globalData.qaTeam = Array.isArray(data.qaTeam) ? data.qaTeam[0] : data.qaTeam;
+                }
 
                 renderReports(globalData.reports);
                 renderSop(globalData.sop);
                 renderProc(globalData.proc);
                 renderInsp(globalData.insp);
                 renderAudit(globalData.audit);
+                renderQaTeam(globalData.qaTeam);
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
             } finally {
@@ -1647,6 +1739,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            renderQaTeam(defaultQaTeam);
             loadAllDataFromGoogleSheet();
         });
 
