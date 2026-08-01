@@ -1201,7 +1201,7 @@
             document.getElementById('qaEditModal').style.display = 'none';
         }
 
-        /* ĐÃ SỬA: Hàm saveQaData lấy chuẩn dữ liệu & cập nhật giao diện lập tức */
+        /* ĐÃ SỬA: Hàm saveQaData gửi đúng tên sheet 'qa_headcount' lên Google Sheet */
         function saveQaData() {
             const newQa = {
                 total: document.getElementById('qa_total').value.trim() || '0',
@@ -1214,7 +1214,7 @@
 
             globalData.qaTeam = newQa;
             renderQaTeam(newQa);
-            saveToGoogleSheet('qaTeam', [newQa], closeQaEditModal, 'btnSaveQa');
+            saveToGoogleSheet('qa_headcount', [newQa], closeQaEditModal, 'btnSaveQa');
         }
 
         function formatDate(dateString) {
@@ -1373,17 +1373,18 @@
                 if (data.insp && data.insp.length > 0) globalData.insp = data.insp;
                 if (data.audit && data.audit.length > 0) globalData.audit = data.audit;
                 
-                /* ĐÃ SỬA: Ép kiểu đối tượng QA Team an toàn */
-                if (data.qaTeam) {
-                    const rawQa = Array.isArray(data.qaTeam) ? data.qaTeam[0] : data.qaTeam;
+                /* ĐÃ SỬA: Ép kiểu đối tượng QA Team an toàn từ cả qa_headcount hoặc qaTeam */
+                const rawQaData = data.qa_headcount || data.qaTeam;
+                if (rawQaData) {
+                    const rawQa = Array.isArray(rawQaData) ? rawQaData[0] : rawQaData;
                     if (rawQa) {
                         globalData.qaTeam = {
-                            total: rawQa.total || '0',
-                            leader: rawQa.leader || '0',
-                            officer: rawQa.officer || '0',
-                            inline: rawQa.inline || '0',
-                            prefinal: rawQa.prefinal || '0',
-                            giacong: rawQa.giacong || rawQa.gia_cong || '0'
+                            total: rawQa.total || rawQa[0] || '0',
+                            leader: rawQa.leader || rawQa[1] || '0',
+                            officer: rawQa.officer || rawQa[2] || '0',
+                            inline: rawQa.inline || rawQa[3] || '0',
+                            prefinal: rawQa.prefinal || rawQa[4] || '0',
+                            giacong: rawQa.giacong || rawQa.gia_cong || rawQa[5] || '0'
                         };
                     }
                 }
