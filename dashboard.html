@@ -802,7 +802,6 @@
                         </table>
                     </div>
                     <div class="text-right" style="margin-bottom: 25px;">
-                        <!-- ĐÃ SỬA: Cho phép click để cập nhật Sổ tay quy trình -->
                         <button class="btn-update" onclick="openProcEditModal()">Cập nhật</button>
                     </div>
 
@@ -1073,7 +1072,7 @@
 
         /* Helper chống lỗi XSS & Lỗi chuỗi HTML khi chứa ký tự đặc biệt */
         function escapeHtml(str) {
-            if (!str) return '';
+            if (str === null || str === undefined) return '';
             return String(str)
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
@@ -1157,12 +1156,12 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>${escapeHtml(qa.total) || '0'}</td>
-                                <td>${escapeHtml(qa.leader) || '0'}</td>
-                                <td>${escapeHtml(qa.officer) || '0'}</td>
-                                <td>${escapeHtml(qa.inline) || '0'}</td>
-                                <td>${escapeHtml(qa.prefinal) || '0'}</td>
-                                <td>${escapeHtml(qa.giacong) || '0'}</td>
+                                <td>${escapeHtml(qa.total)}</td>
+                                <td>${escapeHtml(qa.leader)}</td>
+                                <td>${escapeHtml(qa.officer)}</td>
+                                <td>${escapeHtml(qa.inline)}</td>
+                                <td>${escapeHtml(qa.prefinal)}</td>
+                                <td>${escapeHtml(qa.giacong)}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1202,14 +1201,15 @@
             document.getElementById('qaEditModal').style.display = 'none';
         }
 
+        /* ĐÃ SỬA: Hàm saveQaData lấy chuẩn dữ liệu & cập nhật giao diện lập tức */
         function saveQaData() {
             const newQa = {
-                total: document.getElementById('qa_total').value || '0',
-                leader: document.getElementById('qa_leader').value || '0',
-                officer: document.getElementById('qa_officer').value || '0',
-                inline: document.getElementById('qa_inline').value || '0',
-                prefinal: document.getElementById('qa_prefinal').value || '0',
-                giacong: document.getElementById('qa_giacong').value || '0'
+                total: document.getElementById('qa_total').value.trim() || '0',
+                leader: document.getElementById('qa_leader').value.trim() || '0',
+                officer: document.getElementById('qa_officer').value.trim() || '0',
+                inline: document.getElementById('qa_inline').value.trim() || '0',
+                prefinal: document.getElementById('qa_prefinal').value.trim() || '0',
+                giacong: document.getElementById('qa_giacong').value.trim() || '0'
             };
 
             globalData.qaTeam = newQa;
@@ -1329,7 +1329,7 @@
         ];
         const defaultInsp = [];
         const defaultAudit = [];
-        const defaultQaTeam = { total: "22", leader: "4", officer: "3", inline: "9", prefinal: "4", giacong: "1" };
+        const defaultQaTeam = { total: "0", leader: "0", officer: "0", inline: "0", prefinal: "0", giacong: "0" };
 
         let globalData = {
             reports: defaultReports,
@@ -1347,12 +1347,12 @@
             const data = qa || defaultQaTeam;
             container.innerHTML = `
                 <tr>
-                    <td>${escapeHtml(data.total) || '0'}</td>
-                    <td>${escapeHtml(data.leader) || '0'}</td>
-                    <td>${escapeHtml(data.officer) || '0'}</td>
-                    <td>${escapeHtml(data.inline) || '0'}</td>
-                    <td>${escapeHtml(data.prefinal) || '0'}</td>
-                    <td>${escapeHtml(data.giacong) || '0'}</td>
+                    <td>${escapeHtml(data.total || '0')}</td>
+                    <td>${escapeHtml(data.leader || '0')}</td>
+                    <td>${escapeHtml(data.officer || '0')}</td>
+                    <td>${escapeHtml(data.inline || '0')}</td>
+                    <td>${escapeHtml(data.prefinal || '0')}</td>
+                    <td>${escapeHtml(data.giacong || '0')}</td>
                 </tr>
             `;
         }
@@ -1372,8 +1372,20 @@
                 if (data.proc && data.proc.length > 0) globalData.proc = data.proc;
                 if (data.insp && data.insp.length > 0) globalData.insp = data.insp;
                 if (data.audit && data.audit.length > 0) globalData.audit = data.audit;
+                
+                /* ĐÃ SỬA: Ép kiểu đối tượng QA Team an toàn */
                 if (data.qaTeam) {
-                    globalData.qaTeam = Array.isArray(data.qaTeam) ? data.qaTeam[0] : data.qaTeam;
+                    const rawQa = Array.isArray(data.qaTeam) ? data.qaTeam[0] : data.qaTeam;
+                    if (rawQa) {
+                        globalData.qaTeam = {
+                            total: rawQa.total || '0',
+                            leader: rawQa.leader || '0',
+                            officer: rawQa.officer || '0',
+                            inline: rawQa.inline || '0',
+                            prefinal: rawQa.prefinal || '0',
+                            giacong: rawQa.giacong || rawQa.gia_cong || '0'
+                        };
+                    }
                 }
 
                 renderReports(globalData.reports);
