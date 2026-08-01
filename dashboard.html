@@ -706,7 +706,7 @@
         <div class="dashboard-grid">
             <!-- CỘT BÊN TRÁI -->
             <div>
-                <!-- KHỐI 1: BÁO CÁO (ĐÃ THÊM POPOVER HOVER) -->
+                <!-- KHỐI 1: DANH SÁCH BÁO CÁO -->
                 <div class="card-box">
                     <h3 class="card-box-title">📊 Danh Sách Báo Cáo</h3>
                     <div id="reportListContainer"></div>
@@ -715,29 +715,6 @@
                     </div>
                 </div>
 
-                <!-- LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
-                <div class="card-box" style="margin-bottom: 0; background-color: #fffbe6;">
-                    <h3 class="card-box-title">📋 Lịch Đánh Giá SOP & Công tác</h3>
-                    <div class="table-responsive">
-                        <table id="sopTable">
-                            <thead>
-                                <tr class="table-header-row">
-                                    <th class="table-header-cell" style="border-radius: 6px 0 0 6px;">Ngày tháng</th>
-                                    <th class="table-header-cell text-center">Nội dung</th>
-                                    <th class="table-header-cell text-center" style="border-radius: 0 6px 6px 0;">Checklist</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                    <div class="text-right">
-                        <button class="btn-update" onclick="openSopEditModal()">Cập nhật</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CỘT BÊN PHẢI -->
-            <div>
                 <!-- KHỐI 2: TÀI LIỆU & HƯỚNG DẪN -->
                 <div class="card-box" style="background-color: #faf5ff;">
                     <h3 class="card-box-title">📂 Tài Liệu & Hướng dẫn</h3>
@@ -773,37 +750,7 @@
                     </div>
                 </div>
 
-                <!-- LỊCH KIỂM HÀNG & AUDIT -->
-                <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
-                    <h3 class="card-box-title">📅 Lịch Kiểm Hàng & Audit</h3>
-                    <div class="table-responsive">
-                        <table id="auditTable">
-                            <thead>
-                                <tr class="table-header-row">
-                                    <th class="table-header-cell text-nowrap" style="border-radius: 6px 0 0 6px; width: 130px;">Khách hàng</th>
-                                    <th class="table-header-cell">Ngày</th>
-                                    <th class="table-header-cell">Loại</th>
-                                    <th class="table-header-cell text-center">Nhà máy</th>
-                                    <th class="table-header-cell text-center" style="border-radius: 0 6px 6px 0;">Tài liệu</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                    <div class="text-right">
-                        <button class="btn-update" onclick="openEditModal()">Cập nhật</button>
-                    </div>
-                </div>
-
-                <!-- KHỐI BẢN ĐỒ GOOGLE MAPS -->
-                <div class="card-box" style="margin-bottom: 20px;">
-                    <h3 class="card-box-title">📍 Vị Trí Công Ty (Google Maps)</h3>
-                    <div class="map-container">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.818167888874!2d106.2917!3d20.8784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31358d341076ee2b%3A0xc33a11029c546db9!2zQ29uZyB0eSBUSlNIIEhhaSBWaW5h!5e0!3m2!1svi!2svn!4v1700000000000!5m2!1svi!2svn" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                </div>
-
-                <!-- KHỐI 4: THÔNG TIN VÀ NHÂN SỰ -->
+                <!-- KHỐI 3: THÔNG TIN VÀ NHÂN SỰ -->
                 <div class="card-box" style="margin-bottom: 0;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
                     <div style="display: flex; gap: 12px;">
@@ -864,6 +811,59 @@
                             </div>
                         </div>
 
+                    </div>
+                </div>
+            </div>
+
+            <!-- CỘT BÊN PHẢI -->
+            <div>
+                <!-- KHỐI 1: LỊCH KIỂM HÀNG & AUDIT -->
+                <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
+                    <h3 class="card-box-title">📅 Lịch Kiểm Hàng & Audit</h3>
+                    <div class="table-responsive">
+                        <table id="auditTable">
+                            <thead>
+                                <tr class="table-header-row">
+                                    <th class="table-header-cell text-nowrap" style="border-radius: 6px 0 0 6px; width: 130px;">Khách hàng</th>
+                                    <th class="table-header-cell">Ngày</th>
+                                    <th class="table-header-cell">Loại</th>
+                                    <th class="table-header-cell text-center">Nhà máy</th>
+                                    <th class="table-header-cell text-center" style="border-radius: 0 6px 6px 0;">Tài liệu</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="text-right">
+                        <button class="btn-update" onclick="openEditModal()">Cập nhật</button>
+                    </div>
+                </div>
+
+                <!-- KHỐI 2: LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
+                <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
+                    <h3 class="card-box-title">📋 Lịch Đánh Giá SOP & Công tác</h3>
+                    <div class="table-responsive">
+                        <table id="sopTable">
+                            <thead>
+                                <tr class="table-header-row">
+                                    <th class="table-header-cell" style="border-radius: 6px 0 0 6px;">Ngày tháng</th>
+                                    <th class="table-header-cell text-center">Nội dung</th>
+                                    <th class="table-header-cell text-center" style="border-radius: 0 6px 6px 0;">Checklist</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="text-right">
+                        <button class="btn-update" onclick="openSopEditModal()">Cập nhật</button>
+                    </div>
+                </div>
+
+                <!-- KHỐI 3: BẢN ĐỒ GOOGLE MAPS -->
+                <div class="card-box" style="margin-bottom: 0;">
+                    <h3 class="card-box-title">📍 Vị Trí Công Ty (Google Maps)</h3>
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.818167888874!2d106.2917!3d20.8784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31358d341076ee2b%3A0xc33a11029c546db9!2zQ29uZyB0eSBUSlNIIEhhaSBWaW5h!5e0!3m2!1svi!2svn!4v1700000000000!5m2!1svi!2svn" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
             </div>
