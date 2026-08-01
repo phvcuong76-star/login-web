@@ -441,6 +441,7 @@
         }
         .text-center { text-align: center; }
         .text-left { text-align: left; }
+        .text-right { text-align: right; }
         .text-nowrap { white-space: nowrap; }
 
         .cell-date {
@@ -629,6 +630,10 @@
             font-weight: 600;
             cursor: pointer;
         }
+        .btn-save:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
         .btn-cancel {
             background: #e2e8f0;
             color: #475569;
@@ -736,7 +741,7 @@
 </head>
 <body>
 
-    <!-- BÁO BANNER HAI BÊN -->
+    <!-- BANNER HAI BÊN -->
     <div class="side-banner banner-left">
         <img src="images nha may 2.jpg" alt="Nhà máy 2">
     </div>
@@ -760,7 +765,7 @@
             </div>
         </div>
 
-        <!-- DÒNG CHỮ THÔNG BÁO TẢI DỮ LIỆU PHÍA TRÊN BANNER -->
+        <!-- DÒNG CHỮ THÔNG BÁO TẢI DỮ LIỆU -->
         <div id="loading-notice">
             ⏳ Đang tải dữ liệu, xin chờ một lát...
         </div>
@@ -797,7 +802,8 @@
                         </table>
                     </div>
                     <div class="text-right" style="margin-bottom: 25px;">
-                        <button class="btn-update" onclick="alert('Bấm vào Xem để cập nhật từng bộ phận')">Cập nhật</button>
+                        <!-- ĐÃ SỬA: Cho phép click để cập nhật Sổ tay quy trình -->
+                        <button class="btn-update" onclick="openProcEditModal()">Cập nhật</button>
                     </div>
 
                     <!-- BẢNG 2: TÀI LIỆU KHÁCH HÀNG -->
@@ -950,6 +956,7 @@
     </div>
 
     <!-- MODALS -->
+    <!-- MODAL BÁO CÁO -->
     <div class="modal-overlay" id="reportModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -960,7 +967,7 @@
             <button class="btn-add-row" onclick="addReportModalRow()">+ Thêm báo cáo mới</button>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeReportEditModal()">Hủy</button>
-                <button class="btn-save" onclick="saveReportList()">Lưu thay đổi</button>
+                <button class="btn-save" id="btnSaveReport" onclick="saveReportList()">Lưu thay đổi</button>
             </div>
         </div>
     </div>
@@ -976,11 +983,12 @@
             <button class="btn-add-row" onclick="addSopModalRow()">+ Thêm dòng mới</button>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeSopEditModal()">Hủy</button>
-                <button class="btn-save" onclick="saveSopTable()">Lưu thay đổi</button>
+                <button class="btn-save" id="btnSaveSop" onclick="saveSopTable()">Lưu thay đổi</button>
             </div>
         </div>
     </div>
 
+    <!-- MODAL QUY TRÌNH CÔNG VIỆC -->
     <div class="modal-overlay" id="procModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -991,11 +999,12 @@
             <button class="btn-add-row" onclick="addDocModalRow('modalProcContainer')">+ Thêm quy trình mới</button>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeProcEditModal()">Hủy</button>
-                <button class="btn-save" onclick="saveProcTable()">Lưu thay đổi</button>
+                <button class="btn-save" id="btnSaveProc" onclick="saveProcTable()">Lưu thay đổi</button>
             </div>
         </div>
     </div>
 
+    <!-- MODAL HƯỚNG DẪN KIỂM HÀNG -->
     <div class="modal-overlay" id="inspModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1006,7 +1015,7 @@
             <button class="btn-add-row" onclick="addInspModalRow()">+ Thêm hướng dẫn mới</button>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeInspEditModal()">Hủy</button>
-                <button class="btn-save" onclick="saveInspTable()">Lưu thay đổi</button>
+                <button class="btn-save" id="btnSaveInsp" onclick="saveInspTable()">Lưu thay đổi</button>
             </div>
         </div>
     </div>
@@ -1022,7 +1031,7 @@
             <button class="btn-add-row" onclick="addModalRow()">+ Thêm dòng mới</button>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeEditModal()">Hủy</button>
-                <button class="btn-save" onclick="saveAuditTable()">Lưu thay đổi</button>
+                <button class="btn-save" id="btnSaveAudit" onclick="saveAuditTable()">Lưu thay đổi</button>
             </div>
         </div>
     </div>
@@ -1051,7 +1060,7 @@
             <div id="modalQaContainer"></div>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeQaEditModal()">Hủy</button>
-                <button class="btn-save" onclick="saveQaData()">Lưu thay đổi</button>
+                <button class="btn-save" id="btnSaveQa" onclick="saveQaData()">Lưu thay đổi</button>
             </div>
         </div>
     </div>
@@ -1061,6 +1070,17 @@
     <script type="text/javascript">
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
         const DETAIL_SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421";
+
+        /* Helper chống lỗi XSS & Lỗi chuỗi HTML khi chứa ký tự đặc biệt */
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
 
         /* Helper tạo HTML cho Nút Xem có Tooltip Popover */
         function createViewLinkWithPopover(url, previewTitle, previewInfo) {
@@ -1075,14 +1095,15 @@
                 typeLabel = "📄 Trang quy trình nội bộ";
             }
 
+            const safeUrl = url.replace(/'/g, "\\'");
             return `
                 <div class="doc-popover-wrapper">
-                    <span class="view-link" onclick="openDocument('${url.replace(/'/g, "\\'")}')">Xem</span>
+                    <span class="view-link" onclick="openDocument('${safeUrl}')">Xem</span>
                     <div class="doc-popover">
-                        <div class="doc-popover-title">${previewTitle}</div>
+                        <div class="doc-popover-title">${escapeHtml(previewTitle)}</div>
                         <div class="doc-popover-body">
                             <p style="margin: 2px 0;"><strong>Loại:</strong> ${typeLabel}</p>
-                            ${previewInfo ? `<p style="margin: 2px 0;"><strong>Chi tiết:</strong> ${previewInfo}</p>` : ''}
+                            ${previewInfo ? `<p style="margin: 2px 0;"><strong>Chi tiết:</strong> ${escapeHtml(previewInfo)}</p>` : ''}
                             <p style="margin: 4px 0 0 0; font-size: 10px; color: #94a3b8;">Nhấp để mở xem tài liệu</p>
                         </div>
                     </div>
@@ -1136,12 +1157,12 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>${qa.total || '0'}</td>
-                                <td>${qa.leader || '0'}</td>
-                                <td>${qa.officer || '0'}</td>
-                                <td>${qa.inline || '0'}</td>
-                                <td>${qa.prefinal || '0'}</td>
-                                <td>${qa.giacong || '0'}</td>
+                                <td>${escapeHtml(qa.total) || '0'}</td>
+                                <td>${escapeHtml(qa.leader) || '0'}</td>
+                                <td>${escapeHtml(qa.officer) || '0'}</td>
+                                <td>${escapeHtml(qa.inline) || '0'}</td>
+                                <td>${escapeHtml(qa.prefinal) || '0'}</td>
+                                <td>${escapeHtml(qa.giacong) || '0'}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1166,12 +1187,12 @@
             const qa = globalData.qaTeam || defaultQaTeam;
             container.innerHTML = `
                 <div class="edit-row-qa">
-                    <div><label style="font-size:12px;font-weight:600;">Tổng số QA</label><input type="number" id="qa_total" value="${qa.total}"></div>
-                    <div><label style="font-size:12px;font-weight:600;">QA Leader</label><input type="number" id="qa_leader" value="${qa.leader}"></div>
-                    <div><label style="font-size:12px;font-weight:600;">QA Officer</label><input type="number" id="qa_officer" value="${qa.officer}"></div>
-                    <div><label style="font-size:12px;font-weight:600;">Inline QA</label><input type="number" id="qa_inline" value="${qa.inline}"></div>
-                    <div><label style="font-size:12px;font-weight:600;">Pre-final QA</label><input type="number" id="qa_prefinal" value="${qa.prefinal}"></div>
-                    <div><label style="font-size:12px;font-weight:600;">QA gia công</label><input type="number" id="qa_giacong" value="${qa.giacong}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">Tổng số QA</label><input type="number" id="qa_total" value="${escapeHtml(qa.total)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">QA Leader</label><input type="number" id="qa_leader" value="${escapeHtml(qa.leader)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">QA Officer</label><input type="number" id="qa_officer" value="${escapeHtml(qa.officer)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">Inline QA</label><input type="number" id="qa_inline" value="${escapeHtml(qa.inline)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">Pre-final QA</label><input type="number" id="qa_prefinal" value="${escapeHtml(qa.prefinal)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">QA gia công</label><input type="number" id="qa_giacong" value="${escapeHtml(qa.giacong)}"></div>
                 </div>
             `;
             document.getElementById('qaEditModal').style.display = 'flex';
@@ -1193,7 +1214,7 @@
 
             globalData.qaTeam = newQa;
             renderQaTeam(newQa);
-            saveToGoogleSheet('qaTeam', [newQa], closeQaEditModal);
+            saveToGoogleSheet('qaTeam', [newQa], closeQaEditModal, 'btnSaveQa');
         }
 
         function formatDate(dateString) {
@@ -1241,15 +1262,24 @@
             const rowDiv = document.createElement('div');
             rowDiv.className = 'edit-row';
             rowDiv.innerHTML = `
-                <input type="text" placeholder="Tên Tài Liệu" value="${name}">
-                <input type="text" placeholder="Ghi chú" value="${note}">
-                <input type="text" placeholder="Link (URL)" value="${link}">
+                <input type="text" placeholder="Tên Tài Liệu" value="${escapeHtml(name)}">
+                <input type="text" placeholder="Ghi chú" value="${escapeHtml(note)}">
+                <input type="text" placeholder="Link (URL)" value="${escapeHtml(link)}">
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
             `;
             container.appendChild(rowDiv);
         }
 
-        async function saveToGoogleSheet(sheetName, data, callbackClose) {
+        /* Cập nhật hàm lưu dữ liệu có hiệu ứng Loading trên nút Lưu */
+        async function saveToGoogleSheet(sheetName, data, callbackClose, btnId) {
+            const btn = btnId ? document.getElementById(btnId) : null;
+            let originalText = "";
+            if (btn) {
+                originalText = btn.innerText;
+                btn.innerText = "⏳ Đang lưu...";
+                btn.disabled = true;
+            }
+
             try {
                 renderReports(globalData.reports);
                 renderSop(globalData.sop);
@@ -1274,10 +1304,15 @@
 
                 setTimeout(() => { 
                     loadAllDataFromGoogleSheet(); 
-                }, 3000);
+                }, 2000);
 
             } catch (e) {
                 alert("Có lỗi xảy ra khi lưu dữ liệu lên Google Sheets!");
+            } finally {
+                if (btn) {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
             }
         }
 
@@ -1312,12 +1347,12 @@
             const data = qa || defaultQaTeam;
             container.innerHTML = `
                 <tr>
-                    <td>${data.total || '0'}</td>
-                    <td>${data.leader || '0'}</td>
-                    <td>${data.officer || '0'}</td>
-                    <td>${data.inline || '0'}</td>
-                    <td>${data.prefinal || '0'}</td>
-                    <td>${data.giacong || '0'}</td>
+                    <td>${escapeHtml(data.total) || '0'}</td>
+                    <td>${escapeHtml(data.leader) || '0'}</td>
+                    <td>${escapeHtml(data.officer) || '0'}</td>
+                    <td>${escapeHtml(data.inline) || '0'}</td>
+                    <td>${escapeHtml(data.prefinal) || '0'}</td>
+                    <td>${escapeHtml(data.giacong) || '0'}</td>
                 </tr>
             `;
         }
@@ -1371,13 +1406,13 @@
                 const authorText = item.author ? item.author : '';
 
                 wrapper.innerHTML = `
-                    <a href="${item.link}" target="_blank" class="${cardClass}">
-                        <div class="link-card-main" title="${item.title}">${item.title}</div>
-                        ${authorText ? `<div class="link-card-sub">${authorText}</div>` : ''}
+                    <a href="${escapeHtml(item.link)}" target="_blank" class="${cardClass}">
+                        <div class="link-card-main" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
+                        ${authorText ? `<div class="link-card-sub">${escapeHtml(authorText)}</div>` : ''}
                     </a>
                     <div class="report-popover">
-                        <h5>📋 ${item.title}</h5>
-                        <p><strong>Người nhập/Phụ trách:</strong> ${authorText || 'Chưa cập nhật'}</p>
+                        <h5>📋 ${escapeHtml(item.title)}</h5>
+                        <p><strong>Người nhập/Phụ trách:</strong> ${escapeHtml(authorText) || 'Chưa cập nhật'}</p>
                     </div>
                 `;
                 container.appendChild(wrapper);
@@ -1389,9 +1424,9 @@
             const rowDiv = document.createElement('div');
             rowDiv.className = 'edit-row-report';
             rowDiv.innerHTML = `
-                <input type="text" placeholder="Tên Báo Cáo" value="${title}">
-                <input type="text" placeholder="Người nhập" value="${author}">
-                <input type="text" placeholder="Link (URL)" value="${link}">
+                <input type="text" placeholder="Tên Báo Cáo" value="${escapeHtml(title)}">
+                <input type="text" placeholder="Người nhập" value="${escapeHtml(author)}">
+                <input type="text" placeholder="Link (URL)" value="${escapeHtml(link)}">
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
             `;
             container.appendChild(rowDiv);
@@ -1427,7 +1462,7 @@
             });
 
             globalData.reports = newData;
-            saveToGoogleSheet('reports', newData, closeReportEditModal);
+            saveToGoogleSheet('reports', newData, closeReportEditModal, 'btnSaveReport');
         }
 
         /* Render SOP (Có Tooltip Popover) */
@@ -1442,8 +1477,8 @@
                 const linkCell = createViewLinkWithPopover(item.checklistLink, "📋 Checklist SOP", content);
 
                 tr.innerHTML = `
-                    <td class="cell-date">${formatDate(item.date)}</td>
-                    <td class="cell-content text-left">${content}</td>
+                    <td class="cell-date">${escapeHtml(formatDate(item.date))}</td>
+                    <td class="cell-content text-left">${escapeHtml(content)}</td>
                     <td class="cell-date text-center">${linkCell}</td>
                 `;
                 tbody.appendChild(tr);
@@ -1466,9 +1501,9 @@
             const rowDiv = document.createElement('div');
             rowDiv.className = 'edit-row-sop';
             rowDiv.innerHTML = `
-                <input type="text" placeholder="Ngày tháng" value="${date}">
-                <input type="text" placeholder="Nội dung" value="${factory}">
-                <input type="text" class="link-input" placeholder="Link hoặc PDF Checklist" value="${checklistLink}">
+                <input type="text" placeholder="Ngày tháng" value="${escapeHtml(date)}">
+                <input type="text" placeholder="Nội dung" value="${escapeHtml(factory)}">
+                <input type="text" class="link-input" placeholder="Link hoặc PDF Checklist" value="${escapeHtml(checklistLink)}">
                 <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
                 <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
@@ -1493,7 +1528,7 @@
             });
 
             globalData.sop = newData;
-            saveToGoogleSheet('sop', newData, closeSopEditModal);
+            saveToGoogleSheet('sop', newData, closeSopEditModal, 'btnSaveSop');
         }
 
         /* Render Sổ tay quy trình (Có Tooltip Popover) */
@@ -1507,8 +1542,8 @@
                 const linkCell = createViewLinkWithPopover(item.link, `📖 ${item.name}`, item.note);
 
                 tr.innerHTML = `
-                    <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
-                    <td class="cell-note">${item.note}</td>
+                    <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${escapeHtml(item.name)}</td>
+                    <td class="cell-note">${escapeHtml(item.note)}</td>
                     <td class="cell-note text-center">${linkCell}</td>
                 `;
                 tbody.appendChild(tr);
@@ -1540,7 +1575,7 @@
             });
 
             globalData.proc = newData;
-            saveToGoogleSheet('proc', newData, closeProcEditModal);
+            saveToGoogleSheet('proc', newData, closeProcEditModal, 'btnSaveProc');
         }
 
         /* Render Hướng Dẫn Kiểm Hàng (Có Tooltip Popover) */
@@ -1554,8 +1589,8 @@
                 const linkCell = createViewLinkWithPopover(item.link, `🔍 ${item.name}`, item.note);
 
                 tr.innerHTML = `
-                    <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${item.name}</td>
-                    <td class="cell-note">${item.note}</td>
+                    <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${escapeHtml(item.name)}</td>
+                    <td class="cell-note">${escapeHtml(item.note)}</td>
                     <td class="cell-note text-center">${linkCell}</td>
                 `;
                 tbody.appendChild(tr);
@@ -1567,9 +1602,9 @@
             const rowDiv = document.createElement('div');
             rowDiv.className = 'edit-row-insp';
             rowDiv.innerHTML = `
-                <input type="text" placeholder="Tên Hướng Dẫn" value="${name}">
-                <input type="text" placeholder="Ghi chú" value="${note}">
-                <input type="text" class="link-input" placeholder="Link hoặc chọn PDF" value="${link}">
+                <input type="text" placeholder="Tên Hướng Dẫn" value="${escapeHtml(name)}">
+                <input type="text" placeholder="Ghi chú" value="${escapeHtml(note)}">
+                <input type="text" class="link-input" placeholder="Link hoặc chọn PDF" value="${escapeHtml(link)}">
                 <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
                 <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 Tải PDF</button>
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
@@ -1658,7 +1693,7 @@
             });
 
             globalData.insp = newData;
-            saveToGoogleSheet('insp', newData, closeInspEditModal);
+            saveToGoogleSheet('insp', newData, closeInspEditModal, 'btnSaveInsp');
         }
 
         /* Render Audit (Có Tooltip Popover) */
@@ -1678,10 +1713,10 @@
                 const docCell = createViewLinkWithPopover(item.docLink, `📂 Tài liệu Audit/Kiểm hàng`, info);
 
                 tr.innerHTML = `
-                    <td class="cell-text-bold">${item.customer}</td>
-                    <td class="cell-date">${formatDate(item.date)}</td>
-                    <td class="cell-date" style="color: ${typeColor}; font-weight: 600;">${item.type}</td>
-                    <td class="cell-text-bold text-center">${item.factory}</td>
+                    <td class="cell-text-bold">${escapeHtml(item.customer)}</td>
+                    <td class="cell-date">${escapeHtml(formatDate(item.date))}</td>
+                    <td class="cell-date" style="color: ${typeColor}; font-weight: 600;">${escapeHtml(item.type)}</td>
+                    <td class="cell-text-bold text-center">${escapeHtml(item.factory)}</td>
                     <td class="cell-date text-center">${docCell}</td>
                 `;
                 tbody.appendChild(tr);
@@ -1704,11 +1739,11 @@
             const rowDiv = document.createElement('div');
             rowDiv.className = 'edit-row-audit';
             rowDiv.innerHTML = `
-                <input type="text" placeholder="Khách hàng" value="${customer}">
-                <input type="text" placeholder="Ngày" value="${date}">
-                <input type="text" placeholder="Loại" value="${type}">
-                <input type="text" placeholder="Nhà máy" value="${factory}">
-                <input type="text" class="link-input" placeholder="Link hoặc upload PDF" value="${docLink}">
+                <input type="text" placeholder="Khách hàng" value="${escapeHtml(customer)}">
+                <input type="text" placeholder="Ngày" value="${escapeHtml(date)}">
+                <input type="text" placeholder="Loại" value="${escapeHtml(type)}">
+                <input type="text" placeholder="Nhà máy" value="${escapeHtml(factory)}">
+                <input type="text" class="link-input" placeholder="Link hoặc upload PDF" value="${escapeHtml(docLink)}">
                 <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
                 <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
@@ -1735,7 +1770,7 @@
             });
 
             globalData.audit = newData;
-            saveToGoogleSheet('audit', newData, closeEditModal);
+            saveToGoogleSheet('audit', newData, closeEditModal, 'btnSaveAudit');
         }
 
         window.addEventListener('DOMContentLoaded', () => {
