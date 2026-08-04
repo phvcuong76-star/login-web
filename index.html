@@ -79,10 +79,8 @@
 <body>
 
 <div class="login-card">
-    <!-- Thay link ảnh Logo của bạn vào đây -->
     <img src="QA APPROVED.png" class="logo" alt="Logo">
     
-    <!-- Khối báo lỗi -->
     <div class="error-msg" id="errorBlock" style="display: none;">
         <span class="icon">!</span> <span id="errorText">Thông tin đăng nhập không chính xác.</span>
     </div>
@@ -101,13 +99,15 @@
 <script>
     function handleLogin(e) {
         e.preventDefault();
-        const u = document.getElementById('username').value;
-        const p = document.getElementById('password').value;
+        const u = document.getElementById('username').value.trim();
+        const p = document.getElementById('password').value.trim();
         
-        // Thử nghiệm kiểm tra tài khoản đơn giản
         if(u === "pcl" && p === "qa123") {
-            alert("Đăng nhập thành công!");
-            window.location.href = "dashboard.html"; //
+            // 🔑 LƯU TRẠNG THÁI ĐĂNG NHẬP VÀO LOCALSTORAGE
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('username', u);
+            
+            window.location.href = "dashboard.html";
         } else {
             document.getElementById('errorBlock').style.display = 'flex';
         }
