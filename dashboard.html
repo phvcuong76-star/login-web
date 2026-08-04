@@ -656,7 +656,15 @@
             align-items: center;
         }
 
-        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input {
+        .edit-row-company {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input, .edit-row-company input {
             padding: 8px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
@@ -818,10 +826,10 @@
             .footer-info { flex-direction: column; align-items: flex-start; gap: 10px; }
             .footer-info div:last-child { white-space: normal; }
             .modal-content { padding: 15px; }
-            .edit-row, .edit-row-insp, .edit-row-report, .edit-row-audit, .edit-row-sop, .edit-row-qa {
+            .edit-row, .edit-row-insp, .edit-row-report, .edit-row-audit, .edit-row-sop, .edit-row-qa, .edit-row-company {
                 display: flex; flex-direction: column; background: #f8fafc; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; position: relative;
             }
-            .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input { width: 100%; }
+            .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input, .edit-row-company input { width: 100%; }
             .btn-delete-row { width: 100%; margin-top: 5px; }
             .btn-pdf-upload { width: 100%; padding: 8px; }
             .org-popover { width: 290px; }
@@ -997,7 +1005,7 @@
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
                     <div style="display: flex; gap: 12px;">
                         
-                        <!-- Nút 1: Công ty -->
+                        <!-- Nút 1: Công ty Hai Vina -->
                         <div class="org-btn-wrapper">
                             <button class="btn-org" onclick="openOrgChart('company')">Hai Vina</button>
                             <div class="org-popover">
@@ -1011,7 +1019,7 @@
                                             <th>Quản lý Hàn Quốc</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="companyPopoverBody">
                                         <tr>
                                             <td>-</td>
                                             <td>-</td>
@@ -1182,6 +1190,21 @@
         </div>
     </div>
 
+    <!-- MODAL SỬA DỮ LIỆU HAI VINA (CÔNG TY) -->
+    <div class="modal-overlay" id="companyEditModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Nhân Sự Công Ty Hai Vina</h3>
+                <button class="close-btn" onclick="closeCompanyEditModal()">&times;</button>
+            </div>
+            <div id="modalCompanyContainer"></div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeCompanyEditModal()">Hủy</button>
+                <button class="btn-save" id="btnSaveCompany" onclick="saveCompanyData()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
@@ -1282,14 +1305,14 @@
             `;
         }
 
-        /* HÀM OPEN ORG CHART ĐÃ ĐƯỢC CẬP NHẬT */
         function openOrgChart(type) {
             const titleEl = document.getElementById('orgModalTitle');
             const bodyEl = document.getElementById('orgModalBody');
             const footerEl = document.getElementById('orgModalFooter');
 
             if (type === 'company') {
-                titleEl.innerText = "👥 Tình hình nhân sự công ty";
+                titleEl.innerText = "👥 Tình hình nhân sự công ty Hai Vina";
+                const company = globalData.companyTeam || defaultCompanyTeam;
                 bodyEl.innerHTML = `
                     <table class="org-table">
                         <thead>
@@ -1302,17 +1325,17 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
+                                <td>${escapeHtml(company.office)}</td>
+                                <td>${escapeHtml(company.worker)}</td>
+                                <td>${escapeHtml(company.qc)}</td>
+                                <td>${escapeHtml(company.korean)}</td>
                             </tr>
                         </tbody>
                     </table>
                     <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
                 `;
                 footerEl.innerHTML = `
-                    <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-update" style="margin-top:0; text-decoration:none;">✏️ Sửa trên Google Sheets</a>
+                    <button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openCompanyEditModal();">✏️ Cập nhật số lượng</button>
                     <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
                 `;
             } else if (type === 'qa') {
@@ -1354,6 +1377,48 @@
 
         function closeOrgChartModal() {
             document.getElementById('orgChartModal').style.display = 'none';
+        }
+
+        function openCompanyEditModal() {
+            const container = document.getElementById('modalCompanyContainer');
+            const company = globalData.companyTeam || defaultCompanyTeam;
+            container.innerHTML = `
+                <div class="edit-row-company">
+                    <div><label style="font-size:12px;font-weight:600;">Văn phòng</label><input type="number" id="company_office" value="${escapeHtml(company.office)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">Công nhân</label><input type="number" id="company_worker" value="${escapeHtml(company.worker)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">QC kiểm hàng</label><input type="number" id="company_qc" value="${escapeHtml(company.qc)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">Quản lý Hàn Quốc</label><input type="number" id="company_korean" value="${escapeHtml(company.korean)}"></div>
+                </div>
+            `;
+            document.getElementById('companyEditModal').style.display = 'flex';
+        }
+
+        function closeCompanyEditModal() {
+            document.getElementById('companyEditModal').style.display = 'none';
+        }
+
+        function saveCompanyData() {
+            const officeVal = document.getElementById('company_office').value.trim() || '0';
+            const workerVal = document.getElementById('company_worker').value.trim() || '0';
+            const qcVal = document.getElementById('company_qc').value.trim() || '0';
+            const koreanVal = document.getElementById('company_korean').value.trim() || '0';
+
+            globalData.companyTeam = {
+                office: officeVal,
+                worker: workerVal,
+                qc: qcVal,
+                korean: koreanVal
+            };
+            renderCompanyTeam(globalData.companyTeam);
+
+            const dataToSave = [{
+                "Văn phòng": officeVal,
+                "Công nhân": workerVal,
+                "QC kiểm hàng": qcVal,
+                "Quản lý Hàn Quốc": koreanVal
+            }];
+
+            saveToGoogleSheet('company_headcount', dataToSave, closeCompanyEditModal, 'btnSaveCompany');
         }
 
         function openQaEditModal() {
@@ -1475,6 +1540,7 @@
                 renderInsp(globalData.insp);
                 renderAudit(globalData.audit);
                 renderQaTeam(globalData.qaTeam);
+                renderCompanyTeam(globalData.companyTeam);
 
                 await fetch(API_URL, {
                     method: 'POST',
@@ -1519,6 +1585,7 @@
         const defaultInsp = [];
         const defaultAudit = [];
         const defaultQaTeam = { total: "0", leader: "0", officer: "0", inline: "0", prefinal: "0", giacong: "0" };
+        const defaultCompanyTeam = { office: "0", worker: "0", qc: "0", korean: "0" };
 
         let globalData = {
             reports: defaultReports,
@@ -1526,8 +1593,23 @@
             proc: defaultProc,
             insp: defaultInsp,
             audit: defaultAudit,
-            qaTeam: defaultQaTeam
+            qaTeam: defaultQaTeam,
+            companyTeam: defaultCompanyTeam
         };
+
+        function renderCompanyTeam(company) {
+            const container = document.getElementById('companyPopoverBody');
+            if (!container) return;
+            const data = company || defaultCompanyTeam;
+            container.innerHTML = `
+                <tr>
+                    <td>${escapeHtml(data.office || '0')}</td>
+                    <td>${escapeHtml(data.worker || '0')}</td>
+                    <td>${escapeHtml(data.qc || '0')}</td>
+                    <td>${escapeHtml(data.korean || '0')}</td>
+                </tr>
+            `;
+        }
 
         function renderQaTeam(qa) {
             const container = document.getElementById('qaPopoverBody');
@@ -1560,6 +1642,19 @@
                 if (data.proc && data.proc.length > 0) globalData.proc = data.proc;
                 if (data.insp && data.insp.length > 0) globalData.insp = data.insp;
                 if (data.audit && data.audit.length > 0) globalData.audit = data.audit;
+
+                const rawCompanyData = data.company_headcount || data.companyTeam;
+                if (rawCompanyData) {
+                    const rawCompany = Array.isArray(rawCompanyData) ? rawCompanyData[0] : rawCompanyData;
+                    if (rawCompany) {
+                        globalData.companyTeam = {
+                            office: rawCompany["Văn phòng"] || rawCompany.office || rawCompany[0] || '0',
+                            worker: rawCompany["Công nhân"] || rawCompany.worker || rawCompany[1] || '0',
+                            qc: rawCompany["QC kiểm hàng"] || rawCompany.qc || rawCompany[2] || '0',
+                            korean: rawCompany["Quản lý Hàn Quốc"] || rawCompany.korean || rawCompany[3] || '0'
+                        };
+                    }
+                }
                 
                 const rawQaData = data.qa_headcount || data.qaTeam;
                 if (rawQaData) {
@@ -1581,6 +1676,7 @@
                 renderProc(globalData.proc);
                 renderInsp(globalData.insp);
                 renderAudit(globalData.audit);
+                renderCompanyTeam(globalData.companyTeam);
                 renderQaTeam(globalData.qaTeam);
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
@@ -1970,6 +2066,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             initWeatherAndDate();
+            renderCompanyTeam(defaultCompanyTeam);
             renderQaTeam(defaultQaTeam);
             loadAllDataFromGoogleSheet();
         });
