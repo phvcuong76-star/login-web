@@ -1282,6 +1282,7 @@
             `;
         }
 
+        /* HÀM OPEN ORG CHART ĐÃ ĐƯỢC CẬP NHẬT */
         function openOrgChart(type) {
             const titleEl = document.getElementById('orgModalTitle');
             const bodyEl = document.getElementById('orgModalBody');
@@ -1310,7 +1311,10 @@
                     </table>
                     <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
                 `;
-                footerEl.innerHTML = `<button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>`;
+                footerEl.innerHTML = `
+                    <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-update" style="margin-top:0; text-decoration:none;">✏️ Sửa trên Google Sheets</a>
+                    <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
+                `;
             } else if (type === 'qa') {
                 titleEl.innerText = "👥 Tình hình nhân sự Phòng chất lượng";
                 const qa = globalData.qaTeam || defaultQaTeam;
