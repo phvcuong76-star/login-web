@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRANG CỦA PHÒNG CHẤT LƯỢNG</title>
+
+    <!-- 🛡️ BẢO VỆ TRANG: KIỂM TRA ĐĂNG NHẬP NGAY KHI TẢI HEAD -->
+    <script>
+        (function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn || isLoggedIn !== 'true') {
+                alert('Vui lòng đăng nhập để truy cập trang này!');
+                window.location.replace("index.html");
+            }
+        })();
+    </script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -64,7 +76,7 @@
         .header-right-group {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
@@ -123,6 +135,25 @@
             color: #475569;
             font-weight: 500;
             white-space: nowrap;
+        }
+
+        /* NÚT ĐĂNG XUẤT */
+        .btn-logout {
+            background-color: #dc2626;
+            color: #ffffff;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-logout:hover {
+            background-color: #b91c1c;
         }
 
         /* DÒNG THÔNG BÁO TẢI DỮ LIỆU PHÍA TRÊN BANNER */
@@ -195,7 +226,6 @@
             font-size: 18px;
         }
 
-        /* CSS CHO KHUNG BẢN ĐỒ GOOGLE MAPS */
         .map-container {
             position: relative;
             width: 100%;
@@ -209,7 +239,6 @@
             border: 0;
         }
 
-        /* THẺ LIÊN KẾT BÁO CÁO & POPOVER TOOLTIP */
         .report-card-wrapper {
             position: relative;
             display: block;
@@ -267,7 +296,6 @@
             color: #1565c0;
         }
 
-        /* POPOVER CHO DANH SÁCH BÁO CÁO */
         .report-popover {
             visibility: hidden;
             opacity: 0;
@@ -315,7 +343,6 @@
             line-height: 1.4;
         }
 
-        /* CSS TOOLTIP POPOVER CHO NÚT "XEM" */
         .doc-popover-wrapper {
             position: relative;
             display: inline-block;
@@ -395,7 +422,6 @@
             box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
         }
 
-        /* NÚT BẤM CHO SƠ ĐỒ TỔ CHỨC & NÚT CHI TIẾT */
         .btn-org {
             padding: 10px 20px;
             font-size: 14px;
@@ -433,7 +459,6 @@
             background-color: #1557b0;
         }
 
-        /* CSS CHO HOVER POPOVER TRÊN NÚT NHÂN SỰ */
         .org-btn-wrapper {
             position: relative;
             display: inline-block;
@@ -493,7 +518,6 @@
             text-align: left;
         }
 
-        /* CLASS DÙNG CHUNG CHO BẢNG DỮ LIỆU DỄ BẢO TRÌ */
         .table-row-border {
             border-bottom: 1px solid #f1f3f5;
         }
@@ -543,7 +567,6 @@
             color: #94a3b8;
         }
 
-        /* Modal Form CSS */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -824,7 +847,7 @@
                 <img src="QA APPROVED.png" alt="Logo Công ty" class="company-logo">
             </div>
 
-            <!-- CỤM BÊN PHẢI: THỜI TIẾT, NGÀY THÁNG & CHỌN NGÔN NGỮ -->
+            <!-- CỤM BÊN PHẢI: THỜI TIẾT, NGÀY THÁNG, NGÔN NGỮ & ĐĂNG XUẤT -->
             <div class="header-right-group">
                 <!-- WIDGET THỜI TIẾT & NGÀY THÁNG -->
                 <div class="weather-date-widget">
@@ -854,6 +877,9 @@
                         <button class="lang-btn active" onclick="translatePage('vi', this)">VN</button>
                     </div>
                 </div>
+
+                <!-- NÚT ĐĂNG XUẤT -->
+                <button class="btn-logout" onclick="handleLogout()">🚪 Thoát</button>
             </div>
         </div>
 
@@ -1162,16 +1188,21 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
         const DETAIL_SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421";
 
+        /* HÀM XỬ LÝ ĐĂNG XUẤT */
+        function handleLogout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            window.location.replace("index.html");
+        }
+
         /* HÀM KHỞI TẠO VÀ CẬP NHẬT NGÀY THÁNG, THỜI TIẾT TỰ ĐỘNG */
         function initWeatherAndDate() {
-            // 1. Cập nhật ngày tháng hiện tại
             const now = new Date();
             const days = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
             const dayName = days[now.getDay()];
             const dateStr = `${dayName}, ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
             document.getElementById('currentDateDisplay').textContent = dateStr;
 
-            // 2. Lấy dữ liệu thời tiết
             fetchWeatherData();
         }
 
@@ -1179,7 +1210,6 @@
             const locSelect = document.getElementById('locationSelect');
             const selectedLoc = locSelect.value;
             
-            // Tọa độ tương ứng Hải Phòng và Hà Nội
             const coords = {
                 haiphong: { lat: 20.8651, lon: 106.6838 },
                 hanoi: { lat: 21.0285, lon: 105.8542 }
@@ -1188,7 +1218,6 @@
             const target = coords[selectedLoc] || coords.haiphong;
 
             try {
-                // Gọi API thời tiết miễn phí Open-Meteo
                 const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${target.lat}&longitude=${target.lon}&current_weather=true`);
                 const data = await res.json();
                 
@@ -1205,18 +1234,16 @@
             }
         }
 
-        // Đổi mã thời tiết Open-Meteo sang icon Emoji
         function getWeatherIcon(code) {
-            if (code === 0) return '☀️'; // Nắng
-            if (code >= 1 && code <= 3) return '⛅'; // Có mây
-            if (code >= 45 && code <= 48) return '🌫️'; // Sương mù
-            if (code >= 51 && code <= 67) return '🌧️'; // Mưa
-            if (code >= 80 && code <= 82) return '🌦️'; // Mưa rào
-            if (code >= 95) return '⛈️'; // Dông
+            if (code === 0) return '☀️';
+            if (code >= 1 && code <= 3) return '⛅';
+            if (code >= 45 && code <= 48) return '🌫️';
+            if (code >= 51 && code <= 67) return '🌧️';
+            if (code >= 80 && code <= 82) return '🌦️';
+            if (code >= 95) return '⛈️';
             return '☀️';
         }
 
-        /* Helper chống lỗi XSS & Lỗi chuỗi HTML khi chứa ký tự đặc biệt */
         function escapeHtml(str) {
             if (str === null || str === undefined) return '';
             return String(str)
@@ -1227,7 +1254,6 @@
                 .replace(/'/g, "&#039;");
         }
 
-        /* Helper tạo HTML cho Nút Xem có Tooltip Popover */
         function createViewLinkWithPopover(url, previewTitle, previewInfo) {
             if (!url || url === '#') return `<span class="cell-subtext">-</span>`;
             
@@ -1326,7 +1352,6 @@
             document.getElementById('orgChartModal').style.display = 'none';
         }
 
-        /* Dữ liệu và Modal chỉnh sửa QA Team */
         function openQaEditModal() {
             const container = document.getElementById('modalQaContainer');
             const qa = globalData.qaTeam || defaultQaTeam;
@@ -1347,7 +1372,6 @@
             document.getElementById('qaEditModal').style.display = 'none';
         }
 
-        /* BƯỚC 1: Hàm saveQaData() gửi đúng Tên Tiêu Đề Cột Tiếng Việt khớp 100% Google Sheet 'qa_headcount' */
         function saveQaData() {
             const totalVal = document.getElementById('qa_total').value.trim() || '0';
             const leaderVal = document.getElementById('qa_leader').value.trim() || '0';
@@ -1356,7 +1380,6 @@
             const prefinalVal = document.getElementById('qa_prefinal').value.trim() || '0';
             const giacongVal = document.getElementById('qa_giacong').value.trim() || '0';
 
-            // 1. Cập nhật biến bộ nhớ tạm trên Frontend
             globalData.qaTeam = {
                 total: totalVal,
                 leader: leaderVal,
@@ -1367,7 +1390,6 @@
             };
             renderQaTeam(globalData.qaTeam);
 
-            // 2. Tạo đối tượng dữ liệu gửi đi khớp đúng tiêu đề các cột ở Dòng 1 trên Google Sheet
             const dataToSave = [{
                 "Tổng số QA": totalVal,
                 "QA leader": leaderVal,
@@ -1377,7 +1399,6 @@
                 "QA gia công": giacongVal
             }];
 
-            // 3. Thực hiện lưu vào Sheet 'qa_headcount'
             saveToGoogleSheet('qa_headcount', dataToSave, closeQaEditModal, 'btnSaveQa');
         }
 
@@ -1434,7 +1455,6 @@
             container.appendChild(rowDiv);
         }
 
-        /* HÀM SAVE TO GOOGLE SHEET ĐÃ ĐƯỢC TỐI ƯU CẬP NHẬT TRỰC TIẾP VÀ TĂNG TIMEOUT */
         async function saveToGoogleSheet(sheetName, data, callbackClose, btnId) {
             const btn = btnId ? document.getElementById(btnId) : null;
             let originalText = "";
@@ -1445,7 +1465,6 @@
             }
 
             try {
-                // Cập nhật giao diện HTML ngay lập tức bằng dữ liệu mới nhập
                 renderReports(globalData.reports);
                 renderSop(globalData.sop);
                 renderProc(globalData.proc);
@@ -1453,7 +1472,6 @@
                 renderAudit(globalData.audit);
                 renderQaTeam(globalData.qaTeam);
 
-                // Gửi dữ liệu cập nhật tới Google Apps Script
                 await fetch(API_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -1468,7 +1486,6 @@
                 alert("Đã gửi dữ liệu thành công! Đang đồng bộ...");
                 if (callbackClose) callbackClose();
 
-                // Chờ 3 giây để Google Sheet hoàn tất ghi dữ liệu rồi mới tải lại dữ liệu từ Server
                 setTimeout(() => { 
                     loadAllDataFromGoogleSheet(); 
                 }, 3000);
@@ -1508,7 +1525,6 @@
             qaTeam: defaultQaTeam
         };
 
-        /* Render Popover Nhân sự QA Team */
         function renderQaTeam(qa) {
             const container = document.getElementById('qaPopoverBody');
             if (!container) return;
@@ -1525,7 +1541,6 @@
             `;
         }
 
-        /* Hàm loadAllDataFromGoogleSheet() hỗ trợ đọc chính xác các tiêu đề Tiếng Việt từ sheet qa_headcount */
         async function loadAllDataFromGoogleSheet() {
             if (!API_URL) return;
 
@@ -1542,7 +1557,6 @@
                 if (data.insp && data.insp.length > 0) globalData.insp = data.insp;
                 if (data.audit && data.audit.length > 0) globalData.audit = data.audit;
                 
-                // Lấy mảng dữ liệu từ sheet qa_headcount
                 const rawQaData = data.qa_headcount || data.qaTeam;
                 if (rawQaData) {
                     const rawQa = Array.isArray(rawQaData) ? rawQaData[0] : rawQaData;
@@ -1571,7 +1585,6 @@
             }
         }
 
-        /* 1. Render Danh Sách Báo Cáo */
         function renderReports(data) {
             const container = document.getElementById('reportListContainer');
             container.innerHTML = '';
@@ -1647,7 +1660,6 @@
             saveToGoogleSheet('reports', newData, closeReportEditModal, 'btnSaveReport');
         }
 
-        /* Render SOP (Có Tooltip Popover) */
         function renderSop(data) {
             const tbody = document.querySelector('#sopTable tbody');
             tbody.innerHTML = '';
@@ -1713,7 +1725,6 @@
             saveToGoogleSheet('sop', newData, closeSopEditModal, 'btnSaveSop');
         }
 
-        /* Render Sổ tay quy trình (Có Tooltip Popover) */
         function renderProc(data) {
             const tbody = document.querySelector('#procTable tbody');
             tbody.innerHTML = '';
@@ -1760,7 +1771,6 @@
             saveToGoogleSheet('proc', newData, closeProcEditModal, 'btnSaveProc');
         }
 
-        /* Render Hướng Dẫn Kiểm Hàng (Có Tooltip Popover) */
         function renderInsp(data) {
             const tbody = document.querySelector('#inspTable tbody');
             tbody.innerHTML = '';
@@ -1878,7 +1888,6 @@
             saveToGoogleSheet('insp', newData, closeInspEditModal, 'btnSaveInsp');
         }
 
-        /* Render Audit (Có Tooltip Popover) */
         function renderAudit(data) {
             const tbody = document.querySelector('#auditTable tbody');
             tbody.innerHTML = '';
