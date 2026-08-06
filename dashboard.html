@@ -1524,6 +1524,7 @@
             container.appendChild(rowDiv);
         }
 
+        /* HÀM SAVE TO GOOGLE SHEET CHUẨN MỚI (LƯU LOCALSTORAGE + NỔI CÓI TEXT/PLAIN ÉP CORS) */
         async function saveToGoogleSheet(sheetName, data, callbackClose, btnId) {
             const btn = btnId ? document.getElementById(btnId) : null;
             let originalText = "";
@@ -1533,7 +1534,11 @@
                 btn.disabled = true;
             }
 
+            // 1. CẬP NHẬT TỨC THÌ LÊN GIAO DIỆN & LƯU TẠM VÀO LOCALSTORAGE
             try {
+                localStorage.setItem(`cache_${sheetName}`, JSON.stringify(data));
+                
+                // Render cập nhật giao diện ngay lập tức
                 renderReports(globalData.reports);
                 renderSop(globalData.sop);
                 renderProc(globalData.proc);
@@ -1541,11 +1546,15 @@
                 renderAudit(globalData.audit);
                 renderQaTeam(globalData.qaTeam);
                 renderCompanyTeam(globalData.companyTeam);
+            } catch (err) {
+                console.warn("Lỗi lưu tạm LocalStorage:", err);
+            }
 
+            // 2. GỬI DỮ LIỆU ĐẾN GOOGLE APPS SCRIPT VỚI CONTENT-TYPE: TEXT/PLAIN LÁCH CORS
+            try {
                 await fetch(API_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({
                         action: 'updateSheet',
                         sheetName: sheetName,
@@ -1553,15 +1562,16 @@
                     })
                 });
 
-                alert("Đã gửi dữ liệu thành công! Đang đồng bộ...");
+                alert("Đã lưu dữ liệu thành công!");
                 if (callbackClose) callbackClose();
 
+                // Đồng bộ lại dữ liệu sau 3s
                 setTimeout(() => { 
                     loadAllDataFromGoogleSheet(); 
                 }, 3000);
 
             } catch (e) {
-                alert("Có lỗi xảy ra khi lưu dữ liệu lên Google Sheets!");
+                alert("Có lỗi xảy ra khi đồng bộ lên Google Sheets! Dữ liệu đã lưu tạm ở máy.");
                 console.error(e);
             } finally {
                 if (btn) {
@@ -1934,6 +1944,7 @@
 
                 fetch(API_URL, {
                     method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({
                         action: 'uploadPdf',
                         fileName: file.name,
