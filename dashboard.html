@@ -506,6 +506,44 @@
             color: #1a73e8;
         }
 
+        /* KHU VỰC TIÊU CHUẨN NGÀNH MAY */
+        .standards-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-around;
+            gap: 12px;
+            padding: 15px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        .standard-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .standard-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            border-color: #1a73e8;
+        }
+
+        .standard-item img {
+            height: 38px;
+            width: auto;
+            object-fit: contain;
+        }
+
         .table-responsive {
             width: 100%;
             overflow-x: auto;
@@ -835,6 +873,8 @@
             .org-popover { width: 290px; }
             .report-popover { width: 260px; }
             .doc-popover { width: 220px; }
+            .standards-container { gap: 8px; padding: 10px; }
+            .standard-item img { height: 30px; }
         }
     </style>
 </head>
@@ -1063,6 +1103,34 @@
                             </div>
                         </div>
 
+                    </div>
+
+                    <!-- KHU VỰC THÊM MỚI: DANH SÁCH TIÊU CHUẨN NGÀNH MAY (CLICKABLE IMAGES) -->
+                    <div class="standards-container">
+                        <!-- ISO 9001 -->
+                        <a href="https://www.iso.org/iso-9001-quality-management.html" target="_blank" class="standard-item" title="Tiêu chuẩn Quản lý Chất lượng ISO 9001">
+                            <img src="https://via.placeholder.com/100x45?text=ISO+9001" alt="ISO 9001">
+                        </a>
+
+                        <!-- WRAP -->
+                        <a href="https://wrapcertification.org/" target="_blank" class="standard-item" title="Chứng nhận Trách nhiệm Xã hội WRAP">
+                            <img src="https://via.placeholder.com/100x45?text=WRAP" alt="WRAP">
+                        </a>
+
+                        <!-- OEKO-TEX -->
+                        <a href="https://www.oeko-tex.com/" target="_blank" class="standard-item" title="Tiêu chuẩn An toàn Dệt may OEKO-TEX">
+                            <img src="https://via.placeholder.com/100x45?text=OEKO-TEX" alt="OEKO-TEX">
+                        </a>
+
+                        <!-- SMETA / SEDEX -->
+                        <a href="https://www.sedex.com/our-services/smeta-audit/" target="_blank" class="standard-item" title="Đánh giá Trách nhiệm Xã hội SMETA">
+                            <img src="https://via.placeholder.com/100x45?text=SMETA" alt="SMETA">
+                        </a>
+
+                        <!-- HIGG INDEX -->
+                        <a href="https://apparelcoalition.org/the-higg-index/" target="_blank" class="standard-item" title="Chỉ số Bền vững Higg Index">
+                            <img src="https://via.placeholder.com/100x45?text=HIGG+INDEX" alt="Higg Index">
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1524,7 +1592,6 @@
             container.appendChild(rowDiv);
         }
 
-        /* HÀM SAVE TO GOOGLE SHEET CHUẨN MỚI (LƯU LOCALSTORAGE + NỔI CÓI TEXT/PLAIN ÉP CORS) */
         async function saveToGoogleSheet(sheetName, data, callbackClose, btnId) {
             const btn = btnId ? document.getElementById(btnId) : null;
             let originalText = "";
@@ -1534,11 +1601,7 @@
                 btn.disabled = true;
             }
 
-            // 1. CẬP NHẬT TỨC THÌ LÊN GIAO DIỆN & LƯU TẠM VÀO LOCALSTORAGE
             try {
-                localStorage.setItem(`cache_${sheetName}`, JSON.stringify(data));
-                
-                // Render cập nhật giao diện ngay lập tức
                 renderReports(globalData.reports);
                 renderSop(globalData.sop);
                 renderProc(globalData.proc);
@@ -1546,15 +1609,11 @@
                 renderAudit(globalData.audit);
                 renderQaTeam(globalData.qaTeam);
                 renderCompanyTeam(globalData.companyTeam);
-            } catch (err) {
-                console.warn("Lỗi lưu tạm LocalStorage:", err);
-            }
 
-            // 2. GỬI DỮ LIỆU ĐẾN GOOGLE APPS SCRIPT VỚI CONTENT-TYPE: TEXT/PLAIN LÁCH CORS
-            try {
                 await fetch(API_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         action: 'updateSheet',
                         sheetName: sheetName,
@@ -1562,16 +1621,15 @@
                     })
                 });
 
-                alert("Đã lưu dữ liệu thành công!");
+                alert("Đã gửi dữ liệu thành công! Đang đồng bộ...");
                 if (callbackClose) callbackClose();
 
-                // Đồng bộ lại dữ liệu sau 3s
                 setTimeout(() => { 
                     loadAllDataFromGoogleSheet(); 
                 }, 3000);
 
             } catch (e) {
-                alert("Có lỗi xảy ra khi đồng bộ lên Google Sheets! Dữ liệu đã lưu tạm ở máy.");
+                alert("Có lỗi xảy ra khi lưu dữ liệu lên Google Sheets!");
                 console.error(e);
             } finally {
                 if (btn) {
@@ -1653,32 +1711,30 @@
                 if (data.insp && data.insp.length > 0) globalData.insp = data.insp;
                 if (data.audit && data.audit.length > 0) globalData.audit = data.audit;
 
-                // Xử lý dữ liệu Tình hình nhân sự công ty Hai Vina
-                const rawCompanyData = data.company_headcount || data.companyTeam || data.company;
+                const rawCompanyData = data.company_headcount || data.companyTeam;
                 if (rawCompanyData) {
                     const rawCompany = Array.isArray(rawCompanyData) ? rawCompanyData[0] : rawCompanyData;
                     if (rawCompany) {
                         globalData.companyTeam = {
-                            office: rawCompany["Văn phòng"] ?? rawCompany.office ?? rawCompany[0] ?? '0',
-                            worker: rawCompany["Công nhân"] ?? rawCompany.worker ?? rawCompany[1] ?? '0',
-                            qc: rawCompany["QC kiểm hàng"] ?? rawCompany.qc ?? rawCompany[2] ?? '0',
-                            korean: rawCompany["Quản lý Hàn Quốc"] ?? rawCompany.korean ?? rawCompany[3] ?? '0'
+                            office: rawCompany["Văn phòng"] || rawCompany.office || rawCompany[0] || '0',
+                            worker: rawCompany["Công nhân"] || rawCompany.worker || rawCompany[1] || '0',
+                            qc: rawCompany["QC kiểm hàng"] || rawCompany.qc || rawCompany[2] || '0',
+                            korean: rawCompany["Quản lý Hàn Quốc"] || rawCompany.korean || rawCompany[3] || '0'
                         };
                     }
                 }
-
-                // Xử lý dữ liệu Nhân sự Phòng chất lượng (QA Team)
-                const rawQaData = data.qa_headcount || data.qaTeam || data.qa;
+                
+                const rawQaData = data.qa_headcount || data.qaTeam;
                 if (rawQaData) {
                     const rawQa = Array.isArray(rawQaData) ? rawQaData[0] : rawQaData;
                     if (rawQa) {
                         globalData.qaTeam = {
-                            total: rawQa["Tổng số QA"] ?? rawQa.total ?? rawQa[0] ?? '0',
-                            leader: rawQa["QA leader"] ?? rawQa.leader ?? rawQa[1] ?? '0',
-                            officer: rawQa["QA Officer"] ?? rawQa.officer ?? rawQa[2] ?? '0',
-                            inline: rawQa["Inline QA"] ?? rawQa.inline ?? rawQa[3] ?? '0',
-                            prefinal: rawQa["Pre-final QA"] ?? rawQa.prefinal ?? rawQa[4] ?? '0',
-                            giacong: rawQa["QA gia công"] ?? rawQa.giacong ?? rawQa.gia_cong ?? rawQa[5] ?? '0'
+                            total: rawQa["Tổng số QA"] || rawQa.total || rawQa[0] || '0',
+                            leader: rawQa["QA leader"] || rawQa.leader || rawQa[1] || '0',
+                            officer: rawQa["QA Officer"] || rawQa.officer || rawQa[2] || '0',
+                            inline: rawQa["Inline QA"] || rawQa.inline || rawQa[3] || '0',
+                            prefinal: rawQa["Pre-final QA"] || rawQa.prefinal || rawQa[4] || '0',
+                            giacong: rawQa["QA gia công"] || rawQa.giacong || rawQa.gia_cong || rawQa[5] || '0'
                         };
                     }
                 }
@@ -1944,7 +2000,6 @@
 
                 fetch(API_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({
                         action: 'uploadPdf',
                         fileName: file.name,
