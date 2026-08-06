@@ -1643,30 +1643,32 @@
                 if (data.insp && data.insp.length > 0) globalData.insp = data.insp;
                 if (data.audit && data.audit.length > 0) globalData.audit = data.audit;
 
-                const rawCompanyData = data.company_headcount || data.companyTeam;
+                // Xử lý dữ liệu Tình hình nhân sự công ty Hai Vina
+                const rawCompanyData = data.company_headcount || data.companyTeam || data.company;
                 if (rawCompanyData) {
                     const rawCompany = Array.isArray(rawCompanyData) ? rawCompanyData[0] : rawCompanyData;
                     if (rawCompany) {
                         globalData.companyTeam = {
-                            office: rawCompany["Văn phòng"] || rawCompany.office || rawCompany[0] || '0',
-                            worker: rawCompany["Công nhân"] || rawCompany.worker || rawCompany[1] || '0',
-                            qc: rawCompany["QC kiểm hàng"] || rawCompany.qc || rawCompany[2] || '0',
-                            korean: rawCompany["Quản lý Hàn Quốc"] || rawCompany.korean || rawCompany[3] || '0'
+                            office: rawCompany["Văn phòng"] ?? rawCompany.office ?? rawCompany[0] ?? '0',
+                            worker: rawCompany["Công nhân"] ?? rawCompany.worker ?? rawCompany[1] ?? '0',
+                            qc: rawCompany["QC kiểm hàng"] ?? rawCompany.qc ?? rawCompany[2] ?? '0',
+                            korean: rawCompany["Quản lý Hàn Quốc"] ?? rawCompany.korean ?? rawCompany[3] ?? '0'
                         };
                     }
                 }
-                
-                const rawQaData = data.qa_headcount || data.qaTeam;
+
+                // Xử lý dữ liệu Nhân sự Phòng chất lượng (QA Team)
+                const rawQaData = data.qa_headcount || data.qaTeam || data.qa;
                 if (rawQaData) {
                     const rawQa = Array.isArray(rawQaData) ? rawQaData[0] : rawQaData;
                     if (rawQa) {
                         globalData.qaTeam = {
-                            total: rawQa["Tổng số QA"] || rawQa.total || rawQa[0] || '0',
-                            leader: rawQa["QA leader"] || rawQa.leader || rawQa[1] || '0',
-                            officer: rawQa["QA Officer"] || rawQa.officer || rawQa[2] || '0',
-                            inline: rawQa["Inline QA"] || rawQa.inline || rawQa[3] || '0',
-                            prefinal: rawQa["Pre-final QA"] || rawQa.prefinal || rawQa[4] || '0',
-                            giacong: rawQa["QA gia công"] || rawQa.giacong || rawQa.gia_cong || rawQa[5] || '0'
+                            total: rawQa["Tổng số QA"] ?? rawQa.total ?? rawQa[0] ?? '0',
+                            leader: rawQa["QA leader"] ?? rawQa.leader ?? rawQa[1] ?? '0',
+                            officer: rawQa["QA Officer"] ?? rawQa.officer ?? rawQa[2] ?? '0',
+                            inline: rawQa["Inline QA"] ?? rawQa.inline ?? rawQa[3] ?? '0',
+                            prefinal: rawQa["Pre-final QA"] ?? rawQa.prefinal ?? rawQa[4] ?? '0',
+                            giacong: rawQa["QA gia công"] ?? rawQa.giacong ?? rawQa.gia_cong ?? rawQa[5] ?? '0'
                         };
                     }
                 }
