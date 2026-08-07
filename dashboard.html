@@ -423,8 +423,8 @@
         }
 
         .btn-org {
-            padding: 8px 14px;
-            font-size: 13px;
+            padding: 10px 20px;
+            font-size: 14px;
             font-weight: 600;
             border-radius: 8px;
             border: 1px solid #d2e3fc;
@@ -435,7 +435,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            white-space: nowrap;
         }
         .btn-org:hover {
             background-color: #1a73e8;
@@ -702,23 +701,7 @@
             align-items: center;
         }
 
-        .edit-row-iso {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .edit-row-calib {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input, .edit-row-company input, .edit-row-iso input, .edit-row-calib input {
+        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input, .edit-row-company input {
             padding: 8px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
@@ -880,10 +863,10 @@
             .footer-info { flex-direction: column; align-items: flex-start; gap: 10px; }
             .footer-info div:last-child { white-space: normal; }
             .modal-content { padding: 15px; }
-            .edit-row, .edit-row-insp, .edit-row-report, .edit-row-audit, .edit-row-sop, .edit-row-qa, .edit-row-company, .edit-row-iso, .edit-row-calib {
+            .edit-row, .edit-row-insp, .edit-row-report, .edit-row-audit, .edit-row-sop, .edit-row-qa, .edit-row-company {
                 display: flex; flex-direction: column; background: #f8fafc; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; position: relative;
             }
-            .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input, .edit-row-company input, .edit-row-iso input, .edit-row-calib input { width: 100%; }
+            .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input, .edit-row-company input { width: 100%; }
             .btn-delete-row { width: 100%; margin-top: 5px; }
             .btn-pdf-upload { width: 100%; padding: 8px; }
             .org-popover { width: 290px; }
@@ -1056,10 +1039,10 @@
                     </div>
                 </div>
 
-                <!-- KHỐI 4: THÔNG TIN VÀ NHÂN SỰ (ĐÃ THÊM 2 NÚT ISO 9001 & HIỆU CHUẨN) -->
+                <!-- KHỐI 4: THÔNG TIN VÀ NHÂN SỰ -->
                 <div class="card-box" style="margin-bottom: 20px;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 12px;">
                         
                         <!-- Nút 1: Công ty Hai Vina -->
                         <div class="org-btn-wrapper">
@@ -1109,56 +1092,6 @@
                                             <td>-</td>
                                             <td>-</td>
                                             <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
-                            </div>
-                        </div>
-
-                        <!-- Nút 3: ISO 9001 (MỚI THÊM) -->
-                        <div class="org-btn-wrapper">
-                            <button class="btn-org" onclick="openOrgChart('iso')">ISO 9001</button>
-                            <div class="org-popover">
-                                <h4>📜 Thông tin Chứng nhận ISO 9001</h4>
-                                <table class="org-table" style="margin-top: 0;">
-                                    <thead>
-                                        <tr>
-                                            <th>Phiên bản</th>
-                                            <th>Tổ chức đánh giá</th>
-                                            <th>Trạng thái</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="isoPopoverBody">
-                                        <tr>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
-                            </div>
-                        </div>
-
-                        <!-- Nút 4: Hiệu chuẩn (MỚI THÊM) -->
-                        <div class="org-btn-wrapper">
-                            <button class="btn-org" onclick="openOrgChart('calibration')">Hiệu chuẩn</button>
-                            <div class="org-popover">
-                                <h4>⚙️ Quản lý Thiết bị & Hiệu chuẩn</h4>
-                                <table class="org-table" style="margin-top: 0;">
-                                    <thead>
-                                        <tr>
-                                            <th>Tổng thiết bị</th>
-                                            <th>Đã hiệu chuẩn</th>
-                                            <th>Định kỳ kế tiếp</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="calibPopoverBody">
-                                        <tr>
                                             <td>-</td>
                                             <td>-</td>
                                             <td>-</td>
@@ -1357,36 +1290,6 @@
         </div>
     </div>
 
-    <!-- MODAL SỬA DỮ LIỆU ISO 9001 (MỚI THÊM) -->
-    <div class="modal-overlay" id="isoEditModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>✏️ Cập Nhật Thông Tin ISO 9001</h3>
-                <button class="close-btn" onclick="closeIsoEditModal()">&times;</button>
-            </div>
-            <div id="modalIsoContainer"></div>
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeIsoEditModal()">Hủy</button>
-                <button class="btn-save" id="btnSaveIso" onclick="saveIsoData()">Lưu thay đổi</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL SỬA DỮ LIỆU HIỆU CHUẨN (MỚI THÊM) -->
-    <div class="modal-overlay" id="calibEditModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>✏️ Cập Nhật Thông Tin Hiệu Chuẩn</h3>
-                <button class="close-btn" onclick="closeCalibEditModal()">&times;</button>
-            </div>
-            <div id="modalCalibContainer"></div>
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeCalibEditModal()">Hủy</button>
-                <button class="btn-save" id="btnSaveCalib" onclick="saveCalibData()">Lưu thay đổi</button>
-            </div>
-        </div>
-    </div>
-
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
@@ -1552,58 +1455,6 @@
                     <button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openQaEditModal();">✏️ Cập nhật số lượng</button>
                     <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
                 `;
-            } else if (type === 'iso') {
-                titleEl.innerText = "📜 Thông tin Chứng nhận ISO 9001";
-                const iso = globalData.isoData || defaultIsoData;
-                bodyEl.innerHTML = `
-                    <table class="org-table">
-                        <thead>
-                            <tr>
-                                <th>Phiên bản</th>
-                                <th>Tổ chức đánh giá</th>
-                                <th>Trạng thái</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>${escapeHtml(iso.version)}</td>
-                                <td>${escapeHtml(iso.auditor)}</td>
-                                <td>${escapeHtml(iso.status)}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
-                `;
-                footerEl.innerHTML = `
-                    <button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openIsoEditModal();">✏️ Cập nhật thông tin</button>
-                    <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
-                `;
-            } else if (type === 'calibration') {
-                titleEl.innerText = "⚙️ Quản lý Thiết bị & Hiệu chuẩn";
-                const calib = globalData.calibData || defaultCalibData;
-                bodyEl.innerHTML = `
-                    <table class="org-table">
-                        <thead>
-                            <tr>
-                                <th>Tổng thiết bị</th>
-                                <th>Đã hiệu chuẩn</th>
-                                <th>Định kỳ kế tiếp</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>${escapeHtml(calib.total_devices)}</td>
-                                <td>${escapeHtml(calib.calibrated)}</td>
-                                <td>${escapeHtml(calib.next_date)}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
-                `;
-                footerEl.innerHTML = `
-                    <button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openCalibEditModal();">✏️ Cập nhật thông tin</button>
-                    <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
-                `;
             }
 
             document.getElementById('orgChartModal').style.display = 'flex';
@@ -1705,84 +1556,6 @@
             saveToGoogleSheet('qa_headcount', dataToSave, closeQaEditModal, 'btnSaveQa');
         }
 
-        /* HÀM CHỈNH SỬA & LƯU CHO ISO 9001 (MỚI THÊM) */
-        function openIsoEditModal() {
-            const container = document.getElementById('modalIsoContainer');
-            const iso = globalData.isoData || defaultIsoData;
-            container.innerHTML = `
-                <div class="edit-row-iso">
-                    <div><label style="font-size:12px;font-weight:600;">Phiên bản ISO</label><input type="text" id="iso_version" value="${escapeHtml(iso.version)}"></div>
-                    <div><label style="font-size:12px;font-weight:600;">Tổ chức đánh giá</label><input type="text" id="iso_auditor" value="${escapeHtml(iso.auditor)}"></div>
-                    <div><label style="font-size:12px;font-weight:600;">Trạng thái</label><input type="text" id="iso_status" value="${escapeHtml(iso.status)}"></div>
-                </div>
-            `;
-            document.getElementById('isoEditModal').style.display = 'flex';
-        }
-
-        function closeIsoEditModal() {
-            document.getElementById('isoEditModal').style.display = 'none';
-        }
-
-        function saveIsoData() {
-            const versionVal = document.getElementById('iso_version').value.trim() || 'ISO 9001:2015';
-            const auditorVal = document.getElementById('iso_auditor').value.trim() || 'QUACERT';
-            const statusVal = document.getElementById('iso_status').value.trim() || 'Đang hiệu lực';
-
-            globalData.isoData = {
-                version: versionVal,
-                auditor: auditorVal,
-                status: statusVal
-            };
-            renderIsoData(globalData.isoData);
-
-            const dataToSave = [{
-                "Phiên bản": versionVal,
-                "Tổ chức đánh giá": auditorVal,
-                "Trạng thái": statusVal
-            }];
-
-            saveToGoogleSheet('iso_data', dataToSave, closeIsoEditModal, 'btnSaveIso');
-        }
-
-        /* HÀM CHỈNH SỬA & LƯU CHO HIỆU CHUẨN (MỚI THÊM) */
-        function openCalibEditModal() {
-            const container = document.getElementById('modalCalibContainer');
-            const calib = globalData.calibData || defaultCalibData;
-            container.innerHTML = `
-                <div class="edit-row-calib">
-                    <div><label style="font-size:12px;font-weight:600;">Tổng thiết bị</label><input type="text" id="calib_total" value="${escapeHtml(calib.total_devices)}"></div>
-                    <div><label style="font-size:12px;font-weight:600;">Đã hiệu chuẩn</label><input type="text" id="calib_done" value="${escapeHtml(calib.calibrated)}"></div>
-                    <div><label style="font-size:12px;font-weight:600;">Định kỳ kế tiếp</label><input type="text" id="calib_next" value="${escapeHtml(calib.next_date)}"></div>
-                </div>
-            `;
-            document.getElementById('calibEditModal').style.display = 'flex';
-        }
-
-        function closeCalibEditModal() {
-            document.getElementById('calibEditModal').style.display = 'none';
-        }
-
-        function saveCalibData() {
-            const totalVal = document.getElementById('calib_total').value.trim() || '0';
-            const doneVal = document.getElementById('calib_done').value.trim() || '0';
-            const nextVal = document.getElementById('calib_next').value.trim() || '-';
-
-            globalData.calibData = {
-                total_devices: totalVal,
-                calibrated: doneVal,
-                next_date: nextVal
-            };
-            renderCalibData(globalData.calibData);
-
-            const dataToSave = [{
-                "Tổng thiết bị": totalVal,
-                "Đã hiệu chuẩn": doneVal,
-                "Định kỳ kế tiếp": nextVal
-            }];
-
-            saveToGoogleSheet('calib_data', dataToSave, closeCalibEditModal, 'btnSaveCalib');
-        }
-
         function formatDate(dateString) {
             if (!dateString) return '';
             const d = new Date(dateString);
@@ -1853,8 +1626,6 @@
                 renderAudit(globalData.audit);
                 renderQaTeam(globalData.qaTeam);
                 renderCompanyTeam(globalData.companyTeam);
-                renderIsoData(globalData.isoData);
-                renderCalibData(globalData.calibData);
 
                 await fetch(API_URL, {
                     method: 'POST',
@@ -1900,8 +1671,6 @@
         const defaultAudit = [];
         const defaultQaTeam = { total: "0", leader: "0", officer: "0", inline: "0", prefinal: "0", giacong: "0" };
         const defaultCompanyTeam = { office: "0", worker: "0", qc: "0", korean: "0" };
-        const defaultIsoData = { version: "ISO 9001:2015", auditor: "QUACERT", status: "Đang hiệu lực" };
-        const defaultCalibData = { total_devices: "0", calibrated: "0", next_date: "-" };
 
         let globalData = {
             reports: defaultReports,
@@ -1910,9 +1679,7 @@
             insp: defaultInsp,
             audit: defaultAudit,
             qaTeam: defaultQaTeam,
-            companyTeam: defaultCompanyTeam,
-            isoData: defaultIsoData,
-            calibData: defaultCalibData
+            companyTeam: defaultCompanyTeam
         };
 
         function renderCompanyTeam(company) {
@@ -1941,32 +1708,6 @@
                     <td>${escapeHtml(data.inline || '0')}</td>
                     <td>${escapeHtml(data.prefinal || '0')}</td>
                     <td>${escapeHtml(data.giacong || '0')}</td>
-                </tr>
-            `;
-        }
-
-        function renderIsoData(iso) {
-            const container = document.getElementById('isoPopoverBody');
-            if (!container) return;
-            const data = iso || defaultIsoData;
-            container.innerHTML = `
-                <tr>
-                    <td>${escapeHtml(data.version || 'ISO 9001:2015')}</td>
-                    <td>${escapeHtml(data.auditor || 'QUACERT')}</td>
-                    <td>${escapeHtml(data.status || 'Đang hiệu lực')}</td>
-                </tr>
-            `;
-        }
-
-        function renderCalibData(calib) {
-            const container = document.getElementById('calibPopoverBody');
-            if (!container) return;
-            const data = calib || defaultCalibData;
-            container.innerHTML = `
-                <tr>
-                    <td>${escapeHtml(data.total_devices || '0')}</td>
-                    <td>${escapeHtml(data.calibrated || '0')}</td>
-                    <td>${escapeHtml(data.next_date || '-')}</td>
                 </tr>
             `;
         }
@@ -2015,30 +1756,6 @@
                     }
                 }
 
-                const rawIsoData = data.iso_data || data.isoData;
-                if (rawIsoData) {
-                    const rawIso = Array.isArray(rawIsoData) ? rawIsoData[0] : rawIsoData;
-                    if (rawIso) {
-                        globalData.isoData = {
-                            version: rawIso["Phiên bản"] || rawIso.version || 'ISO 9001:2015',
-                            auditor: rawIso["Tổ chức đánh giá"] || rawIso.auditor || 'QUACERT',
-                            status: rawIso["Trạng thái"] || rawIso.status || 'Đang hiệu lực'
-                        };
-                    }
-                }
-
-                const rawCalibData = data.calib_data || data.calibData;
-                if (rawCalibData) {
-                    const rawCalib = Array.isArray(rawCalibData) ? rawCalibData[0] : rawCalibData;
-                    if (rawCalib) {
-                        globalData.calibData = {
-                            total_devices: rawCalib["Tổng thiết bị"] || rawCalib.total_devices || '0',
-                            calibrated: rawCalib["Đã hiệu chuẩn"] || rawCalib.calibrated || '0',
-                            next_date: rawCalib["Định kỳ kế tiếp"] || rawCalib.next_date || '-'
-                        };
-                    }
-                }
-
                 renderReports(globalData.reports);
                 renderSop(globalData.sop);
                 renderProc(globalData.proc);
@@ -2046,8 +1763,6 @@
                 renderAudit(globalData.audit);
                 renderCompanyTeam(globalData.companyTeam);
                 renderQaTeam(globalData.qaTeam);
-                renderIsoData(globalData.isoData);
-                renderCalibData(globalData.calibData);
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
             } finally {
@@ -2438,8 +2153,6 @@
             initWeatherAndDate();
             renderCompanyTeam(defaultCompanyTeam);
             renderQaTeam(defaultQaTeam);
-            renderIsoData(defaultIsoData);
-            renderCalibData(defaultCalibData);
             loadAllDataFromGoogleSheet();
         });
 
