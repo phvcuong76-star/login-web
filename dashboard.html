@@ -317,7 +317,6 @@
             font-size: 14px;
             color: #1a73e8;
         }
-        /* ------------------------------------------------------------- */
 
         .map-container {
             position: relative;
@@ -371,7 +370,6 @@
             background-color: #1557b0;
         }
 
-        /* KHU VỰC TIÊU CHUẨN NGÀNH MAY */
         .standards-container {
             display: flex;
             flex-wrap: wrap;
@@ -431,6 +429,36 @@
         .text-center { text-align: center; }
         .text-right { text-align: right; }
         .text-nowrap { white-space: nowrap; }
+
+        td {
+            padding: 8px 10px;
+            font-size: 13px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .report-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
+        }
+        .report-item:last-child {
+            border-bottom: none;
+        }
+        .report-title {
+            color: #1e293b;
+            font-weight: 500;
+        }
+        .report-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .report-link:hover {
+            text-decoration: underline;
+        }
 
         .modal-overlay {
             position: fixed;
@@ -755,7 +783,7 @@
                     </div>
                 </div>
 
-                <!-- KHỐI 4: THÔNG TIN VÀ NHÂN SỰ (Chứa cả 4 nút song song: Hai Vina, QA Team, ISO 9001, Hiệu chuẩn) -->
+                <!-- KHỐI 4: THÔNG TIN VÀ NHÂN SỰ -->
                 <div class="card-box" style="margin-bottom: 20px;">
                     <h3 class="card-box-title">👤 Thông tin và nhân sự</h3>
                     <div class="info-four-columns">
@@ -810,12 +838,12 @@
                             </div>
                         </div>
 
-                        <!-- Nút 3: ISO 9001 (Bấm vào mở ảnh/chứng nhận) -->
+                        <!-- Nút 3: ISO 9001 -->
                         <div class="info-col-item">
                             <a href="ISO9001_certificate.jpg" target="_blank" class="btn-org">ISO 9001</a>
                         </div>
 
-                        <!-- Nút 4: Hiệu Chuẩn (Bấm vào mở thông tin hiệu chuẩn) -->
+                        <!-- Nút 4: Hiệu Chuẩn -->
                         <div class="info-col-item">
                             <a href="hieu_chuan_info.html" target="_blank" class="btn-org">Hiệu Chuẩn</a>
                         </div>
@@ -914,6 +942,51 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
         const DETAIL_SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421";
 
+        /* DỮ LIỆU MẶC ĐỊNH */
+        const defaultReports = [
+            { title: "Báo cáo chất lượng hàng tuần", link: "#" },
+            { title: "Báo cáo lỗi kiểm hàng tháng", link: "#" }
+        ];
+
+        const defaultProcData = [
+            { name: "Quy trình bộ phận Kho", type: "Tài liệu nội bộ", link: "#" },
+            { name: "Quy trình bộ phận Cắt", type: "Tài liệu nội bộ", link: "#" },
+            { name: "Quy trình bộ phận Đặc thù", type: "Tài liệu nội bộ", link: "#" },
+            { name: "Quy trình bộ phận Chuẩn bị", type: "Tài liệu nội bộ", link: "#" },
+            { name: "Quy trình Chuyền may", type: "Tài liệu nội bộ", link: "#" },
+            { name: "Quy trình Hoàn thành", type: "Tài liệu nội bộ", link: "#" },
+            { name: "Quy trình Đối ứng kỹ thuật", type: "Tài liệu nội bộ", link: "#" }
+        ];
+
+        const defaultInspData = [
+            { name: "Tài liệu Home Depot (MW) audit", date: "", link: "#" },
+            { name: "Tài liệu DAKINE audit", date: "", link: "" },
+            { name: "Tài liệu RCS audit", date: "29/04/2026", link: "" },
+            { name: "Tài liệu UNIQLO audit", date: "", link: "" },
+            { name: "Tài liệu ISO audit", date: "14/08/2026", link: "#" }
+        ];
+
+        const defaultAuditData = [
+            { customer: "Home Depot", date: "15/08/2026", type: "Audit", factory: "NM1", link: "#" }
+        ];
+
+        const defaultSopData = [
+            { date: "10/08/2026", content: "Đánh giá SOP Xưởng May", link: "#" }
+        ];
+
+        const defaultQaTeam = { total: "0", leader: "0", officer: "0", inline: "0", prefinal: "0", giacong: "0" };
+        const defaultCompanyTeam = { office: "0", worker: "0", qc: "0", korean: "0" };
+
+        let globalData = {
+            reports: defaultReports,
+            procs: defaultProcData,
+            insps: defaultInspData,
+            audits: defaultAuditData,
+            sops: defaultSopData,
+            qaTeam: defaultQaTeam,
+            companyTeam: defaultCompanyTeam
+        };
+
         function handleLogout() {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('username');
@@ -976,6 +1049,103 @@
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
+        }
+
+        /* HÀM RENDER DỮ LIỆU CÁC BẢNG */
+        function renderReportList(data) {
+            const container = document.getElementById('reportListContainer');
+            if (!container) return;
+            const items = data || defaultReports;
+            container.innerHTML = items.map(item => `
+                <div class="report-item">
+                    <span class="report-title">📄 ${escapeHtml(item.title)}</span>
+                    ${item.link ? `<a href="${escapeHtml(item.link)}" target="_blank" class="report-link">Xem</a>` : '<span style="color:#ccc;">-</span>'}
+                </div>
+            `).join('');
+        }
+
+        function renderProcTable(data) {
+            const tbody = document.querySelector('#procTable tbody');
+            if (!tbody) return;
+            const items = data || defaultProcData;
+            tbody.innerHTML = items.map(item => `
+                <tr>
+                    <td>└ ${escapeHtml(item.name)}</td>
+                    <td style="color:#64748b; font-size:12px;">${escapeHtml(item.type || 'Tài liệu nội bộ')}</td>
+                    <td class="text-right">${item.link ? `<a href="${escapeHtml(item.link)}" target="_blank" class="report-link">Xem</a>` : '<span style="color:#ccc;">-</span>'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderInspTable(data) {
+            const tbody = document.querySelector('#inspTable tbody');
+            if (!tbody) return;
+            const items = data || defaultInspData;
+            tbody.innerHTML = items.map(item => `
+                <tr>
+                    <td>└ ${escapeHtml(item.name)}</td>
+                    <td style="color:#64748b; font-size:12px;">${item.date ? `Ngày đánh giá: ${escapeHtml(item.date)}` : ''}</td>
+                    <td class="text-right">${item.link ? `<a href="${escapeHtml(item.link)}" target="_blank" class="report-link">Xem</a>` : '<span style="color:#ccc;">-</span>'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderAuditTable(data) {
+            const tbody = document.querySelector('#auditTable tbody');
+            if (!tbody) return;
+            const items = data || defaultAuditData;
+            tbody.innerHTML = items.map(item => `
+                <tr>
+                    <td>${escapeHtml(item.customer)}</td>
+                    <td>${escapeHtml(item.date)}</td>
+                    <td>${escapeHtml(item.type)}</td>
+                    <td class="text-center">${escapeHtml(item.factory)}</td>
+                    <td class="text-center">${item.link ? `<a href="${escapeHtml(item.link)}" target="_blank" class="report-link">Xem</a>` : '<span style="color:#ccc;">-</span>'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderSopTable(data) {
+            const tbody = document.querySelector('#sopTable tbody');
+            if (!tbody) return;
+            const items = data || defaultSopData;
+            tbody.innerHTML = items.map(item => `
+                <tr>
+                    <td>${escapeHtml(item.date)}</td>
+                    <td class="text-center">${escapeHtml(item.content)}</td>
+                    <td class="text-center">${item.link ? `<a href="${escapeHtml(item.link)}" target="_blank" class="report-link">Xem</a>` : '<span style="color:#ccc;">-</span>'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderCompanyTeam(company) {
+            const container = document.getElementById('companyPopoverBody');
+            if (!container) return;
+            const data = company || defaultCompanyTeam;
+            container.innerHTML = `
+                <tr>
+                    <td>${escapeHtml(data.office || '0')}</td>
+                    <td>${escapeHtml(data.worker || '0')}</td>
+                    <td>${escapeHtml(data.qc || '0')}</td>
+                    <td>${escapeHtml(data.korean || '0')}</td>
+                </tr>
+            `;
+        }
+
+        function renderQaTeam(qa) {
+            const container = document.getElementById('qaPopoverBody');
+            if (!container) return;
+            const data = qa || defaultQaTeam;
+            container.innerHTML = `
+                <tr>
+                    <td>${escapeHtml(data.total || '0')}</td>
+                    <td>${escapeHtml(data.leader || '0')}</td>
+                    <td>${escapeHtml(data.officer || '0')}</td>
+                    <td>${escapeHtml(data.inline || '0')}</td>
+                    <td>${escapeHtml(data.prefinal || '0')}</td>
+                    <td>${escapeHtml(data.giacong || '0')}</td>
+                </tr>
+            `;
         }
 
         function openOrgChart(type) {
@@ -1174,44 +1344,6 @@
             }
         }
 
-        const defaultQaTeam = { total: "0", leader: "0", officer: "0", inline: "0", prefinal: "0", giacong: "0" };
-        const defaultCompanyTeam = { office: "0", worker: "0", qc: "0", korean: "0" };
-
-        let globalData = {
-            qaTeam: defaultQaTeam,
-            companyTeam: defaultCompanyTeam
-        };
-
-        function renderCompanyTeam(company) {
-            const container = document.getElementById('companyPopoverBody');
-            if (!container) return;
-            const data = company || defaultCompanyTeam;
-            container.innerHTML = `
-                <tr>
-                    <td>${escapeHtml(data.office || '0')}</td>
-                    <td>${escapeHtml(data.worker || '0')}</td>
-                    <td>${escapeHtml(data.qc || '0')}</td>
-                    <td>${escapeHtml(data.korean || '0')}</td>
-                </tr>
-            `;
-        }
-
-        function renderQaTeam(qa) {
-            const container = document.getElementById('qaPopoverBody');
-            if (!container) return;
-            const data = qa || defaultQaTeam;
-            container.innerHTML = `
-                <tr>
-                    <td>${escapeHtml(data.total || '0')}</td>
-                    <td>${escapeHtml(data.leader || '0')}</td>
-                    <td>${escapeHtml(data.officer || '0')}</td>
-                    <td>${escapeHtml(data.inline || '0')}</td>
-                    <td>${escapeHtml(data.prefinal || '0')}</td>
-                    <td>${escapeHtml(data.giacong || '0')}</td>
-                </tr>
-            `;
-        }
-
         async function loadAllDataFromGoogleSheet() {
             if (!API_URL) return;
 
@@ -1221,6 +1353,12 @@
             try {
                 const response = await fetch(API_URL);
                 const data = await response.json();
+
+                if (data.reports) globalData.reports = data.reports;
+                if (data.procs) globalData.procs = data.procs;
+                if (data.insps) globalData.insps = data.insps;
+                if (data.audits) globalData.audits = data.audits;
+                if (data.sops) globalData.sops = data.sops;
 
                 const rawCompanyData = data.company_headcount || data.companyTeam;
                 if (rawCompanyData) {
@@ -1250,11 +1388,25 @@
                     }
                 }
 
+                // Render tất cả các danh sách và bảng ra giao diện
+                renderReportList(globalData.reports);
+                renderProcTable(globalData.procs);
+                renderInspTable(globalData.insps);
+                renderAuditTable(globalData.audits);
+                renderSopTable(globalData.sops);
                 renderCompanyTeam(globalData.companyTeam);
                 renderQaTeam(globalData.qaTeam);
 
             } catch (err) {
                 console.error("Lỗi khi tải dữ liệu từ API:", err);
+                // Fallback render nếu lỗi
+                renderReportList(defaultReports);
+                renderProcTable(defaultProcData);
+                renderInspTable(defaultInspData);
+                renderAuditTable(defaultAuditData);
+                renderSopTable(defaultSopData);
+                renderCompanyTeam(defaultCompanyTeam);
+                renderQaTeam(defaultQaTeam);
             } finally {
                 if (notice) notice.style.display = 'none';
             }
