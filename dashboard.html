@@ -226,24 +226,6 @@
             font-size: 18px;
         }
 
-        /* KHUNG THÔNG TIN NHÂN SỰ CHIA SONG SONG 2 THẺ */
-        .info-cards-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .info-card {
-            flex: 1;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
         .map-container {
             position: relative;
             width: 100%;
@@ -453,8 +435,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            width: 100%;
-            justify-content: center;
         }
         .btn-org:hover {
             background-color: #1a73e8;
@@ -481,8 +461,7 @@
 
         .org-btn-wrapper {
             position: relative;
-            display: block;
-            width: 100%;
+            display: inline-block;
         }
 
         .org-popover {
@@ -878,7 +857,6 @@
             .main-title-box { margin: 0 auto 15px auto; padding: 12px 20px; border-radius: 30px; }
             .main-title-box h2 { font-size: 15px; letter-spacing: 0.5px; }
             .dashboard-grid { grid-template-columns: 1fr; }
-            .info-cards-row { flex-direction: column; gap: 15px; }
             .card-box { padding: 15px; margin-bottom: 15px; border-radius: 12px; }
             .card-box h3 { font-size: 16px !important; margin-bottom: 12px !important; }
             .link-card { font-size: 13px; padding: 10px 12px; }
@@ -1061,11 +1039,12 @@
                     </div>
                 </div>
 
-                <!-- KHỐI 4: THÔNG TIN VÀ NHÂN SỰ (Đã tách thành 2 ô card song song) -->
-                <div class="info-cards-row">
-                    <!-- Thẻ 1: Công ty Hai Vina -->
-                    <div class="info-card">
-                        <h3 style="margin-top: 0; margin-bottom: 15px; color: #333; font-size: 16px;">🏢 Công ty Hai Vina</h3>
+                <!-- KHỐI 4: THÔNG TIN VÀ NHÂN SỰ -->
+                <div class="card-box" style="margin-bottom: 20px;">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
+                    <div style="display: flex; gap: 12px;">
+                        
+                        <!-- Nút 1: Công ty Hai Vina -->
                         <div class="org-btn-wrapper">
                             <button class="btn-org" onclick="openOrgChart('company')">Hai Vina</button>
                             <div class="org-popover">
@@ -1091,11 +1070,8 @@
                                 <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Thẻ 2: QA Team -->
-                    <div class="info-card">
-                        <h3 style="margin-top: 0; margin-bottom: 15px; color: #333; font-size: 16px;">👥 QA Team</h3>
+                        <!-- Nút 2: QA Team -->
                         <div class="org-btn-wrapper">
                             <button class="btn-org" onclick="openOrgChart('qa')">QA Team</button>
                             <div class="org-popover">
@@ -1125,54 +1101,55 @@
                                 <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
-                <!-- KHỐI 5: KHÁCH HÀNG TIÊU BIỂU -->
-                <div class="card-box" style="margin-bottom: 0;">
-                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">🏅 Khách hàng tiêu biểu</h3>
-                    <div class="standards-container">
-                        <!-- STRAUSS -->
-                        <a href="https://www.strauss.com/" target="_blank" class="standard-item" title="STRAUSS">
-                            <img src="https://lh3.googleusercontent.com/d/1hEWtTiGLY3FjfT_JfGCbMJ3Wi7uOPxfC" alt="STRAUSS">
-                        </a>
+               <!-- KHỐI 5: KHÁCH HÀNG TIÊU BIỂU -->
+<div class="card-box" style="margin-bottom: 0;">
+    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">🏅 Khách hàng tiêu biểu</h3>
+    <div class="standards-container">
+        <!-- STRAUSS -->
+        <a href="https://www.strauss.com/" target="_blank" class="standard-item" title="STRAUSS">
+            <img src="https://lh3.googleusercontent.com/d/1hEWtTiGLY3FjfT_JfGCbMJ3Wi7uOPxfC" alt="STRAUSS">
+        </a>
 
-                        <!-- ALPINESTARS S.P.A -->
-                        <a href="https://www.alpinestars.com/" target="_blank" class="standard-item" title="ALPINESTARS S.P.A">
-                            <img src="https://lh3.googleusercontent.com/d/1DFOvoR5QlTu8Dzcs5eoKAsWAZJliPdHL" alt="ALPINESTARS S.P.A">
-                        </a>
+        <!-- ALPINESTARS S.P.A -->
+        <a href="https://www.alpinestars.com/" target="_blank" class="standard-item" title="ALPINESTARS S.P.A">
+            <img src="https://lh3.googleusercontent.com/d/1DFOvoR5QlTu8Dzcs5eoKAsWAZJliPdHL" alt="ALPINESTARS S.P.A">
+        </a>
 
-                        <!-- FOX HEAD, INC. -->
-                        <a href="https://www.foxracing.com/" target="_blank" class="standard-item" title="FOX HEAD, INC.">
-                            <img src="https://lh3.googleusercontent.com/d/1j7HVwReS9fw7KuneQbYIDbVOodW2Kq3f" alt="FOX HEAD, INC.">
-                        </a>
+        <!-- FOX HEAD, INC. -->
+        <a href="https://www.foxracing.com/" target="_blank" class="standard-item" title="FOX HEAD, INC.">
+            <img src="https://lh3.googleusercontent.com/d/1j7HVwReS9fw7KuneQbYIDbVOodW2Kq3f" alt="FOX HEAD, INC.">
+        </a>
 
-                        <!-- MECHANIX WEAR -->
-                        <a href="https://www.mechanix.com/" target="_blank" class="standard-item" title="MECHANIX WEAR">
-                            <img src="https://lh3.googleusercontent.com/d/1V7EWtqW0nq5YuVkZSiklEAm2rImMFdBR" alt="MECHANIX WEAR">
-                        </a>
+        <!-- MECHANIX WEAR -->
+        <a href="https://www.mechanix.com/" target="_blank" class="standard-item" title="MECHANIX WEAR">
+            <img src="https://lh3.googleusercontent.com/d/1V7EWtqW0nq5YuVkZSiklEAm2rImMFdBR" alt="MECHANIX WEAR">
+        </a>
 
-                        <!-- CASTELLI -->
-                        <a href="https://www.castelli-cycling.com/US/en/" target="_blank" class="standard-item" title="CASTELLI">
-                            <img src="https://lh3.googleusercontent.com/d/1wCApL05bUUdHbBGQlBGJOz_WnGJ8DXY6" alt="CASTELLI">
-                        </a>
+        <!-- CASTELLI -->
+        <a href="https://www.castelli-cycling.com/US/en/" target="_blank" class="standard-item" title="CASTELLI">
+            <img src="https://lh3.googleusercontent.com/d/1wCApL05bUUdHbBGQlBGJOz_WnGJ8DXY6" alt="CASTELLI">
+        </a>
 
-                        <!-- GIRO -->
-                        <a href="https://www.giro.com/" target="_blank" class="standard-item" title="GIRO">
-                            <img src="https://lh3.googleusercontent.com/d/1PyDAdrXX-l7rY429Mbeb_A8V-szPMuSj" alt="GIRO">
-                        </a>
+        <!-- GIRO -->
+        <a href="https://www.giro.com/" target="_blank" class="standard-item" title="GIRO">
+            <img src="https://lh3.googleusercontent.com/d/1PyDAdrXX-l7rY429Mbeb_A8V-szPMuSj" alt="GIRO">
+        </a>
 
-                        <!-- HEXARMOR -->
-                        <a href="https://www.hexarmor.com/" target="_blank" class="standard-item" title="HEXARMOR">
-                            <img src="https://lh3.googleusercontent.com/d/1LDQMXD0PCoADtywPt-MEqYyokoni-tDP" alt="HEXARMOR">
-                        </a>
+        <!-- HEXARMOR -->
+        <a href="https://www.hexarmor.com/" target="_blank" class="standard-item" title="HEXARMOR">
+            <img src="https://lh3.googleusercontent.com/d/1LDQMXD0PCoADtywPt-MEqYyokoni-tDP" alt="HEXARMOR">
+        </a>
 
-                        <!-- SPECIALIZED -->
-                        <a href="https://www.specialized.com/us/en" target="_blank" class="standard-item" title="SPECIALIZED">
-                            <img src="https://lh3.googleusercontent.com/d/19ceRp4qgWyUpgOXHPPpWMZh-2UIJdbFX" alt="SPECIALIZED">
-                        </a>
-                    </div>
-                </div>
+        <!-- SPECIALIZED -->
+        <a href="https://www.specialized.com/us/en" target="_blank" class="standard-item" title="SPECIALIZED">
+            <img src="https://lh3.googleusercontent.com/d/19ceRp4qgWyUpgOXHPPpWMZh-2UIJdbFX" alt="SPECIALIZED">
+        </a>
+    </div>
+</div>
             </div>
         </div>
 
@@ -1779,20 +1756,426 @@
                     }
                 }
 
+                renderReports(globalData.reports);
+                renderSop(globalData.sop);
+                renderProc(globalData.proc);
+                renderInsp(globalData.insp);
+                renderAudit(globalData.audit);
                 renderCompanyTeam(globalData.companyTeam);
                 renderQaTeam(globalData.qaTeam);
-
-            } catch (err) {
-                console.error("Lỗi khi tải dữ liệu từ API:", err);
+            } catch (error) {
+                console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
             } finally {
                 if (notice) notice.style.display = 'none';
             }
         }
 
-        window.onload = function() {
+        function renderReports(data) {
+            const container = document.getElementById('reportListContainer');
+            container.innerHTML = '';
+            const normalReports = data.filter(item => !item.title.toLowerCase().includes('appsheet'));
+            const appsheetReports = data.filter(item => item.title.toLowerCase().includes('appsheet'));
+            const sortedData = [...normalReports, ...appsheetReports];
+
+            sortedData.forEach((item) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'report-card-wrapper';
+
+                const isAppSheet = item.title.toLowerCase().includes('appsheet');
+                const cardClass = isAppSheet ? 'link-card appsheet-link' : 'link-card sheet-link';
+                const authorText = item.author ? item.author : '';
+
+                wrapper.innerHTML = `
+                    <a href="${escapeHtml(item.link)}" target="_blank" class="${cardClass}">
+                        <div class="link-card-main" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
+                        ${authorText ? `<div class="link-card-sub">${escapeHtml(authorText)}</div>` : ''}
+                    </a>
+                    <div class="report-popover">
+                        <h5>📋 ${escapeHtml(item.title)}</h5>
+                        <p><strong>Người nhập/Phụ trách:</strong> ${escapeHtml(authorText) || 'Chưa cập nhật'}</p>
+                    </div>
+                `;
+                container.appendChild(wrapper);
+            });
+        }
+
+        function addReportModalRow(title = '', author = '', link = '') {
+            const container = document.getElementById('modalReportContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-report';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Tên Báo Cáo" value="${escapeHtml(title)}">
+                <input type="text" placeholder="Người nhập" value="${escapeHtml(author)}">
+                <input type="text" placeholder="Link (URL)" value="${escapeHtml(link)}">
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function openReportEditModal() {
+            const container = document.getElementById('modalReportContainer');
+            container.innerHTML = '';
+            const data = globalData.reports;
+            const normalReports = data.filter(item => !item.title.toLowerCase().includes('appsheet'));
+            const appsheetReports = data.filter(item => item.title.toLowerCase().includes('appsheet'));
+            const sortedData = [...normalReports, ...appsheetReports];
+
+            sortedData.forEach(item => addReportModalRow(item.title, item.author || '', item.link));
+            document.getElementById('reportModal').style.display = 'flex';
+        }
+
+        function closeReportEditModal() {
+            document.getElementById('reportModal').style.display = 'none';
+        }
+
+        function saveReportList() {
+            const container = document.getElementById('modalReportContainer');
+            const editRows = container.querySelectorAll('.edit-row-report');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const title = inputs[0].value.trim();
+                const author = inputs[1].value.trim();
+                const link = inputs[2].value.trim() || '#';
+                if (title) newData.push({ title, author, link });
+            });
+
+            globalData.reports = newData;
+            saveToGoogleSheet('reports', newData, closeReportEditModal, 'btnSaveReport');
+        }
+
+        function renderSop(data) {
+            const tbody = document.querySelector('#sopTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row-border';
+                const content = item.factory || item.content || '';
+                const linkCell = createViewLinkWithPopover(item.checklistLink, "📋 Checklist SOP", content);
+
+                tr.innerHTML = `
+                    <td class="cell-date">${escapeHtml(formatDate(item.date))}</td>
+                    <td class="cell-content text-left">${escapeHtml(content)}</td>
+                    <td class="cell-date text-center">${linkCell}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openSopEditModal() {
+            const container = document.getElementById('modalSopContainer');
+            container.innerHTML = '';
+            globalData.sop.forEach(item => addSopModalRow(formatDate(item.date), item.factory || item.content || '', item.checklistLink));
+            document.getElementById('sopModal').style.display = 'flex';
+        }
+
+        function closeSopEditModal() {
+            document.getElementById('sopModal').style.display = 'none';
+        }
+
+        function addSopModalRow(date = '', factory = '', checklistLink = '') {
+            const container = document.getElementById('modalSopContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-sop';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Ngày tháng" value="${escapeHtml(date)}">
+                <input type="text" placeholder="Nội dung" value="${escapeHtml(factory)}">
+                <input type="text" class="link-input" placeholder="Link hoặc PDF Checklist" value="${escapeHtml(checklistLink)}">
+                <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function saveSopTable() {
+            const container = document.getElementById('modalSopContainer');
+            const editRows = container.querySelectorAll('.edit-row-sop');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const date = inputs[0].value.trim();
+                const factory = inputs[1].value.trim();
+                const checklistLink = inputs[2].value.trim();
+
+                if (date || factory || checklistLink) {
+                    newData.push({ date, factory, checklistLink });
+                }
+            });
+
+            globalData.sop = newData;
+            saveToGoogleSheet('sop', newData, closeSopEditModal, 'btnSaveSop');
+        }
+
+        function renderProc(data) {
+            const tbody = document.querySelector('#procTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row-border';
+                const linkCell = createViewLinkWithPopover(item.link, `📖 ${item.name}`, item.note);
+
+                tr.innerHTML = `
+                    <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${escapeHtml(item.name)}</td>
+                    <td class="cell-note">${escapeHtml(item.note)}</td>
+                    <td class="cell-note text-center">${linkCell}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openProcEditModal() {
+            const container = document.getElementById('modalProcContainer');
+            container.innerHTML = '';
+            globalData.proc.forEach(item => addDocModalRow('modalProcContainer', item.name, item.note, item.link));
+            document.getElementById('procModal').style.display = 'flex';
+        }
+
+        function closeProcEditModal() {
+            document.getElementById('procModal').style.display = 'none';
+        }
+
+        function saveProcTable() {
+            const container = document.getElementById('modalProcContainer');
+            const editRows = container.querySelectorAll('.edit-row');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const name = inputs[0].value.trim();
+                const note = inputs[1].value.trim();
+                const link = inputs[2].value.trim() || '#';
+                if (name) newData.push({ name, note, link });
+            });
+
+            globalData.proc = newData;
+            saveToGoogleSheet('proc', newData, closeProcEditModal, 'btnSaveProc');
+        }
+
+        function renderInsp(data) {
+            const tbody = document.querySelector('#inspTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row-border';
+                const linkCell = createViewLinkWithPopover(item.link, `🔍 ${item.name}`, item.note);
+
+                tr.innerHTML = `
+                    <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${escapeHtml(item.name)}</td>
+                    <td class="cell-note">${escapeHtml(item.note)}</td>
+                    <td class="cell-note text-center">${linkCell}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function addInspModalRow(name = '', note = '', link = '') {
+            const container = document.getElementById('modalInspContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-insp';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Tên Hướng Dẫn" value="${escapeHtml(name)}">
+                <input type="text" placeholder="Ghi chú" value="${escapeHtml(note)}">
+                <input type="text" class="link-input" placeholder="Link hoặc chọn PDF" value="${escapeHtml(link)}">
+                <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 Tải PDF</button>
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function triggerFileInput(btn) {
+            const fileInput = btn.parentElement.querySelector('.pdf-file-input');
+            if (fileInput) fileInput.click();
+        }
+
+        function handlePdfUpload(fileInput) {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            if (file.type !== 'application/pdf') {
+                alert('Vui lòng chọn tệp định dạng .PDF!');
+                return;
+            }
+
+            const parentRow = fileInput.parentElement;
+            const linkInput = parentRow.querySelector('.link-input');
+            const btnUpload = parentRow.querySelector('.btn-pdf-upload');
+
+            const originalBtnText = btnUpload.innerText;
+            btnUpload.innerText = "⏳ Đang tải...";
+            btnUpload.disabled = true;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Data = e.target.result;
+
+                fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'uploadPdf',
+                        fileName: file.name,
+                        mimeType: file.type,
+                        fileData: base64Data
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        linkInput.value = data.fileUrl;
+                        alert('Tải file lên Google Drive thành công!');
+                    } else {
+                        alert('Lỗi upload: ' + data.message);
+                    }
+                })
+                .catch(err => {
+                    alert('Lỗi kết nối khi tải file lên Drive!');
+                    console.error(err);
+                })
+                .finally(() => {
+                    btnUpload.innerText = originalBtnText;
+                    btnUpload.disabled = false;
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function openInspEditModal() {
+            const container = document.getElementById('modalInspContainer');
+            container.innerHTML = '';
+            globalData.insp.forEach(item => addInspModalRow(item.name, item.note, item.link));
+            document.getElementById('inspModal').style.display = 'flex';
+        }
+
+        function closeInspEditModal() {
+            document.getElementById('inspModal').style.display = 'none';
+        }
+
+        function saveInspTable() {
+            const container = document.getElementById('modalInspContainer');
+            const editRows = container.querySelectorAll('.edit-row-insp');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const name = inputs[0].value.trim();
+                const note = inputs[1].value.trim();
+                const link = inputs[2].value.trim() || '#';
+                if (name) newData.push({ name, note, link });
+            });
+
+            globalData.insp = newData;
+            saveToGoogleSheet('insp', newData, closeInspEditModal, 'btnSaveInsp');
+        }
+
+        function renderAudit(data) {
+            const tbody = document.querySelector('#auditTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row-border';
+                
+                let typeColor = '#1a73e8';
+                if (item.type && item.type.toLowerCase().includes('audit')) typeColor = '#d93025';
+                if (item.type && item.type.toLowerCase().includes('pre')) typeColor = '#137333';
+
+                const info = `Khách hàng: ${item.customer} | Loại: ${item.type} | Nhà máy: ${item.factory}`;
+                const docCell = createViewLinkWithPopover(item.docLink, `📂 Tài liệu Audit/Kiểm hàng`, info);
+
+                tr.innerHTML = `
+                    <td class="cell-text-bold">${escapeHtml(item.customer)}</td>
+                    <td class="cell-date">${escapeHtml(formatDate(item.date))}</td>
+                    <td class="cell-date" style="color: ${typeColor}; font-weight: 600;">${escapeHtml(item.type)}</td>
+                    <td class="cell-text-bold text-center">${escapeHtml(item.factory)}</td>
+                    <td class="cell-date text-center">${docCell}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openEditModal() {
+            const container = document.getElementById('modalRowContainer');
+            container.innerHTML = '';
+            globalData.audit.forEach(item => addModalRow(item.customer, formatDate(item.date), item.type, item.factory, item.docLink));
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function addModalRow(customer = '', date = '', type = '', factory = '', docLink = '') {
+            const container = document.getElementById('modalRowContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-audit';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Khách hàng" value="${escapeHtml(customer)}">
+                <input type="text" placeholder="Ngày" value="${escapeHtml(date)}">
+                <input type="text" placeholder="Loại" value="${escapeHtml(type)}">
+                <input type="text" placeholder="Nhà máy" value="${escapeHtml(factory)}">
+                <input type="text" class="link-input" placeholder="Link hoặc upload PDF" value="${escapeHtml(docLink)}">
+                <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function saveAuditTable() {
+            const container = document.getElementById('modalRowContainer');
+            const editRows = container.querySelectorAll('.edit-row-audit');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const customer = inputs[0].value.trim();
+                const date = inputs[1].value.trim();
+                const type = inputs[2].value.trim();
+                const factory = inputs[3].value.trim();
+                const docLink = inputs[4].value.trim();
+
+                if (customer || date || type || factory || docLink) {
+                    newData.push({ customer, date, type, factory, docLink });
+                }
+            });
+
+            globalData.audit = newData;
+            saveToGoogleSheet('audit', newData, closeEditModal, 'btnSaveAudit');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
             initWeatherAndDate();
+            renderCompanyTeam(defaultCompanyTeam);
+            renderQaTeam(defaultQaTeam);
             loadAllDataFromGoogleSheet();
-        };
+        });
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'vi',
+                includedLanguages: 'en,ko,vi',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        function translatePage(langCode, btn) {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            var selectObj = document.querySelector('.goog-te-combo');
+            if (selectObj) {
+                selectObj.value = langCode;
+                selectObj.dispatchEvent(new Event('change'));
+            }
+        }
     </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
