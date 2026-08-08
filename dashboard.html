@@ -846,6 +846,27 @@
             font-weight: 600;
         }
 
+        /* STYLES CHO NÚT ĐẦU TRANG */
+        .btn-back-to-top {
+            background-color: #1a73e8;
+            color: #ffffff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            margin-bottom: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 1300px) {
             .side-banner { display: none; }
         }
@@ -1173,7 +1194,12 @@
                     <p style="margin: 0 0 5px 0;">Phòng Chất lượng - Công ty TNHH Hai Vina</p>
                     <p style="margin: 0;">Trụ sở chính: Thôn Lãng Xuyên, xã Gia Lộc, thành phố Hải Phòng, Việt Nam / Điện thoại: 02203717500</p>
                 </div>
-                <div>© 08-2026. Bản quyền thuộc QA team</div>
+                <div>
+                    <div style="text-align: right;">
+                        <button class="btn-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">⬆ Đầu trang</button>
+                    </div>
+                    © 08-2026. Bản quyền thuộc QA team
+                </div>
             </div>
         </div>
     </div>
