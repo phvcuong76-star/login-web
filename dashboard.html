@@ -550,7 +550,7 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Cấu hình khung chứa bảng có thể cuộn dọc */
+        /* Cấu hình khung chứa bảng có thể cuộn dọc (Lịch Kiểm Hàng & Audit) */
         .scrollable-table-wrapper {
             max-height: 400px;
             overflow-y: auto;
@@ -558,8 +558,17 @@
             border-radius: 6px;
         }
 
+        /* Cấu hình khung chứa bảng có thể cuộn dọc (Lịch đánh giá SOP) */
+        .sop-scrollable-table-wrapper {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+
         /* Giữ cố định tiêu đề bảng khi cuộn */
-        .scrollable-table-wrapper th {
+        .scrollable-table-wrapper th,
+        .sop-scrollable-table-wrapper th {
             position: sticky;
             top: 0;
             z-index: 10;
@@ -1051,20 +1060,22 @@
                     </div>
                 </div>
 
-                <!-- KHỐI 2: LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
+                <!-- KHỐI 2: LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC (ĐÃ THÊM WRAPPER CHIỀU CAO NHO HƠN) -->
                 <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
                     <h3 class="card-box-title">📋 Lịch Đánh Giá SOP & Công tác</h3>
                     <div class="table-responsive">
-                        <table id="sopTable">
-                            <thead>
-                                <tr class="table-header-row">
-                                    <th class="table-header-cell" style="border-radius: 6px 0 0 6px;">Ngày tháng</th>
-                                    <th class="table-header-cell text-center">Nội dung</th>
-                                    <th class="table-header-cell text-center" style="border-radius: 0 6px 6px 0;">Checklist</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                        <div class="sop-scrollable-table-wrapper">
+                            <table id="sopTable">
+                                <thead>
+                                    <tr class="table-header-row">
+                                        <th class="table-header-cell" style="border-radius: 6px 0 0 6px;">Ngày tháng</th>
+                                        <th class="table-header-cell text-center">Nội dung</th>
+                                        <th class="table-header-cell text-center" style="border-radius: 0 6px 6px 0;">Checklist</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="text-right">
                         <button class="btn-update" onclick="openSopEditModal()">Cập nhật</button>
