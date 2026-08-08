@@ -226,6 +226,26 @@
             font-size: 18px;
         }
 
+        /* LOGO VÀ TIÊU ĐỀ TRÊN CÙNG 1 HÀNG */
+        .footer-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .footer-header img {
+            height: 35px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .footer-header h3 {
+            margin: 0;
+            color: #333;
+            font-size: 18px;
+        }
+
         .map-container {
             position: relative;
             width: 100%;
@@ -1212,12 +1232,12 @@
             </div>
         </div>
 
+        <!-- KHỐI FOOTER THÔNG TIN -->
         <div class="card-box" style="margin-bottom: 0;">
-            <img src="QA APPROVED.png" alt="Logo" style="height: 30px; width: auto; object-fit: contain;">
-            <h3 style="margin-top: 0; margin-bottom: 15px; color: #333; font-size: 18px; display: flex; align-items: center; gap: 10px;">
-                
-                <span>Trang thông tin</span>
-            </h3>
+            <div class="footer-header">
+                <img src="QA APPROVED.png" alt="Logo">
+                <h3>Trang thông tin</h3>
+            </div>
             <div class="footer-info">
                 <div>
                     <p style="margin: 0 0 5px 0;">Phòng Chất lượng - Công ty TNHH Hai Vina</p>
