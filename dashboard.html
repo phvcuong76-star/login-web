@@ -33,25 +33,78 @@
             position: relative;
         }
 
-        /* BANNER HAI BÊN */
+        /* 💎 BANNER HAI BÊN - PHONG CÁCH MINIMALIST GLASSMORPHISM 💎 */
         .side-banner {
             position: fixed;
-            top: 40px;
-            width: 180px;
-            height: calc(100vh - 80px);
-            z-index: -1;
-            pointer-events: none;
+            top: 30px;
+            width: 190px;
+            height: calc(100vh - 60px);
+            z-index: 10;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
+        
+        .side-banner:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.65);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
+            border-color: rgba(255, 255, 255, 0.9);
+        }
+
         .banner-left { left: 15px; }
         .banner-right { right: 15px; }
+
+        .side-banner .img-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
 
         .side-banner img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            opacity: 0.85;
+            opacity: 0.9;
+            transition: transform 0.5s ease, opacity 0.3s ease;
+        }
+
+        .side-banner:hover img {
+            transform: scale(1.04);
+            opacity: 1;
+        }
+
+        /* NHÃN KÍNH MỜ TRÊN BANNER */
+        .banner-label {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85%;
+            padding: 6px 10px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #1e293b;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            pointer-events: none;
+            letter-spacing: 0.5px;
         }
 
         /* KHUNG NỘI DUNG CHÍNH */
@@ -84,16 +137,17 @@
             flex-wrap: wrap;
         }
 
-        /* WIDGET THỜI TIẾT & NGÀY THÁNG */
+        /* WIDGET THỜI TIẾT & NGÀY THÁNG - PHONG CÁCH KÍNH MỜ nhẹ */
         .weather-date-widget {
             display: flex;
             align-items: center;
             gap: 10px;
-            background-color: #ffffff;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
             padding: 6px 14px;
             border-radius: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            border: 1px solid rgba(226, 232, 240, 0.8);
             font-size: 13px;
         }
 
@@ -185,20 +239,23 @@
             width: 100%;
         }
 
+        /* 💎 TIÊU ĐỀ CHÍNH - MINIMALIST GLASSMORPHISM GRADIENT 💎 */
         .main-title-box {
             grid-column: 2;
-            background: linear-gradient(135deg, #1a73e8, #1557b0);
-            padding: 14px 28px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(29, 78, 216, 0.95));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 14px 32px;
             border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
-            border: 1px solid #185abc;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             text-align: center;
             transition: all 0.3s ease;
             white-space: nowrap;
         }
 
         .main-title-box:hover {
-            box-shadow: 0 6px 20px rgba(26, 115, 232, 0.45);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.5);
             transform: translateY(-2px);
         }
 
@@ -213,12 +270,14 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
         /* 📢 DÒNG CHỮ CHẠY (MARQUEE) LỊCH KIỂM HÀNG */
         .marquee-container {
             width: 100%;
-            background: #fffbe6;
+            background: rgba(255, 251, 230, 0.85);
+            backdrop-filter: blur(6px);
             border: 1px solid #ffe58f;
             border-radius: 25px;
             padding: 8px 15px;
@@ -1138,12 +1197,18 @@
 </head>
 <body>
 
-    <!-- BANNER HAI BÊN -->
+    <!-- 💎 BANNER HAI BÊN (GLASSMORPHISM STYLE) 💎 -->
     <div class="side-banner banner-left">
-        <img src="images nha may 2.jpg" alt="Nhà máy 2">
+        <div class="img-container">
+            <img src="images nha may 2.jpg" alt="Nhà máy 2">
+            <div class="banner-label">NHÀ MÁY 2</div>
+        </div>
     </div>
     <div class="side-banner banner-right">
-        <img src="images nha may 3.jpg" alt="Nhà máy 3">
+        <div class="img-container">
+            <img src="images nha may 3.jpg" alt="Nhà máy 3">
+            <div class="banner-label">NHÀ MÁY 3</div>
+        </div>
     </div>
 
     <!-- TOÀN BỘ NỘI DUNG CHÍNH -->
