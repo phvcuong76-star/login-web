@@ -185,10 +185,6 @@
             width: 100%;
         }
 
-        .header-left-space {
-            /* Giúp cân bằng grid để tiêu đề luôn nằm chính giữa */
-        }
-
         .main-title-box {
             grid-column: 2;
             background: linear-gradient(135deg, #1a73e8, #1557b0);
@@ -233,7 +229,7 @@
             position: relative;
             width: 100%;
             max-width: 280px;
-            margin-bottom: 8px;
+            margin-top: 6px;
             margin-left: auto;
         }
 
@@ -243,7 +239,7 @@
 
         #autoComplete, #autoCompleteFooter {
             width: 100% !important;
-            height: 38px !important;
+            height: 34px !important;
             padding: 0 15px !important;
             font-size: 13px !important;
             border-radius: 25px !important;
@@ -258,7 +254,7 @@
             box-shadow: 0 4px 15px rgba(26, 115, 232, 0.2) !important;
         }
 
-        /* POPUP GỢI Ý TÌM KIẾM CHO FOOTER (HIỂN THỊ NỔI LÊN TRÊN) */
+        /* POPUP GỢI Ý TÌM KIẾM CHO FOOTER */
         .footer-search-container ul {
             bottom: 100% !important;
             top: auto !important;
@@ -327,6 +323,15 @@
             margin-bottom: 20px;
         }
 
+        /* CHỈNH SỬA CARD-BOX TỐI ƯU CHIỀU CAO FOOTER */
+        .footer-card-box {
+            background: #ffffff;
+            padding: 12px 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            margin-bottom: 0;
+        }
+
         .card-box-title {
             margin-top: 0;
             margin-bottom: 20px;
@@ -334,16 +339,22 @@
             font-size: 18px;
         }
 
-        /* LOGO VÀ TIÊU ĐỀ TRÊN CÙNG 1 HÀNG */
+        /* FOOTER HEADER & TOP BAR CÙNG HÀNG */
+        .footer-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
         .footer-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 10px;
         }
 
         .footer-header img {
-            height: 35px;
+            height: 30px;
             width: auto;
             object-fit: contain;
         }
@@ -351,7 +362,7 @@
         .footer-header h3 {
             margin: 0;
             color: #333;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .map-container {
@@ -678,7 +689,6 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Cấu hình khung chứa bảng có thể cuộn dọc (Lịch Kiểm Hàng & Audit) */
         .scrollable-table-wrapper {
             max-height: 400px;
             overflow-y: auto;
@@ -686,7 +696,6 @@
             border-radius: 6px;
         }
 
-        /* Cấu hình khung chứa bảng có thể cuộn dọc (Lịch đánh giá SOP) */
         .sop-scrollable-table-wrapper {
             max-height: 300px;
             overflow-y: auto;
@@ -694,7 +703,6 @@
             border-radius: 6px;
         }
 
-        /* Giữ cố định tiêu đề bảng khi cuộn */
         .scrollable-table-wrapper th,
         .sop-scrollable-table-wrapper th {
             position: sticky;
@@ -977,7 +985,7 @@
         .footer-info {
             display: flex; 
             justify-content: space-between; 
-            align-items: flex-end; 
+            align-items: flex-start; 
             font-size: 12px; 
             font-weight: 500; 
             color: #94a3b8;
@@ -1004,13 +1012,12 @@
             background-color: #1a73e8;
             color: #ffffff;
             border: none;
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s, transform 0.2s;
-            margin-bottom: 10px;
             display: inline-flex;
             align-items: center;
             gap: 4px;
@@ -1030,7 +1037,6 @@
             .header-top-bar { justify-content: center; }
             .header-right-group { justify-content: center; width: 100%; }
             
-            /* Responsive cho phần tiêu đề & tìm kiếm trên thiết bị di động */
             .header-center-container {
                 display: flex;
                 flex-direction: column;
@@ -1054,8 +1060,9 @@
             .card-box { padding: 15px; margin-bottom: 15px; border-radius: 12px; }
             .card-box h3 { font-size: 16px !important; margin-bottom: 12px !important; }
             .link-card { font-size: 13px; padding: 10px 12px; }
+            .footer-top-row { flex-direction: column; align-items: flex-start; gap: 8px; }
             .footer-info { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .footer-info div:last-child { white-space: normal; width: 100%; }
+            .footer-info div:last-child { white-space: normal; width: 100%; text-align: left !important; }
             .modal-content { padding: 15px; }
             .edit-row, .edit-row-insp, .edit-row-report, .edit-row-audit, .edit-row-sop, .edit-row-qa, .edit-row-company {
                 display: flex; flex-direction: column; background: #f8fafc; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; position: relative;
@@ -1369,27 +1376,31 @@
             </div>
         </div>
 
-        <!-- KHỐI FOOTER THÔNG TIN -->
-        <div class="card-box" style="margin-bottom: 0;">
-            <div class="footer-header">
-                <img src="QA APPROVED.png" alt="Logo">
-                <h3>Trang thông tin</h3>
+        <!-- KHỐI FOOTER THÔNG TIN (ĐÃ TỐI ƯU CHIỀU CAO & ĐIỀU CHỈNH THỨ TỰ CÁC PHẦN TỬ) -->
+        <div class="footer-card-box">
+            <div class="footer-top-row">
+                <div class="footer-header">
+                    <img src="QA APPROVED.png" alt="Logo">
+                    <h3>Trang thông tin</h3>
+                </div>
+                <div>
+                    <button class="btn-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">⬆ Đầu trang</button>
+                </div>
             </div>
+
             <div class="footer-info">
                 <div>
-                    <p style="margin: 0 0 5px 0;">Phòng Chất lượng - Công ty TNHH Hai Vina</p>
+                    <p style="margin: 0 0 3px 0;">Phòng Chất lượng - Công ty TNHH Hai Vina</p>
                     <p style="margin: 0;">Trụ sở chính: Thôn Lãng Xuyên, xã Gia Lộc, thành phố Hải Phòng, Việt Nam / Điện thoại: 02203717500</p>
                 </div>
                 <div style="text-align: right;">
-                    <!-- 🔍 Ô TÌM KIẾM Ở FOOTER (ĐƯỢC THÊM TRÊN NÚT ĐẦU TRANG) -->
+                    <!-- 🔍 Ô TÌM KIẾM Ở FOOTER (BÊN DƯỚI NÚT ĐẦU TRANG) -->
                     <div class="footer-search-container">
                         <input id="autoCompleteFooter" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" capitalize="off">
                     </div>
-
-                    <div>
-                        <button class="btn-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">⬆ Đầu trang</button>
+                    <div style="margin-top: 4px;">
+                        © 08-2026. Bản quyền thuộc QA team
                     </div>
-                    © 08-2026. Bản quyền thuộc QA team
                 </div>
             </div>
         </div>
