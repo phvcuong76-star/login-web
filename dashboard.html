@@ -2390,8 +2390,8 @@
                 marqueeEl.innerHTML = "Tuần này hiện chưa có lịch kiểm hàng / audit phát sinh.";
             } else {
                 const marqueeItems = thisWeekAudits.map(item => {
-                    return `📅 <b>[${formatDate(item.date)}]</b> Khách hàng: <b>${escapeHtml(item.customer)}</b> | Loại: <b>${escapeHtml(item.type)}</b> | Nhà máy: <b>${escapeHtml(item.factory)}</b>`;
-                });
+                    return `📅 [${formatDate(item.date)}] ${escapeHtml(item.customer)}`;
+            });
                 marqueeEl.innerHTML = marqueeItems.join(' &nbsp;&nbsp;&nbsp; ─── &nbsp;&nbsp;&nbsp; ');
             }
         }
