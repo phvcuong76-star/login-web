@@ -84,79 +84,6 @@
             flex-wrap: wrap;
         }
 
-        /* 🔍 TÙY CHỈNH Ô TÌM KIẾM AUTOCOMPLETE */
-        .search-container {
-            position: relative;
-            margin: 0 auto 20px auto;
-            max-width: 580px;
-            width: 100%;
-            text-align: center;
-        }
-        .autoComplete_wrapper {
-            width: 100%;
-        }
-        #autoComplete {
-            width: 100% !important;
-            height: 45px !important;
-            padding: 0 20px !important;
-            font-size: 14px !important;
-            border-radius: 25px !important;
-            border: 1px solid #cbd5e1 !important;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
-            outline: none !important;
-            background-image: none !important;
-            transition: all 0.3s ease;
-        }
-        #autoComplete:focus {
-            border-color: #1a73e8 !important;
-            box-shadow: 0 4px 15px rgba(26, 115, 232, 0.2) !important;
-        }
-        #autoComplete_list {
-            position: absolute !important;
-            top: 100% !important;
-            left: 0 !important;
-            right: 0 !important;
-            z-index: 1000 !important;
-            margin-top: 5px !important;
-            padding: 0 !important;
-            border-radius: 12px !important;
-            background-color: #ffffff !important;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
-            border: 1px solid #e2e8f0 !important;
-            max-height: 280px !important;
-            overflow-y: auto !important;
-            list-style: none !important;
-        }
-        .autoComplete_result {
-            padding: 10px 15px !important;
-            border-bottom: 1px solid #f1f5f9 !important;
-            cursor: pointer !important;
-            display: flex !important;
-            justify-content: space-between !important;
-            align-items: center !important;
-            text-align: left !important;
-            font-size: 13px !important;
-        }
-        .autoComplete_result:last-child {
-            border-bottom: none !important;
-        }
-        .autoComplete_result:hover, .autoComplete_selected {
-            background-color: #f1f5f9 !important;
-        }
-        .search-item-title {
-            font-weight: 600;
-            color: #1e293b;
-        }
-        .search-item-category {
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            background-color: #e8f0fe;
-            color: #1a73e8;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
         /* WIDGET THỜI TIẾT & NGÀY THÁNG */
         .weather-date-widget {
             display: flex;
@@ -248,17 +175,30 @@
             border: 1px solid #c7d2fe;
         }
 
+        /* 📌 BỐ CỤC CĂN GIỮA TIÊU ĐỀ & Ô TÌM KIẾM SANG PHẢI */
+        .header-center-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        .header-left-space {
+            /* Giúp cân bằng grid để tiêu đề luôn nằm chính giữa */
+        }
+
         .main-title-box {
+            grid-column: 2;
             background: linear-gradient(135deg, #1a73e8, #1557b0);
-            max-width: 580px;
-            margin: 0 auto 25px auto;
-            padding: 16px 30px;
+            padding: 14px 28px;
             border-radius: 50px;
             box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
             border: 1px solid #185abc;
             text-align: center;
-            position: relative;
             transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
         .main-title-box:hover {
@@ -269,7 +209,7 @@
         .main-title-box h2 {
             color: #ffffff;
             margin: 0;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             letter-spacing: 0.8px;
             text-transform: uppercase;
@@ -277,6 +217,79 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+        }
+
+        /* 🔍 TÙY CHỈNH Ô TÌM KIẾM BÊN PHẢI */
+        .search-container {
+            grid-column: 3;
+            justify-self: end;
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+        }
+        .autoComplete_wrapper {
+            width: 100%;
+        }
+        #autoComplete {
+            width: 100% !important;
+            height: 40px !important;
+            padding: 0 15px !important;
+            font-size: 13px !important;
+            border-radius: 25px !important;
+            border: 1px solid #cbd5e1 !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+            outline: none !important;
+            background-image: none !important;
+            transition: all 0.3s ease;
+        }
+        #autoComplete:focus {
+            border-color: #1a73e8 !important;
+            box-shadow: 0 4px 15px rgba(26, 115, 232, 0.2) !important;
+        }
+        #autoComplete_list {
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+            right: 0 !important;
+            z-index: 1000 !important;
+            margin-top: 5px !important;
+            padding: 0 !important;
+            border-radius: 12px !important;
+            background-color: #ffffff !important;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+            border: 1px solid #e2e8f0 !important;
+            max-height: 280px !important;
+            overflow-y: auto !important;
+            list-style: none !important;
+        }
+        .autoComplete_result {
+            padding: 10px 15px !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            cursor: pointer !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            text-align: left !important;
+            font-size: 13px !important;
+        }
+        .autoComplete_result:last-child {
+            border-bottom: none !important;
+        }
+        .autoComplete_result:hover, .autoComplete_selected {
+            background-color: #f1f5f9 !important;
+        }
+        .search-item-title {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .search-item-category {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            font-weight: 600;
+            white-space: nowrap;
         }
 
         .dashboard-grid {
@@ -998,8 +1011,27 @@
             .company-logo { height: 50px; }
             .header-top-bar { justify-content: center; }
             .header-right-group { justify-content: center; width: 100%; }
-            .main-title-box { margin: 0 auto 15px auto; padding: 12px 20px; border-radius: 30px; }
+            
+            /* Responsive cho phần tiêu đề & tìm kiếm trên thiết bị di động */
+            .header-center-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+            .header-left-space { display: none; }
+            .main-title-box {
+                width: 100%;
+                max-width: 100%;
+                padding: 12px 20px;
+                border-radius: 30px;
+                white-space: normal;
+            }
             .main-title-box h2 { font-size: 15px; letter-spacing: 0.5px; }
+            .search-container {
+                max-width: 100%;
+            }
+
             .dashboard-grid { grid-template-columns: 1fr; }
             .card-box { padding: 15px; margin-bottom: 15px; border-radius: 12px; }
             .card-box h3 { font-size: 16px !important; margin-bottom: 12px !important; }
@@ -1079,13 +1111,18 @@
             ⏳ Đang tải dữ liệu, xin chờ một lát...
         </div>
 
-        <div class="main-title-box">
-            <h2>TRANG THÔNG TIN PHÒNG CHẤT LƯỢNG</h2>
-        </div>
+        <!-- 🎯 KHỐI CHỨA TIÊU ĐỀ (CHÍNH GIỮA) & Ô TÌM KIẾM (BÊN PHẢI) -->
+        <div class="header-center-container">
+            <div class="header-left-space"></div>
+            
+            <div class="main-title-box">
+                <h2>TRANG THÔNG TIN PHÒNG CHẤT LƯỢNG</h2>
+            </div>
 
-        <!-- 🔍 Ô TÌM KIẾM THÔNG MINH AUTOCOMPLETE.JS -->
-        <div class="search-container">
-            <input id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" capitalize="off">
+            <!-- 🔍 Ô TÌM KIẾM THÔNG MINH AUTOCOMPLETE.JS NẰM PHÍA BÊN PHẢI -->
+            <div class="search-container">
+                <input id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" capitalize="off">
+            </div>
         </div>
 
         <div class="dashboard-grid">
@@ -2386,7 +2423,7 @@
         function initAutoComplete() {
             autoCompleteJS = new autoComplete({
                 selector: "#autoComplete",
-                placeHolder: "🔍 Tìm kiếm báo cáo, tài liệu, quy trình, lịch audit...",
+                placeHolder: "🔍 Tìm kiếm báo cáo, tài liệu...",
                 data: {
                     src: async () => {
                         return getAllSearchableData();
