@@ -171,17 +171,23 @@
             border: 1px solid #c7d2fe;
         }
 
+        /* THÊM TÍNH NĂNG TIÊU ĐỀ KÈM Ô TÌM KIẾM BÊN PHẢI */
         .main-title-box {
             background: linear-gradient(135deg, #1a73e8, #1557b0);
-            max-width: 580px;
+            max-width: 850px;
             margin: 0 auto 25px auto;
-            padding: 16px 30px;
+            padding: 12px 25px;
             border-radius: 50px;
             box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
             border: 1px solid #185abc;
             text-align: center;
             position: relative;
             transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .main-title-box:hover {
@@ -192,14 +198,65 @@
         .main-title-box h2 {
             color: #ffffff;
             margin: 0;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             letter-spacing: 0.8px;
             text-transform: uppercase;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 10px;
+            flex: 1;
+            white-space: nowrap;
+        }
+
+        /* KHUNG TÌM KIẾM TÍCH HỢP */
+        .search-box-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 30px;
+            padding: 4px 12px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .search-box-container:focus-within {
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .search-box-container input {
+            border: none;
+            background: transparent;
+            outline: none;
+            color: #ffffff;
+            padding: 5px 8px;
+            font-size: 13px;
+            width: 180px;
+            transition: width 0.3s ease, color 0.3s ease;
+        }
+
+        .search-box-container:focus-within input {
+            color: #1e293b;
+            width: 220px;
+        }
+
+        .search-box-container input::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .search-box-container:focus-within input::placeholder {
+            color: #94a3b8;
+        }
+
+        .search-icon {
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .search-box-container:focus-within .search-icon {
+            color: #1a73e8;
         }
 
         .dashboard-grid {
@@ -921,8 +978,17 @@
             .company-logo { height: 50px; }
             .header-top-bar { justify-content: center; }
             .header-right-group { justify-content: center; width: 100%; }
-            .main-title-box { margin: 0 auto 15px auto; padding: 12px 20px; border-radius: 30px; }
-            .main-title-box h2 { font-size: 15px; letter-spacing: 0.5px; }
+            .main-title-box { 
+                margin: 0 auto 15px auto; 
+                padding: 12px 20px; 
+                border-radius: 25px; 
+                flex-direction: column;
+                gap: 10px;
+            }
+            .main-title-box h2 { font-size: 15px; letter-spacing: 0.5px; text-align: center; justify-content: center; }
+            .search-box-container { width: 100%; }
+            .search-box-container input { width: 100%; }
+            .search-box-container:focus-within input { width: 100%; }
             .dashboard-grid { grid-template-columns: 1fr; }
             .card-box { padding: 15px; margin-bottom: 15px; border-radius: 12px; }
             .card-box h3 { font-size: 16px !important; margin-bottom: 12px !important; }
@@ -1002,8 +1068,13 @@
             ⏳ Đang tải dữ liệu, xin chờ một lát...
         </div>
 
+        <!-- KHUNG TIÊU ĐỀ ĐÃ TÍCH HỢP Ô TÌM KIẾM BÊN PHẢI -->
         <div class="main-title-box">
             <h2>TRANG THÔNG TIN PHÒNG CHẤT LƯỢNG</h2>
+            <div class="search-box-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="globalSearchInput" placeholder="Tìm kiếm nội dung..." onkeyup="handleGlobalSearch()">
+            </div>
         </div>
 
         <div class="dashboard-grid">
@@ -1448,6 +1519,25 @@
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
+        }
+
+        /* HÀM LỌC TÌM KIẾM TOÀN TRANG */
+        function handleGlobalSearch() {
+            const keyword = document.getElementById('globalSearchInput').value.toLowerCase().trim();
+
+            // 1. Lọc Danh sách Báo cáo
+            const reportCards = document.querySelectorAll('#reportListContainer .report-card-wrapper');
+            reportCards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(keyword) ? '' : 'none';
+            });
+
+            // 2. Lọc các hàng trong Bảng
+            const tableRows = document.querySelectorAll('table tbody tr');
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(keyword) ? '' : 'none';
+            });
         }
 
         function createViewLinkWithPopover(url, previewTitle, previewInfo) {
