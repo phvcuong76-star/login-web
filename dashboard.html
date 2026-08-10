@@ -2388,7 +2388,7 @@
                 const marqueeItems = thisWeekAudits.map(item => {
                     return ` [${formatDate(item.date)}] ${escapeHtml(item.customer)}`;
             });
-                marqueeEl.innerHTML = marqueeItems.join(' &nbsp;&nbsp;&nbsp;        &nbsp;&nbsp;&nbsp; ');
+                marqueeEl.innerHTML = marqueeItems.join(' &nbsp;&nbsp;&nbsp;    |    &nbsp;&nbsp;&nbsp; ');
             }
         }
 
