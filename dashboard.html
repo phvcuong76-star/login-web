@@ -16,6 +16,10 @@
         })();
     </script>
 
+    <!-- 🔍 THƯ VIỆN AUTOCOMPLETE.JS (CDN CSS & JS) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.02.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -78,6 +82,79 @@
             align-items: center;
             gap: 12px;
             flex-wrap: wrap;
+        }
+
+        /* 🔍 TÙY CHỈNH Ô TÌM KIẾM AUTOCOMPLETE */
+        .search-container {
+            position: relative;
+            margin: 0 auto 20px auto;
+            max-width: 580px;
+            width: 100%;
+            text-align: center;
+        }
+        .autoComplete_wrapper {
+            width: 100%;
+        }
+        #autoComplete {
+            width: 100% !important;
+            height: 45px !important;
+            padding: 0 20px !important;
+            font-size: 14px !important;
+            border-radius: 25px !important;
+            border: 1px solid #cbd5e1 !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+            outline: none !important;
+            background-image: none !important;
+            transition: all 0.3s ease;
+        }
+        #autoComplete:focus {
+            border-color: #1a73e8 !important;
+            box-shadow: 0 4px 15px rgba(26, 115, 232, 0.2) !important;
+        }
+        #autoComplete_list {
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+            right: 0 !important;
+            z-index: 1000 !important;
+            margin-top: 5px !important;
+            padding: 0 !important;
+            border-radius: 12px !important;
+            background-color: #ffffff !important;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+            border: 1px solid #e2e8f0 !important;
+            max-height: 280px !important;
+            overflow-y: auto !important;
+            list-style: none !important;
+        }
+        .autoComplete_result {
+            padding: 10px 15px !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            cursor: pointer !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            text-align: left !important;
+            font-size: 13px !important;
+        }
+        .autoComplete_result:last-child {
+            border-bottom: none !important;
+        }
+        .autoComplete_result:hover, .autoComplete_selected {
+            background-color: #f1f5f9 !important;
+        }
+        .search-item-title {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .search-item-category {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            font-weight: 600;
+            white-space: nowrap;
         }
 
         /* WIDGET THỜI TIẾT & NGÀY THÁNG */
@@ -171,23 +248,17 @@
             border: 1px solid #c7d2fe;
         }
 
-        /* THÊM TÍNH NĂNG TIÊU ĐỀ KÈM Ô TÌM KIẾM BÊN PHẢI */
         .main-title-box {
             background: linear-gradient(135deg, #1a73e8, #1557b0);
-            max-width: 850px;
+            max-width: 580px;
             margin: 0 auto 25px auto;
-            padding: 12px 25px;
+            padding: 16px 30px;
             border-radius: 50px;
             box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
             border: 1px solid #185abc;
             text-align: center;
             position: relative;
             transition: all 0.3s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
         }
 
         .main-title-box:hover {
@@ -198,65 +269,14 @@
         .main-title-box h2 {
             color: #ffffff;
             margin: 0;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
             letter-spacing: 0.8px;
             text-transform: uppercase;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
-            flex: 1;
-            white-space: nowrap;
-        }
-
-        /* KHUNG TÌM KIẾM TÍCH HỢP */
-        .search-box-container {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 30px;
-            padding: 4px 12px;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-
-        .search-box-container:focus-within {
-            background: #ffffff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .search-box-container input {
-            border: none;
-            background: transparent;
-            outline: none;
-            color: #ffffff;
-            padding: 5px 8px;
-            font-size: 13px;
-            width: 180px;
-            transition: width 0.3s ease, color 0.3s ease;
-        }
-
-        .search-box-container:focus-within input {
-            color: #1e293b;
-            width: 220px;
-        }
-
-        .search-box-container input::placeholder {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .search-box-container:focus-within input::placeholder {
-            color: #94a3b8;
-        }
-
-        .search-icon {
-            color: #ffffff;
-            font-size: 14px;
-        }
-
-        .search-box-container:focus-within .search-icon {
-            color: #1a73e8;
         }
 
         .dashboard-grid {
@@ -978,17 +998,8 @@
             .company-logo { height: 50px; }
             .header-top-bar { justify-content: center; }
             .header-right-group { justify-content: center; width: 100%; }
-            .main-title-box { 
-                margin: 0 auto 15px auto; 
-                padding: 12px 20px; 
-                border-radius: 25px; 
-                flex-direction: column;
-                gap: 10px;
-            }
-            .main-title-box h2 { font-size: 15px; letter-spacing: 0.5px; text-align: center; justify-content: center; }
-            .search-box-container { width: 100%; }
-            .search-box-container input { width: 100%; }
-            .search-box-container:focus-within input { width: 100%; }
+            .main-title-box { margin: 0 auto 15px auto; padding: 12px 20px; border-radius: 30px; }
+            .main-title-box h2 { font-size: 15px; letter-spacing: 0.5px; }
             .dashboard-grid { grid-template-columns: 1fr; }
             .card-box { padding: 15px; margin-bottom: 15px; border-radius: 12px; }
             .card-box h3 { font-size: 16px !important; margin-bottom: 12px !important; }
@@ -1068,13 +1079,13 @@
             ⏳ Đang tải dữ liệu, xin chờ một lát...
         </div>
 
-        <!-- KHUNG TIÊU ĐỀ ĐÃ TÍCH HỢP Ô TÌM KIẾM BÊN PHẢI -->
         <div class="main-title-box">
             <h2>TRANG THÔNG TIN PHÒNG CHẤT LƯỢNG</h2>
-            <div class="search-box-container">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="globalSearchInput" placeholder="Tìm kiếm nội dung..." onkeyup="handleGlobalSearch()">
-            </div>
+        </div>
+
+        <!-- 🔍 Ô TÌM KIẾM THÔNG MINH AUTOCOMPLETE.JS -->
+        <div class="search-container">
+            <input id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" capitalize="off">
         </div>
 
         <div class="dashboard-grid">
@@ -1127,7 +1138,7 @@
 
             <!-- CỘT BÊN PHẢI -->
             <div>
-                <!-- KHỐI 1: LỊCH KIỂM HÀNG & AUDIT (ĐÃ THÊM WRAPPER KHÓA CHIỀU CAO & THANH TRƯỘT) -->
+                <!-- KHỐI 1: LỊCH KIỂM HÀNG & AUDIT -->
                 <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
                     <h3 class="card-box-title">📅 Lịch Kiểm Hàng & Audit</h3>
                     <div class="table-responsive">
@@ -1151,7 +1162,7 @@
                     </div>
                 </div>
 
-                <!-- KHỐI 2: LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC (ĐÃ THÊM WRAPPER CHIỀU CAO NHO HƠN) -->
+                <!-- KHỐI 2: LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
                 <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
                     <h3 class="card-box-title">📋 Lịch Đánh Giá SOP & Công tác</h3>
                     <div class="table-responsive">
@@ -1519,25 +1530,6 @@
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
-        }
-
-        /* HÀM LỌC TÌM KIẾM TOÀN TRANG */
-        function handleGlobalSearch() {
-            const keyword = document.getElementById('globalSearchInput').value.toLowerCase().trim();
-
-            // 1. Lọc Danh sách Báo cáo
-            const reportCards = document.querySelectorAll('#reportListContainer .report-card-wrapper');
-            reportCards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                card.style.display = text.includes(keyword) ? '' : 'none';
-            });
-
-            // 2. Lọc các hàng trong Bảng
-            const tableRows = document.querySelectorAll('table tbody tr');
-            tableRows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(keyword) ? '' : 'none';
-            });
         }
 
         function createViewLinkWithPopover(url, previewTitle, previewInfo) {
@@ -2327,10 +2319,120 @@
             saveToGoogleSheet('audit', newData, closeEditModal, 'btnSaveAudit');
         }
 
+        /* 🔍 CẤU HÌNH TỔNG HỢP DỮ LIỆU & KHỞI TẠO AUTOCOMPLETE.JS */
+        let autoCompleteJS = null;
+
+        function getAllSearchableData() {
+            const items = [];
+
+            // 1. Báo cáo
+            (globalData.reports || []).forEach(r => {
+                if (r.title) {
+                    items.push({
+                        title: r.title,
+                        category: "Báo cáo",
+                        link: r.link
+                    });
+                }
+            });
+
+            // 2. Quy trình công việc
+            (globalData.proc || []).forEach(p => {
+                if (p.name) {
+                    items.push({
+                        title: p.name,
+                        category: "Quy trình",
+                        link: p.link
+                    });
+                }
+            });
+
+            // 3. Tài liệu Audit / Đánh giá
+            (globalData.insp || []).forEach(i => {
+                if (i.name) {
+                    items.push({
+                        title: i.name,
+                        category: "Tài liệu Audit",
+                        link: i.link
+                    });
+                }
+            });
+
+            // 4. Lịch Kiểm Hàng & Audit
+            (globalData.audit || []).forEach(a => {
+                if (a.customer) {
+                    items.push({
+                        title: `${a.customer} - ${a.type || 'Audit'} (${a.factory || ''})`,
+                        category: "Lịch Audit",
+                        link: a.docLink
+                    });
+                }
+            });
+
+            // 5. Lịch SOP
+            (globalData.sop || []).forEach(s => {
+                if (s.factory || s.content) {
+                    items.push({
+                        title: `SOP: ${s.factory || s.content}`,
+                        category: "Lịch SOP",
+                        link: s.checklistLink
+                    });
+                }
+            });
+
+            return items;
+        }
+
+        function initAutoComplete() {
+            autoCompleteJS = new autoComplete({
+                selector: "#autoComplete",
+                placeHolder: "🔍 Tìm kiếm báo cáo, tài liệu, quy trình, lịch audit...",
+                data: {
+                    src: async () => {
+                        return getAllSearchableData();
+                    },
+                    keys: ["title", "category"]
+                },
+                resultsList: {
+                    element: (list, data) => {
+                        if (!data.results.length) {
+                            const message = document.createElement("div");
+                            message.setAttribute("class", "autoComplete_result");
+                            message.innerHTML = `<span>Không tìm thấy kết quả phù hợp</span>`;
+                            list.prepend(message);
+                        }
+                    },
+                    noResults: true,
+                    maxResults: 10
+                },
+                resultItem: {
+                    element: (item, data) => {
+                        item.innerHTML = `
+                            <span class="search-item-title">${data.value.title}</span>
+                            <span class="search-item-category">${data.value.category}</span>
+                        `;
+                    }
+                },
+                events: {
+                    input: {
+                        selection: (event) => {
+                            const selection = event.detail.selection.value;
+                            if (selection.link && selection.link !== '#') {
+                                openDocument(selection.link);
+                            } else {
+                                alert(`Bạn đã chọn: ${selection.title}`);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             initWeatherAndDate();
             renderCompanyTeam(defaultCompanyTeam);
             renderQaTeam(defaultQaTeam);
+            initAutoComplete();
             loadAllDataFromGoogleSheet();
         });
 
