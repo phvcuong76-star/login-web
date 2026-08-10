@@ -373,6 +373,30 @@
             font-size: 18px;
         }
 
+        /* 📜 KHUNG CHỨA DANH SÁCH BÁO CÁO (CỐ ĐỊNH CHIỀU CAO & THANH CUỘN DỌC) */
+        #reportListContainer {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Tùy chỉnh thanh cuộn đẹp mắt cho khối Danh Sách Báo Cáo */
+        #reportListContainer::-webkit-scrollbar {
+            width: 6px;
+        }
+        #reportListContainer::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        #reportListContainer::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        #reportListContainer::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
         /* FOOTER HEADER & TOP BAR CÙNG HÀNG */
         .footer-top-row {
             display: flex;
@@ -1165,7 +1189,7 @@
             </div>
         </div>
 
-        <!-- DÒNG CHỮ THÔNG BÁO TẢI DỮ LIỆU -->
+        <!-- DÒNG THÔNG BÁO TẢI DỮ LIỆU -->
         <div id="loading-notice">
             ⏳ Đang tải dữ liệu, xin chờ một lát...
         </div>
@@ -1418,7 +1442,7 @@
             </div>
         </div>
 
-        <!-- KHỐI FOOTER THÔNG TIN (ĐÃ TỐI ƯU CHIỀU CAO & ĐIỀU CHỈNH THỨ TỰ CÁC PHẦN TỬ) -->
+        <!-- KHỐI FOOTER THÔNG TIN -->
         <div class="footer-card-box">
             <div class="footer-top-row">
                 <div class="footer-header">
@@ -1436,7 +1460,7 @@
                     <p style="margin: 0;">Trụ sở chính: Thôn Lãng Xuyên, xã Gia Lộc, thành phố Hải Phòng, Việt Nam / Điện thoại: 02203717500</p>
                 </div>
                 <div style="text-align: right;">
-                    <!-- 🔍 Ô TÌM KIẾM Ở FOOTER (BÊN DƯỚI NÚT ĐẦU TRANG) -->
+                    <!-- 🔍 Ô TÌM KIẾM Ở FOOTER -->
                     <div class="footer-search-container">
                         <input id="autoCompleteFooter" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" capitalize="off">
                     </div>
@@ -2367,7 +2391,6 @@
             }
 
             const now = new Date();
-            // Lấy ngày đầu tuần (Thứ hai) và ngày cuối tuần (Chủ nhật)
             const currentDay = now.getDay();
             const distanceToMonday = (currentDay === 0 ? -6 : 1 - currentDay);
             
@@ -2379,7 +2402,6 @@
             sunday.setDate(monday.getDate() + 6);
             sunday.setHours(23, 59, 59, 999);
 
-            // Lọc dữ liệu trong tuần hiện tại
             const thisWeekAudits = data.filter(item => {
                 if (!item.date) return false;
                 const itemDate = new Date(item.date);
@@ -2421,7 +2443,6 @@
                 tbody.appendChild(tr);
             });
 
-            // Đồng thời cập nhật chữ chạy
             updateMarqueeSchedule(data);
         }
 
@@ -2479,7 +2500,6 @@
         function getAllSearchableData() {
             const items = [];
 
-            // 1. Báo cáo
             (globalData.reports || []).forEach(r => {
                 if (r.title) {
                     items.push({
@@ -2490,7 +2510,6 @@
                 }
             });
 
-            // 2. Quy trình công việc
             (globalData.proc || []).forEach(p => {
                 if (p.name) {
                     items.push({
@@ -2501,7 +2520,6 @@
                 }
             });
 
-            // 3. Tài liệu Audit / Đánh giá
             (globalData.insp || []).forEach(i => {
                 if (i.name) {
                     items.push({
@@ -2512,7 +2530,6 @@
                 }
             });
 
-            // 4. Lịch Kiểm Hàng & Audit
             (globalData.audit || []).forEach(a => {
                 if (a.customer) {
                     items.push({
@@ -2523,7 +2540,6 @@
                 }
             });
 
-            // 5. Lịch SOP
             (globalData.sop || []).forEach(s => {
                 if (s.factory || s.content) {
                     items.push({
@@ -2580,13 +2596,11 @@
                 }
             };
 
-            // Khởi tạo cho Ô tìm kiếm Header
             new autoComplete({
                 ...autoCompleteConfig,
                 selector: "#autoComplete"
             });
 
-            // Khởi tạo cho Ô tìm kiếm Footer
             new autoComplete({
                 ...autoCompleteConfig,
                 selector: "#autoCompleteFooter"
