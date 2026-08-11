@@ -182,7 +182,7 @@
             align-items: center;
             gap: 15px;
             margin-bottom: 20px;
-            margin-top: 50px;  /* <-- THÊM DÒNG NÀY (tăng/giảm số px tùy ý để đẩy xuống) */
+            margin-top: 50px;
             width: 100%;
         }
 
@@ -1578,10 +1578,52 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
         const DETAIL_SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421";
 
+        /* 📍 BƯỚC 1: KHAI BÁO BIẾN LƯU VAI TRÒ NGƯỜI DÙNG */
+        let currentUserRole = localStorage.getItem('userRole') || 'guest';
+
+        /* 📍 BƯỚC 2: LOGIC KIỂM TRA KHI ĐĂNG NHẬP (KHỞI TẠO TỪ LOCALSTORAGE) */
+        const loggedUsername = localStorage.getItem('username');
+        if (loggedUsername === 'guest' || loggedUsername === 'khach') {
+            currentUserRole = 'guest';
+        } else if (loggedUsername === 'admin') {
+            currentUserRole = 'admin';
+        }
+
+        /* 📍 BƯỚC 3: HÀM PHÂN QUYỀN GIAO DIỆN */
+        function applyRolePermissions() {
+            if (currentUserRole === 'guest') {
+                // Ẩn tất cả các nút Cập nhật ở giao diện chính ngoại trừ Quy trình công việc
+                const allUpdateBtns = document.querySelectorAll('.btn-update');
+                allUpdateBtns.forEach(btn => {
+                    const isProcBtn = btn.getAttribute('onclick') === 'openProcEditModal()';
+                    if (!isProcBtn) {
+                        btn.style.display = 'none';
+                    }
+                });
+
+                // Khóa/Ẩn nút "Cập nhật số lượng" trong Popup Nhân sự
+                const popoverEditBtns = document.querySelectorAll('#orgModalFooter .btn-update');
+                popoverEditBtns.forEach(btn => btn.style.display = 'none');
+
+                // Vô hiệu hóa tính năng thêm/xóa/sửa file PDF ở các Modal không phải Proc
+                const restrictedModals = ['#reportModal', '#sopModal', '#inspModal', '#editModal', '#qaEditModal', '#companyEditModal'];
+                restrictedModals.forEach(selector => {
+                    const modal = document.querySelector(selector);
+                    if (modal) {
+                        const addBtns = modal.querySelectorAll('.btn-add-row, .btn-pdf-upload, .btn-delete-row, .btn-save');
+                        addBtns.forEach(b => {
+                            b.style.display = 'none';
+                        });
+                    }
+                });
+            }
+        }
+
         /* HÀM XỬ LÝ ĐĂNG XUẤT */
         function handleLogout() {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('username');
+            localStorage.removeItem('userRole');
             window.location.replace("index.html");
         }
 
@@ -1740,6 +1782,7 @@
             }
 
             document.getElementById('orgChartModal').style.display = 'flex';
+            applyRolePermissions();
         }
 
         function closeOrgChartModal() {
@@ -1891,7 +1934,13 @@
             container.appendChild(rowDiv);
         }
 
+        /* 📍 BƯỚC 5: CHẶN QUYỀN LƯU DỮ LIỆU (PHÍA CLIENT) */
         async function saveToGoogleSheet(sheetName, data, callbackClose, btnId) {
+            if (currentUserRole === 'guest' && sheetName !== 'proc') {
+                alert("Bạn đang đăng nhập với tài khoản Khách. Bạn chỉ có quyền chỉnh sửa 'Sổ tay Quy trình công việc'!");
+                return;
+            }
+
             const btn = btnId ? document.getElementById(btnId) : null;
             let originalText = "";
             if (btn) {
@@ -1994,6 +2043,7 @@
             `;
         }
 
+        /* 📍 BƯỚC 4: GỌI HÀM PHÂN QUYỀN KHI RENDER XONG DỮ LIỆU */
         async function loadAllDataFromGoogleSheet() {
             if (!API_URL) return;
 
@@ -2045,6 +2095,10 @@
                 renderAudit(globalData.audit);
                 renderCompanyTeam(globalData.companyTeam);
                 renderQaTeam(globalData.qaTeam);
+
+                // GỌI HÀM ÁP DỤNG PHÂN QUYỀN
+                applyRolePermissions();
+
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
             } finally {
