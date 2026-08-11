@@ -1578,21 +1578,22 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
         const DETAIL_SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421";
 
+        /* HÀM KIỂM TRA QUYỀN ADMIN */
+        function checkAdminPermission() {
+            const username = localStorage.getItem('username');
+            // Nếu username là 'guest' hoặc không phải admin (hoặc bạn có thể điều chỉnh tùy cách lưu tài khoản khách của bạn)
+            if (username === 'guest' || !username || username.toLowerCase().includes('khach')) {
+                alert('chỉ cấp quyền admin');
+                return false;
+            }
+            return true;
+        }
+
         /* HÀM XỬ LÝ ĐĂNG XUẤT */
         function handleLogout() {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('username');
             window.location.replace("index.html");
-        }
-
-        /* HÀM KIỂM TRA VÀ ẨN NÚT CẬP NHẬT NẾU LÀ TÀI KHOẢN KHÁCH */
-        function checkUserRoleForButtons() {
-            const username = localStorage.getItem('username');
-            if (username && username.trim().toLowerCase() === 'khách') {
-                document.querySelectorAll('.btn-update').forEach(btn => {
-                    btn.style.display = 'none';
-                });
-            }
         }
 
         /* HÀM KHỞI TẠO VÀ CẬP NHẬT NGÀY THÁNG, THỜI TIẾT TỰ ĐỘNG */
@@ -1686,9 +1687,6 @@
             const titleEl = document.getElementById('orgModalTitle');
             const bodyEl = document.getElementById('orgModalBody');
             const footerEl = document.getElementById('orgModalFooter');
-            
-            const username = localStorage.getItem('username');
-            const isGuest = username && username.trim().toLowerCase() === 'khách';
 
             if (type === 'company') {
                 titleEl.innerText = "👥 Tình hình nhân sự công ty Hai Vina";
@@ -1715,7 +1713,7 @@
                     <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
                 `;
                 footerEl.innerHTML = `
-                    ${!isGuest ? `<button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openCompanyEditModal();">✏️ Cập nhật số lượng</button>` : ''}
+                    <button class="btn-update" style="margin-top:0;" onclick="if(checkAdminPermission()) { closeOrgChartModal(); openCompanyEditModal(); }">✏️ Cập nhật số lượng</button>
                     <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
                 `;
             } else if (type === 'qa') {
@@ -1747,7 +1745,7 @@
                     <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
                 `;
                 footerEl.innerHTML = `
-                    ${!isGuest ? `<button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openQaEditModal();">✏️ Cập nhật số lượng</button>` : ''}
+                    <button class="btn-update" style="margin-top:0;" onclick="if(checkAdminPermission()) { closeOrgChartModal(); openQaEditModal(); }">✏️ Cập nhật số lượng</button>
                     <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
                 `;
             }
@@ -1760,6 +1758,7 @@
         }
 
         function openCompanyEditModal() {
+            if (!checkAdminPermission()) return;
             const container = document.getElementById('modalCompanyContainer');
             const company = globalData.companyTeam || defaultCompanyTeam;
             container.innerHTML = `
@@ -1778,6 +1777,7 @@
         }
 
         function saveCompanyData() {
+            if (!checkAdminPermission()) return;
             const officeVal = document.getElementById('company_office').value.trim() || '0';
             const workerVal = document.getElementById('company_worker').value.trim() || '0';
             const qcVal = document.getElementById('company_qc').value.trim() || '0';
@@ -1802,6 +1802,7 @@
         }
 
         function openQaEditModal() {
+            if (!checkAdminPermission()) return;
             const container = document.getElementById('modalQaContainer');
             const qa = globalData.qaTeam || defaultQaTeam;
             container.innerHTML = `
@@ -1822,6 +1823,7 @@
         }
 
         function saveQaData() {
+            if (!checkAdminPermission()) return;
             const totalVal = document.getElementById('qa_total').value.trim() || '0';
             const leaderVal = document.getElementById('qa_leader').value.trim() || '0';
             const officerVal = document.getElementById('qa_officer').value.trim() || '0';
@@ -1905,6 +1907,7 @@
         }
 
         async function saveToGoogleSheet(sheetName, data, callbackClose, btnId) {
+            if (!checkAdminPermission()) return;
             const btn = btnId ? document.getElementById(btnId) : null;
             let originalText = "";
             if (btn) {
@@ -2108,6 +2111,7 @@
         }
 
         function openReportEditModal() {
+            if (!checkAdminPermission()) return;
             const container = document.getElementById('modalReportContainer');
             container.innerHTML = '';
             const data = globalData.reports;
@@ -2124,6 +2128,7 @@
         }
 
         function saveReportList() {
+            if (!checkAdminPermission()) return;
             const container = document.getElementById('modalReportContainer');
             const editRows = container.querySelectorAll('.edit-row-report');
             const newData = [];
@@ -2160,6 +2165,7 @@
         }
 
         function openSopEditModal() {
+            if (!checkAdminPermission()) return;
             const container = document.getElementById('modalSopContainer');
             container.innerHTML = '';
             globalData.sop.forEach(item => addSopModalRow(formatDate(item.date), item.factory || item.content || '', item.checklistLink));
@@ -2186,6 +2192,7 @@
         }
 
         function saveSopTable() {
+            if (!checkAdminPermission()) return;
             const container = document.getElementById('modalSopContainer');
             const editRows = container.querySelectorAll('.edit-row-sop');
             const newData = [];
@@ -2224,6 +2231,7 @@
         }
 
         function openProcEditModal() {
+            if (!checkAdminPermission()) return;
             const container = document.getElementById('modalProcContainer');
             container.innerHTML = '';
             globalData.proc.forEach(item => addDocModalRow('modalProcContainer', item.name, item.note, item.link));
@@ -2235,6 +2243,7 @@
         }
 
         function saveProcTable() {
+            if (!checkAdminPermission()) return;
             const container = document.getElementById('modalProcContainer');
             const editRows = container.querySelectorAll('.edit-row');
             const newData = [];
@@ -2290,6 +2299,7 @@
         }
 
         function handlePdfUpload(fileInput) {
+            if (!checkAdminPermission()) return;
             const file = fileInput.files[0];
             if (!file) return;
 
@@ -2341,6 +2351,7 @@
         }
 
         function openInspEditModal() {
+            if (!checkAdminPermission()) return;
             const container = document.getElementById('modalInspContainer');
             container.innerHTML = '';
             globalData.insp.forEach(item => addInspModalRow(item.name, item.note, item.link));
@@ -2352,6 +2363,7 @@
         }
 
         function saveInspTable() {
+            if (!checkAdminPermission()) return;
             const container = document.getElementById('modalInspContainer');
             const editRows = container.querySelectorAll('.edit-row-insp');
             const newData = [];
@@ -2435,6 +2447,7 @@
         }
 
         function openEditModal() {
+            if (!checkAdminPermission()) return;
             const container = document.getElementById('modalRowContainer');
             container.innerHTML = '';
             globalData.audit.forEach(item => addModalRow(item.customer, formatDate(item.date), item.type, item.factory, item.docLink));
@@ -2463,6 +2476,7 @@
         }
 
         function saveAuditTable() {
+            if (!checkAdminPermission()) return;
             const container = document.getElementById('modalRowContainer');
             const editRows = container.querySelectorAll('.edit-row-audit');
             const newData = [];
@@ -2601,7 +2615,6 @@
             renderQaTeam(defaultQaTeam);
             initAutoComplete();
             loadAllDataFromGoogleSheet();
-            checkUserRoleForButtons();
         });
 
         function googleTranslateElementInit() {
