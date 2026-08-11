@@ -21,7 +21,9 @@
         .doc-title { font-weight: 700; color: #1e293b; margin-bottom: 4px; font-size: 15px; }
         .doc-desc { color: #64748b; font-size: 13px; margin: 0; }
         .btn-view { background: #1a73e8; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; border: none; }
-        .btn-update { background: #1a73e8; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 25px; float: right; display: flex; align-items: center; gap: 6px; }
+        
+        /* Mặc định ẩn nút cập nhật cho tới khi xác minh được vai trò người dùng */
+        .btn-update { background: #1a73e8; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 25px; float: right; display: none; align-items: center; gap: 6px; }
 
         /* Modal Styles */
         .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
@@ -54,7 +56,8 @@
             <p>Đang tải dữ liệu...</p>
         </div>
 
-        <button class="btn-update" onclick="openModal()">✏️ Cập nhật Danh sách</button>
+        <!-- Nút Cập nhật danh sách -->
+        <button class="btn-update" id="btnUpdateList" onclick="openModal()">✏️ Cập nhật Danh sách</button>
         <div style="clear: both;"></div>
     </div>
 
@@ -78,6 +81,31 @@
         const SHEET_NAME = 'warehouse_docs';
 
         let currentWarehouseList = [];
+
+        // 🟢 HÀM KIỂM TRA QUYỀN VÀ KHÓA CHỨC NĂNG CỦA KHÁCH
+        function isGuestUser() {
+            // Kiểm tra thông tin lưu trữ vai trò/tài khoản
+            const userRole = localStorage.getItem('userRole'); // Ví dụ: 'guest', 'admin', 'staff'
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            // Nếu vai trò là 'guest' hoặc 'khach' hoặc không ghi nhận đăng nhập
+            if (userRole === 'guest' || userRole === 'khach' || currentUser.role === 'guest' || currentUser.username === 'guest') {
+                return true;
+            }
+            return false;
+        }
+
+        // Cấu hình giao diện tùy thuộc vào vai trò người dùng
+        function checkPermissions() {
+            const btnUpdate = document.getElementById('btnUpdateList');
+            if (isGuestUser()) {
+                // Nếu là tài khoản Khách -> Ẩn hoàn toàn nút Cập nhật
+                if (btnUpdate) btnUpdate.style.display = 'none';
+            } else {
+                // Nếu là Quản trị/Nhân viên -> Hiện nút Cập nhật
+                if (btnUpdate) btnUpdate.style.display = 'flex';
+            }
+        }
 
         // Hàm mở file PDF hoặc Link web an toàn
         function openDocument(url) {
@@ -152,6 +180,12 @@
 
         // 3. Quản lý Modal Cập Nhật
         function openModal() {
+            // Kiểm tra bổ sung nếu tài khoản khách cố tình mở qua code
+            if (isGuestUser()) {
+                alert("Tài khoản Khách không có quyền chỉnh sửa danh sách này!");
+                return;
+            }
+
             const container = document.getElementById('modalRowContainer');
             container.innerHTML = '';
             
@@ -200,6 +234,12 @@
 
         // 4. Lưu dữ liệu về Google Sheets (tab warehouse_docs)
         async function saveData() {
+            // Chặn lưu nếu là tài khoản Khách
+            if (isGuestUser()) {
+                alert("Tài khoản Khách không có quyền cập nhật dữ liệu!");
+                return;
+            }
+
             const rows = document.querySelectorAll('#modalRowContainer .edit-row');
             const updateData = [];
 
@@ -245,7 +285,8 @@
             }
         }
 
-        // Tải dữ liệu ban đầu
+        // Khởi tạo kiểm tra phân quyền & tải dữ liệu ban đầu
+        checkPermissions();
         loadWarehouseDocsData();
     </script>
 </body>
