@@ -1204,7 +1204,7 @@
                 </div>
 
                 <!-- KHỐI 2: TÀI LIỆU & HƯỚNG DẪN -->
-                <div class="card-box" style="background-color: #faf5ff; margin-bottom: 0; max-height: 500px; overflow-y: auto;">
+                <div class="card-box" style="background-color: #faf5ff; margin-bottom: 0;">
                     <h3 class="card-box-title">📂 Tài Liệu & Hướng dẫn</h3>
 
                     <!-- BẢNG 1: SỔ TAY QUY TRÌNH CÔNG VIỆC -->
@@ -2287,16 +2287,329 @@
 
             const parentRow = fileInput.parentElement;
             const linkInput = parentRow.querySelector('.link-input');
-            const reader = new FileReader();
+            const btnUpload = parentRow.querySelector('.btn-pdf-upload');
 
+            const originalBtnText = btnUpload.innerText;
+            btnUpload.innerText = "⏳ Đang tải...";
+            btnUpload.disabled = true;
+
+            const reader = new FileReader();
             reader.onload = function(e) {
-                if (linkInput) {
-                    linkInput.value = e.target.result;
-                    alert('Đã tải và đính kèm file PDF thành công!');
-                }
+                const base64Data = e.target.result;
+
+                fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'uploadPdf',
+                        fileName: file.name,
+                        mimeType: file.type,
+                        fileData: base64Data
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        linkInput.value = data.fileUrl;
+                        alert('Tải file lên Google Drive thành công!');
+                    } else {
+                        alert('Lỗi upload: ' + data.message);
+                    }
+                })
+                .catch(err => {
+                    alert('Lỗi kết nối khi tải file lên Drive!');
+                    console.error(err);
+                })
+                .finally(() => {
+                    btnUpload.innerText = originalBtnText;
+                    btnUpload.disabled = false;
+                });
             };
             reader.readAsDataURL(file);
         }
+
+        function openInspEditModal() {
+            const container = document.getElementById('modalInspContainer');
+            container.innerHTML = '';
+            globalData.insp.forEach(item => addInspModalRow(item.name, item.note, item.link));
+            document.getElementById('inspModal').style.display = 'flex';
+        }
+
+        function closeInspEditModal() {
+            document.getElementById('inspModal').style.display = 'none';
+        }
+
+        function saveInspTable() {
+            const container = document.getElementById('modalInspContainer');
+            const editRows = container.querySelectorAll('.edit-row-insp');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const name = inputs[0].value.trim();
+                const note = inputs[1].value.trim();
+                const link = inputs[2].value.trim() || '#';
+                if (name) newData.push({ name, note, link });
+            });
+
+            globalData.insp = newData;
+            saveToGoogleSheet('insp', newData, closeInspEditModal, 'btnSaveInsp');
+        }
+
+        /* 📢 HÀM TỰ ĐỘNG CẬP NHẬT CHỮ CHẠY VỀ LỊCH KIỂM HÀNG TUẦN HIỆN TẠI */
+        function updateMarqueeSchedule(data) {
+            const marqueeEl = document.getElementById('marqueeAuditSchedule');
+            if (!marqueeEl) return;
+
+            if (!data || data.length === 0) {
+                marqueeEl.innerHTML = "Không có lịch kiểm hàng / audit nào trong tuần hiện tại.";
+                return;
+            }
+
+            const now = new Date();
+            const currentDay = now.getDay();
+            const distanceToMonday = (currentDay === 0 ? -6 : 1 - currentDay);
+            
+            const monday = new Date(now);
+            monday.setDate(now.getDate() + distanceToMonday);
+            monday.setHours(0, 0, 0, 0);
+
+            const sunday = new Date(monday);
+            sunday.setDate(monday.getDate() + 6);
+            sunday.setHours(23, 59, 59, 999);
+
+            const thisWeekAudits = data.filter(item => {
+                if (!item.date) return false;
+                const itemDate = new Date(item.date);
+                return !isNaN(itemDate.getTime()) && itemDate >= monday && itemDate <= sunday;
+            });
+
+            if (thisWeekAudits.length === 0) {
+                marqueeEl.innerHTML = "Tuần này hiện chưa có lịch kiểm hàng / audit phát sinh.";
+            } else {
+                const marqueeItems = thisWeekAudits.map(item => {
+                    return ` [${formatDate(item.date)}] ${escapeHtml(item.customer)}`;
+            });
+                marqueeEl.innerHTML = marqueeItems.join(' &nbsp;&nbsp;&nbsp;    |    &nbsp;&nbsp;&nbsp; ');
+            }
+        }
+
+        function renderAudit(data) {
+            const tbody = document.querySelector('#auditTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row-border';
+                
+                let typeColor = '#1a73e8';
+                if (item.type && item.type.toLowerCase().includes('audit')) typeColor = '#d93025';
+                if (item.type && item.type.toLowerCase().includes('pre')) typeColor = '#137333';
+
+                const info = `Khách hàng: ${item.customer} | Loại: ${item.type} | Nhà máy: ${item.factory}`;
+                const docCell = createViewLinkWithPopover(item.docLink, `📂 Tài liệu Audit/Kiểm hàng`, info);
+
+                tr.innerHTML = `
+                    <td class="cell-text-bold">${escapeHtml(item.customer)}</td>
+                    <td class="cell-date">${escapeHtml(formatDate(item.date))}</td>
+                    <td class="cell-date" style="color: ${typeColor}; font-weight: 600;">${escapeHtml(item.type)}</td>
+                    <td class="cell-text-bold text-center">${escapeHtml(item.factory)}</td>
+                    <td class="cell-date text-center">${docCell}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            updateMarqueeSchedule(data);
+        }
+
+        function openEditModal() {
+            const container = document.getElementById('modalRowContainer');
+            container.innerHTML = '';
+            globalData.audit.forEach(item => addModalRow(item.customer, formatDate(item.date), item.type, item.factory, item.docLink));
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function addModalRow(customer = '', date = '', type = '', factory = '', docLink = '') {
+            const container = document.getElementById('modalRowContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-audit';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Khách hàng" value="${escapeHtml(customer)}">
+                <input type="text" placeholder="Ngày" value="${escapeHtml(date)}">
+                <input type="text" placeholder="Loại" value="${escapeHtml(type)}">
+                <input type="text" placeholder="Nhà máy" value="${escapeHtml(factory)}">
+                <input type="text" class="link-input" placeholder="Link hoặc upload PDF" value="${escapeHtml(docLink)}">
+                <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function saveAuditTable() {
+            const container = document.getElementById('modalRowContainer');
+            const editRows = container.querySelectorAll('.edit-row-audit');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const customer = inputs[0].value.trim();
+                const date = inputs[1].value.trim();
+                const type = inputs[2].value.trim();
+                const factory = inputs[3].value.trim();
+                const docLink = inputs[4].value.trim();
+
+                if (customer || date || type || factory || docLink) {
+                    newData.push({ customer, date, type, factory, docLink });
+                }
+            });
+
+            globalData.audit = newData;
+            saveToGoogleSheet('audit', newData, closeEditModal, 'btnSaveAudit');
+        }
+
+        /* 🔍 CẤU HÌNH TỔNG HỢP DỮ LIỆU & KHỞI TẠO AUTOCOMPLETE.JS */
+        function getAllSearchableData() {
+            const items = [];
+
+            (globalData.reports || []).forEach(r => {
+                if (r.title) {
+                    items.push({
+                        title: r.title,
+                        category: "Báo cáo",
+                        link: r.link
+                    });
+                }
+            });
+
+            (globalData.proc || []).forEach(p => {
+                if (p.name) {
+                    items.push({
+                        title: p.name,
+                        category: "Quy trình",
+                        link: p.link
+                    });
+                }
+            });
+
+            (globalData.insp || []).forEach(i => {
+                if (i.name) {
+                    items.push({
+                        title: i.name,
+                        category: "Tài liệu Audit",
+                        link: i.link
+                    });
+                }
+            });
+
+            (globalData.audit || []).forEach(a => {
+                if (a.customer) {
+                    items.push({
+                        title: `${a.customer} - ${a.type || 'Audit'} (${a.factory || ''})`,
+                        category: "Lịch Audit",
+                        link: a.docLink
+                    });
+                }
+            });
+
+            (globalData.sop || []).forEach(s => {
+                if (s.factory || s.content) {
+                    items.push({
+                        title: `SOP: ${s.factory || s.content}`,
+                        category: "Lịch SOP",
+                        link: s.checklistLink
+                    });
+                }
+            });
+
+            return items;
+        }
+
+        function initAutoComplete() {
+            const autoCompleteConfig = {
+                placeHolder: "🔍 Tìm kiếm báo cáo, tài liệu...",
+                data: {
+                    src: async () => {
+                        return getAllSearchableData();
+                    },
+                    keys: ["title", "category"]
+                },
+                resultsList: {
+                    element: (list, data) => {
+                        if (!data.results.length) {
+                            const message = document.createElement("div");
+                            message.setAttribute("class", "autoComplete_result");
+                            message.innerHTML = `<span>Không tìm thấy kết quả phù hợp</span>`;
+                            list.prepend(message);
+                        }
+                    },
+                    noResults: true,
+                    maxResults: 10
+                },
+                resultItem: {
+                    element: (item, data) => {
+                        item.innerHTML = `
+                            <span class="search-item-title">${data.value.title}</span>
+                            <span class="search-item-category">${data.value.category}</span>
+                        `;
+                    }
+                },
+                events: {
+                    input: {
+                        selection: (event) => {
+                            const selection = event.detail.selection.value;
+                            if (selection.link && selection.link !== '#') {
+                                openDocument(selection.link);
+                            } else {
+                                alert(`Bạn đã chọn: ${selection.title}`);
+                            }
+                        }
+                    }
+                }
+            };
+
+            new autoComplete({
+                ...autoCompleteConfig,
+                selector: "#autoComplete"
+            });
+
+            new autoComplete({
+                ...autoCompleteConfig,
+                selector: "#autoCompleteFooter"
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initWeatherAndDate();
+            renderCompanyTeam(defaultCompanyTeam);
+            renderQaTeam(defaultQaTeam);
+            initAutoComplete();
+            loadAllDataFromGoogleSheet();
+        });
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'vi',
+                includedLanguages: 'en,ko,vi',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        function translatePage(langCode, btn) {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            var selectObj = document.querySelector('.goog-te-combo');
+            if (selectObj) {
+                selectObj.value = langCode;
+                selectObj.dispatchEvent(new Event('change'));
+            }
+        }
     </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
