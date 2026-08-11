@@ -1693,7 +1693,7 @@
                 .replace(/'/g, "&#039;");
         }
 
-        function createViewLinkWithPopover(url, previewTitle, previewInfo) {
+        function createViewLinkWithPopover(url, previewTitle, previewInfo, isInsp = false) {
             if (!url || url === '#') return `<span class="cell-subtext">-</span>`;
             
             let typeLabel = "🔗 Liên kết tài liệu";
@@ -1706,9 +1706,10 @@
             }
 
             const safeUrl = url.replace(/'/g, "\\'");
+            const isInspFlag = isInsp ? 'true' : 'false';
             return `
                 <div class="doc-popover-wrapper">
-                    <span class="view-link" onclick="openDocument('${safeUrl}')">Xem</span>
+                    <span class="view-link" onclick="openDocument('${safeUrl}', ${isInspFlag})">Xem</span>
                     <div class="doc-popover">
                         <div class="doc-popover-title">${escapeHtml(previewTitle)}</div>
                         <div class="doc-popover-body">
@@ -1898,7 +1899,14 @@
             return `${day}/${month}/${year}`;
         }
 
-        function openDocument(url) {
+        /* HÀM MỞ TÀI LIỆU CÓ KIỂM TRA MỤC "TÀI LIỆU CHUẨN BỊ KHÁCH HÀNG ĐÁNH GIÁ" */
+        function openDocument(url, isInsp = false) {
+            // Kiểm tra nếu là tài liệu đánh giá khách hàng
+            if (isInsp) {
+                alert("Tài liệu nội bộ Phòng chất lượng");
+                return;
+            }
+
             if (!url || url === '#') return;
             if (url.startsWith('data:application/pdf')) {
                 try {
@@ -2301,7 +2309,8 @@
             data.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.className = 'table-row-border';
-                const linkCell = createViewLinkWithPopover(item.link, item.name, item.note);
+                // Truyền tham số true cho isInsp để kích hoạt chặn cho mục này
+                const linkCell = createViewLinkWithPopover(item.link, item.name, item.note, true);
 
                 tr.innerHTML = `
                     <td class="cell-title">${escapeHtml(item.name)}</td>
@@ -2445,7 +2454,7 @@
                 });
 
                 globalData.insp.forEach(i => {
-                    results.push({ title: i.name, category: '🔍 Hướng dẫn', link: i.link });
+                    results.push({ title: i.name, category: '🔍 Hướng dẫn', link: i.link, isInsp: true });
                 });
 
                 globalData.audit.forEach(a => {
@@ -2493,7 +2502,7 @@
                                 alert("Tài liệu nội bộ Phòng chất lượng");
                                 return;
                             }
-                            openDocument(selection.link);
+                            openDocument(selection.link, selection.isInsp || false);
                         }
                     }
                 }
