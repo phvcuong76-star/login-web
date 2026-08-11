@@ -14,6 +14,18 @@
                 window.location.replace("index.html");
             }
         })();
+
+        // Thêm hàm kiểm tra tài khoản khách để ẩn/hiện nút Cập nhật
+        window.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('username') || '';
+            // Kiểm tra nếu tên tài khoản chứa chữ "khách" (không phân biệt hoa thường)
+            if (username.toLowerCase().includes('khách')) {
+                const updateButtons = document.querySelectorAll('.btn-update');
+                updateButtons.forEach(btn => {
+                    btn.style.display = 'none';
+                });
+            }
+        });
     </script>
 
     <!-- 🔍 THƯ VIỆN AUTOCOMPLETE.JS (CDN CSS & JS) -->
@@ -1701,8 +1713,10 @@
                     </table>
                     <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
                 `;
+                const username = localStorage.getItem('username') || '';
+                const isGuest = username.toLowerCase().includes('khách');
                 footerEl.innerHTML = `
-                    <button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openCompanyEditModal();">✏️ Cập nhật số lượng</button>
+                    ${!isGuest ? `<button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openCompanyEditModal();">✏️ Cập nhật số lượng</button>` : ''}
                     <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
                 `;
             } else if (type === 'qa') {
@@ -1733,8 +1747,10 @@
                     </table>
                     <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
                 `;
+                const username = localStorage.getItem('username') || '';
+                const isGuest = username.toLowerCase().includes('khách');
                 footerEl.innerHTML = `
-                    <button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openQaEditModal();">✏️ Cập nhật số lượng</button>
+                    ${!isGuest ? `<button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openQaEditModal();">✏️ Cập nhật số lượng</button>` : ''}
                     <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
                 `;
             }
@@ -2613,3 +2629,4 @@
 
 </body>
 </html>
+```[cite: 11]
