@@ -1578,10 +1578,15 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
         const DETAIL_SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421";
 
+        /* HÀM KIỂM TRA TÀI KHOẢN KHÁCH */
+        function isGuestAccount() {
+            const username = localStorage.getItem('username');
+            return (!username || username === 'guest' || username.toLowerCase().includes('khach'));
+        }
+
         /* HÀM KIỂM TRA QUYỀN ADMIN */
         function checkAdminPermission() {
             const username = localStorage.getItem('username');
-            // Nếu username là 'guest' hoặc không phải admin (hoặc bạn có thể điều chỉnh tùy cách lưu tài khoản khách của bạn)
             if (username === 'guest' || !username || username.toLowerCase().includes('khach')) {
                 alert('chỉ cấp quyền admin');
                 return false;
@@ -2075,9 +2080,6 @@
             const appsheetReports = data.filter(item => item.title.toLowerCase().includes('appsheet'));
             const sortedData = [...normalReports, ...appsheetReports];
 
-            const username = localStorage.getItem('username');
-            const isGuest = (username === 'guest' || !username || username.toLowerCase().includes('khach'));
-
             sortedData.forEach((item) => {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'report-card-wrapper';
@@ -2086,7 +2088,8 @@
                 const cardClass = isAppSheet ? 'link-card appsheet-link' : 'link-card sheet-link';
                 const authorText = item.author ? item.author : '';
 
-                if (isGuest) {
+                // Nếu là tài khoản khách, khi click vào card báo cáo sẽ báo "Báo cáo nội bộ" và chặn mở link
+                if (isGuestAccount()) {
                     wrapper.innerHTML = `
                         <div class="${cardClass}" style="cursor: pointer;" onclick="alert('Báo cáo nội bộ');">
                             <div class="link-card-main" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
@@ -2235,6 +2238,7 @@
             data.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.className = 'table-row-border';
+                // Chữ Xem ở mục Sổ tay Quy trình công việc vẫn hoạt động bình thường cho cả khách và admin theo đúng yêu cầu
                 const linkCell = createViewLinkWithPopover(item.link, `📖 ${item.name}`, item.note);
 
                 tr.innerHTML = `
@@ -2283,7 +2287,23 @@
             data.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.className = 'table-row-border';
-                const linkCell = createViewLinkWithPopover(item.link, `🔍 ${item.name}`, item.note);
+                
+                let linkCell = '';
+                if (isGuestAccount()) {
+                    linkCell = `
+                        <div class="doc-popover-wrapper">
+                            <span class="view-link" onclick="alert('Báo cáo nội bộ');">Xem</span>
+                            <div class="doc-popover">
+                                <div class="doc-popover-title">${escapeHtml("🔍 " + item.name)}</div>
+                                <div class="doc-popover-body">
+                                    <p style="margin: 2px 0;"><strong>Chi tiết:</strong> ${escapeHtml(item.note)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    linkCell = createViewLinkWithPopover(item.link, `🔍 ${item.name}`, item.note);
+                }
 
                 tr.innerHTML = `
                     <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${escapeHtml(item.name)}</td>
@@ -2447,7 +2467,23 @@
                 if (item.type && item.type.toLowerCase().includes('pre')) typeColor = '#137333';
 
                 const info = `Khách hàng: ${item.customer} | Loại: ${item.type} | Nhà máy: ${item.factory}`;
-                const docCell = createViewLinkWithPopover(item.docLink, `📂 Tài liệu Audit/Kiểm hàng`, info);
+                
+                let docCell = '';
+                if (isGuestAccount()) {
+                    docCell = `
+                        <div class="doc-popover-wrapper">
+                            <span class="view-link" onclick="alert('Báo cáo nội bộ');">Xem</span>
+                            <div class="doc-popover">
+                                <div class="doc-popover-title">${escapeHtml("📂 Tài liệu Audit/Kiểm hàng")}</div>
+                                <div class="doc-popover-body">
+                                    <p style="margin: 2px 0;"><strong>Chi tiết:</strong> ${escapeHtml(info)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    docCell = createViewLinkWithPopover(item.docLink, `📂 Tài liệu Audit/Kiểm hàng`, info);
+                }
 
                 tr.innerHTML = `
                     <td class="cell-text-bold">${escapeHtml(item.customer)}</td>
@@ -2604,6 +2640,10 @@
                     input: {
                         selection: (event) => {
                             const selection = event.detail.selection.value;
+                            if (isGuestAccount() && selection.category !== "Quy trình") {
+                                alert("Báo cáo nội bộ");
+                                return;
+                            }
                             if (selection.link && selection.link !== '#') {
                                 openDocument(selection.link);
                             } else {
@@ -2656,3 +2696,4 @@
 
 </body>
 </html>
+```[cite: 11]
