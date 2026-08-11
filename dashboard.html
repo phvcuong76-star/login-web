@@ -2075,6 +2075,9 @@
             const appsheetReports = data.filter(item => item.title.toLowerCase().includes('appsheet'));
             const sortedData = [...normalReports, ...appsheetReports];
 
+            const username = localStorage.getItem('username');
+            const isGuest = (username === 'guest' || !username || username.toLowerCase().includes('khach'));
+
             sortedData.forEach((item) => {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'report-card-wrapper';
@@ -2083,16 +2086,29 @@
                 const cardClass = isAppSheet ? 'link-card appsheet-link' : 'link-card sheet-link';
                 const authorText = item.author ? item.author : '';
 
-                wrapper.innerHTML = `
-                    <a href="${escapeHtml(item.link)}" target="_blank" class="${cardClass}">
-                        <div class="link-card-main" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
-                        ${authorText ? `<div class="link-card-sub">${escapeHtml(authorText)}</div>` : ''}
-                    </a>
-                    <div class="report-popover">
-                        <h5>📋 ${escapeHtml(item.title)}</h5>
-                        <p><strong>Người nhập/Phụ trách:</strong> ${escapeHtml(authorText) || 'Chưa cập nhật'}</p>
-                    </div>
-                `;
+                if (isGuest) {
+                    wrapper.innerHTML = `
+                        <div class="${cardClass}" style="cursor: pointer;" onclick="alert('Báo cáo nội bộ');">
+                            <div class="link-card-main" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
+                            ${authorText ? `<div class="link-card-sub">${escapeHtml(authorText)}</div>` : ''}
+                        </div>
+                        <div class="report-popover">
+                            <h5>📋 ${escapeHtml(item.title)}</h5>
+                            <p><strong>Người nhập/Phụ trách:</strong> ${escapeHtml(authorText) || 'Chưa cập nhật'}</p>
+                        </div>
+                    `;
+                } else {
+                    wrapper.innerHTML = `
+                        <a href="${escapeHtml(item.link)}" target="_blank" class="${cardClass}">
+                            <div class="link-card-main" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
+                            ${authorText ? `<div class="link-card-sub">${escapeHtml(authorText)}</div>` : ''}
+                        </a>
+                        <div class="report-popover">
+                            <h5>📋 ${escapeHtml(item.title)}</h5>
+                            <p><strong>Người nhập/Phụ trách:</strong> ${escapeHtml(authorText) || 'Chưa cập nhật'}</p>
+                        </div>
+                    `;
+                }
                 container.appendChild(wrapper);
             });
         }
