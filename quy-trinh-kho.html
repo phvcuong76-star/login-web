@@ -22,8 +22,26 @@
         .doc-desc { color: #64748b; font-size: 13px; margin: 0; }
         .btn-view { background: #1a73e8; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; border: none; }
         
-        /* Mặc định ẩn nút cập nhật cho tới khi xác minh được vai trò người dùng */
-        .btn-update { background: #1a73e8; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 25px; float: right; display: none; align-items: center; gap: 6px; }
+        /* 🚨 QUAN TRỌNG: Mặc định ẨN nút cập nhật bằng CSS !important để tránh bị giật giao diện */
+        .btn-update { 
+            background: #1a73e8; 
+            color: #fff; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            margin-top: 25px; 
+            float: right; 
+            display: none !important; /* Mặc định ẩn hẳn */
+            align-items: center; 
+            gap: 6px; 
+        }
+
+        /* Lớp CSS này chỉ bật lên khi là Admin/User hợp lệ */
+        .btn-update.show-admin {
+            display: flex !important;
+        }
 
         /* Modal Styles */
         .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
@@ -56,7 +74,7 @@
             <p>Đang tải dữ liệu...</p>
         </div>
 
-        <!-- Nút Cập nhật danh sách -->
+        <!-- Nút Cập nhật (Mặc định ẩn hoàn toàn) -->
         <button class="btn-update" id="btnUpdateList" onclick="openModal()">✏️ Cập nhật Danh sách</button>
         <div style="clear: both;"></div>
     </div>
@@ -75,39 +93,54 @@
     </div>
 
     <script>
-        // URL Web App từ Google Apps Script
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec';
-        // Tab dữ liệu riêng cho Bộ phận Kho trên Google Sheets
         const SHEET_NAME = 'warehouse_docs';
 
         let currentWarehouseList = [];
 
-        // 🟢 HÀM KIỂM TRA QUYỀN VÀ KHÓA CHỨC NĂNG CỦA KHÁCH
-        function isGuestUser() {
-            // Kiểm tra thông tin lưu trữ vai trò/tài khoản
-            const userRole = localStorage.getItem('userRole'); // Ví dụ: 'guest', 'admin', 'staff'
-            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            
-            // Nếu vai trò là 'guest' hoặc 'khach' hoặc không ghi nhận đăng nhập
-            if (userRole === 'guest' || userRole === 'khach' || currentUser.role === 'guest' || currentUser.username === 'guest') {
-                return true;
+        // 🔒 HÀM XÁC THỰC QUYỀN
+        function checkCanEdit() {
+            try {
+                // Quét tất cả các bộ lưu trữ dữ liệu phiên làm việc
+                const storageData = {
+                    role: localStorage.getItem('role') || sessionStorage.getItem('role'),
+                    userRole: localStorage.getItem('userRole') || sessionStorage.getItem('userRole'),
+                    user: JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}'),
+                    account: JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}')
+                };
+
+                const roleStr = (
+                    storageData.role || 
+                    storageData.userRole || 
+                    storageData.user.role || 
+                    storageData.user.type ||
+                    storageData.account.role || 
+                    ''
+                ).toString().toLowerCase();
+
+                // Nếu có các từ khóa đại diện cho quyền quản trị/nhân viên chỉnh sửa
+                if (roleStr.includes('admin') || roleStr.includes('manager') || roleStr.includes('editor') || roleStr.includes('staff')) {
+                    return true;
+                }
+            } catch (e) {
+                console.warn('Lỗi khi kiểm tra phân quyền:', e);
             }
+            // Mặc định: KHÔNG CHO PHÉP (Xem như Guest/Khách)
             return false;
         }
 
-        // Cấu hình giao diện tùy thuộc vào vai trò người dùng
-        function checkPermissions() {
+        // Cập nhật giao diện nút
+        function applyPermissionUI() {
             const btnUpdate = document.getElementById('btnUpdateList');
-            if (isGuestUser()) {
-                // Nếu là tài khoản Khách -> Ẩn hoàn toàn nút Cập nhật
-                if (btnUpdate) btnUpdate.style.display = 'none';
-            } else {
-                // Nếu là Quản trị/Nhân viên -> Hiện nút Cập nhật
-                if (btnUpdate) btnUpdate.style.display = 'flex';
+            if (btnUpdate) {
+                if (checkCanEdit()) {
+                    btnUpdate.classList.add('show-admin'); // Hiện nút nếu đúng quyền
+                } else {
+                    btnUpdate.classList.remove('show-admin'); // Ẩn nút hoàn toàn nếu là Khách
+                }
             }
         }
 
-        // Hàm mở file PDF hoặc Link web an toàn
         function openDocument(url) {
             if (!url || url === '#') return;
             
@@ -132,7 +165,6 @@
             }
         }
 
-        // 1. Tải dữ liệu từ tab 'warehouse_docs' trên Google Sheets
         async function loadWarehouseDocsData() {
             const container = document.getElementById('docListContainer');
             if (container) container.innerHTML = '<p>Đang tải dữ liệu từ Google Sheets...</p>';
@@ -141,9 +173,7 @@
                 const res = await fetch(SCRIPT_URL);
                 const result = await res.json();
                 
-                // Lấy mảng dữ liệu thuộc tab 'warehouse_docs'
                 currentWarehouseList = result[SHEET_NAME] || [];
-
                 renderList(currentWarehouseList);
             } catch (err) {
                 console.error('Lỗi khi tải dữ liệu:', err);
@@ -151,7 +181,6 @@
             }
         }
 
-        // 2. Render danh sách tài liệu ra màn hình
         function renderList(list) {
             const container = document.getElementById('docListContainer');
             container.innerHTML = '';
@@ -178,11 +207,9 @@
             });
         }
 
-        // 3. Quản lý Modal Cập Nhật
         function openModal() {
-            // Kiểm tra bổ sung nếu tài khoản khách cố tình mở qua code
-            if (isGuestUser()) {
-                alert("Tài khoản Khách không có quyền chỉnh sửa danh sách này!");
+            if (!checkCanEdit()) {
+                alert("Tài khoản của bạn không có quyền cập nhật danh sách!");
                 return;
             }
 
@@ -232,11 +259,9 @@
             }
         }
 
-        // 4. Lưu dữ liệu về Google Sheets (tab warehouse_docs)
         async function saveData() {
-            // Chặn lưu nếu là tài khoản Khách
-            if (isGuestUser()) {
-                alert("Tài khoản Khách không có quyền cập nhật dữ liệu!");
+            if (!checkCanEdit()) {
+                alert("Tài khoản của bạn không có quyền thực hiện thao tác này!");
                 return;
             }
 
@@ -263,7 +288,7 @@
                     method: 'POST',
                     body: JSON.stringify({
                         action: 'updateSheet',
-                        sheetName: SHEET_NAME, // Định hướng lưu về tab 'warehouse_docs'
+                        sheetName: SHEET_NAME,
                         data: updateData
                     })
                 });
@@ -272,7 +297,7 @@
                 if (result.status === 'success') {
                     alert('Đã cập nhật danh sách vào Google Sheet thành công!');
                     closeModal();
-                    loadWarehouseDocsData(); // Tải lại dữ liệu sau khi cập nhật
+                    loadWarehouseDocsData();
                 } else {
                     alert('Lưu thất bại: ' + (result.message || 'Có lỗi xảy ra!'));
                 }
@@ -285,8 +310,8 @@
             }
         }
 
-        // Khởi tạo kiểm tra phân quyền & tải dữ liệu ban đầu
-        checkPermissions();
+        // Chạy kiểm tra phân quyền & Tải dữ liệu khi mở trang
+        applyPermissionUI();
         loadWarehouseDocsData();
     </script>
 </body>
