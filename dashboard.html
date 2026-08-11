@@ -14,18 +14,6 @@
                 window.location.replace("index.html");
             }
         })();
-
-        // Thêm hàm kiểm tra tài khoản khách để ẩn/hiện nút Cập nhật
-        window.addEventListener('DOMContentLoaded', () => {
-            const username = localStorage.getItem('username') || '';
-            // Kiểm tra nếu tên tài khoản chứa chữ "khách" (không phân biệt hoa thường)
-            if (username.toLowerCase().includes('khách')) {
-                const updateButtons = document.querySelectorAll('.btn-update');
-                updateButtons.forEach(btn => {
-                    btn.style.display = 'none';
-                });
-            }
-        });
     </script>
 
     <!-- 🔍 THƯ VIỆN AUTOCOMPLETE.JS (CDN CSS & JS) -->
@@ -1597,6 +1585,16 @@
             window.location.replace("index.html");
         }
 
+        /* HÀM KIỂM TRA VÀ ẨN NÚT CẬP NHẬT NẾU LÀ TÀI KHOẢN KHÁCH */
+        function checkUserRoleForButtons() {
+            const username = localStorage.getItem('username');
+            if (username && username.trim().toLowerCase() === 'khách') {
+                document.querySelectorAll('.btn-update').forEach(btn => {
+                    btn.style.display = 'none';
+                });
+            }
+        }
+
         /* HÀM KHỞI TẠO VÀ CẬP NHẬT NGÀY THÁNG, THỜI TIẾT TỰ ĐỘNG */
         function initWeatherAndDate() {
             const now = new Date();
@@ -1688,6 +1686,9 @@
             const titleEl = document.getElementById('orgModalTitle');
             const bodyEl = document.getElementById('orgModalBody');
             const footerEl = document.getElementById('orgModalFooter');
+            
+            const username = localStorage.getItem('username');
+            const isGuest = username && username.trim().toLowerCase() === 'khách';
 
             if (type === 'company') {
                 titleEl.innerText = "👥 Tình hình nhân sự công ty Hai Vina";
@@ -1713,8 +1714,6 @@
                     </table>
                     <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
                 `;
-                const username = localStorage.getItem('username') || '';
-                const isGuest = username.toLowerCase().includes('khách');
                 footerEl.innerHTML = `
                     ${!isGuest ? `<button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openCompanyEditModal();">✏️ Cập nhật số lượng</button>` : ''}
                     <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
@@ -1747,8 +1746,6 @@
                     </table>
                     <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
                 `;
-                const username = localStorage.getItem('username') || '';
-                const isGuest = username.toLowerCase().includes('khách');
                 footerEl.innerHTML = `
                     ${!isGuest ? `<button class="btn-update" style="margin-top:0;" onclick="closeOrgChartModal(); openQaEditModal();">✏️ Cập nhật số lượng</button>` : ''}
                     <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
@@ -2604,6 +2601,7 @@
             renderQaTeam(defaultQaTeam);
             initAutoComplete();
             loadAllDataFromGoogleSheet();
+            checkUserRoleForButtons();
         });
 
         function googleTranslateElementInit() {
@@ -2629,4 +2627,3 @@
 
 </body>
 </html>
-```[cite: 11]
