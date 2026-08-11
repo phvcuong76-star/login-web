@@ -102,17 +102,25 @@
         const u = document.getElementById('username').value.trim();
         const p = document.getElementById('password').value.trim();
         
-        if(u === "pcl" && p === "qa123") {
-            // 🔑 LƯU TRẠNG THÁI ĐĂNG NHẬP VÀO LOCALSTORAGE
+        // 1. Tài khoản ADMIN (Toàn quyền)
+        if (u === "pcl" && p === "qa123") { //
+            localStorage.setItem('isLoggedIn', 'true'); //[cite: 6]
+            localStorage.setItem('username', u); //[cite: 6]
+            localStorage.setItem('userRole', 'ADMIN'); // 👈 Lưu thêm vai trò ADMIN
+            
+            window.location.href = "dashboard.html"; //[cite: 6]
+        } 
+        // 2. BỔ SUNG: Tài khoản KHÁCH (Chỉ được sửa Quy trình)
+        else if (u === "khach" && p === "123456") { // 👈 Đổi username/password khách tùy ý bạn
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('username', u);
+            localStorage.setItem('userRole', 'PROCEDURE_ONLY'); // 👈 Cờ nhận diện tài khoản Khách
             
             window.location.href = "dashboard.html";
-        } else {
-            document.getElementById('errorBlock').style.display = 'flex';
+        } 
+        // Trường hợp nhập sai
+        else {
+            document.getElementById('errorBlock').style.display = 'flex'; //[cite: 6]
         }
     }
 </script>
-
-</body>
-</html>
