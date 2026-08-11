@@ -2088,7 +2088,6 @@
                 const cardClass = isAppSheet ? 'link-card appsheet-link' : 'link-card sheet-link';
                 const authorText = item.author ? item.author : '';
 
-                // Nếu là tài khoản khách, khi click vào card báo cáo sẽ báo "Báo cáo nội bộ" và chặn mở link
                 if (isGuestAccount()) {
                     wrapper.innerHTML = `
                         <div class="${cardClass}" style="cursor: pointer;" onclick="alert('Báo cáo nội bộ');">
@@ -2172,7 +2171,23 @@
                 const tr = document.createElement('tr');
                 tr.className = 'table-row-border';
                 const content = item.factory || item.content || '';
-                const linkCell = createViewLinkWithPopover(item.checklistLink, "📋 Checklist SOP", content);
+                
+                let linkCell = '';
+                if (isGuestAccount()) {
+                    linkCell = `
+                        <div class="doc-popover-wrapper">
+                            <span class="view-link" onclick="alert('Báo cáo nội bộ');">Xem</span>
+                            <div class="doc-popover">
+                                <div class="doc-popover-title">📋 Checklist SOP</div>
+                                <div class="doc-popover-body">
+                                    <p style="margin: 2px 0;"><strong>Chi tiết:</strong> ${escapeHtml(content)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    linkCell = createViewLinkWithPopover(item.checklistLink, "📋 Checklist SOP", content);
+                }
 
                 tr.innerHTML = `
                     <td class="cell-date">${escapeHtml(formatDate(item.date))}</td>
@@ -2238,7 +2253,6 @@
             data.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.className = 'table-row-border';
-                // Chữ Xem ở mục Sổ tay Quy trình công việc vẫn hoạt động bình thường cho cả khách và admin theo đúng yêu cầu
                 const linkCell = createViewLinkWithPopover(item.link, `📖 ${item.name}`, item.note);
 
                 tr.innerHTML = `
@@ -2696,4 +2710,4 @@
 
 </body>
 </html>
-```[cite: 11]
+```[cite: 11, 12]
