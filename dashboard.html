@@ -182,7 +182,8 @@
             align-items: center;
             gap: 15px;
             margin-bottom: 20px;
-            margin-top: 50px;
+            margin-top: 50px;  /* <-- THÊM DÒNG NÀY (tăng/giảm số px tùy ý để đẩy xuống) */
+            width: 100%;
         }
 
         /* KHỐI TIÊU ĐỀ CĂN TRÁI VỚI ACCENT BAR */
@@ -366,6 +367,7 @@
             margin-bottom: 10px;
         }
 
+        /* Tùy chỉnh thanh cuộn đẹp mắt cho khối Danh Sách Báo Cáo */
         #reportListContainer::-webkit-scrollbar {
             width: 6px;
         }
@@ -1239,8 +1241,8 @@
 
             <!-- CỘT BÊN PHẢI -->
             <div>
-                <!-- KHỐI 1: LỊCH KIỂM HÀNG & AUDIT (ĐÃ ĐỔI THÀNH MÀU TRẮNG) -->
-                <div class="card-box" style="margin-bottom: 20px; background-color: #ffffff;">
+                <!-- KHỐI 1: LỊCH KIỂM HÀNG & AUDIT -->
+                <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
                     <h3 class="card-box-title">📅 Lịch Kiểm Hàng & Audit</h3>
                     <div class="table-responsive">
                         <div class="scrollable-table-wrapper">
@@ -1263,8 +1265,8 @@
                     </div>
                 </div>
 
-                <!-- KHỐI 2: LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC (ĐÃ ĐỔI THÀNH MÀU TRẮNG) -->
-                <div class="card-box" style="margin-bottom: 20px; background-color: #ffffff;">
+                <!-- KHỐI 2: LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
+                <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
                     <h3 class="card-box-title">📋 Lịch Đánh Giá SOP & Công tác</h3>
                     <div class="table-responsive">
                         <div class="sop-scrollable-table-wrapper">
