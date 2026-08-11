@@ -1592,12 +1592,10 @@
         /* 📍 BƯỚC 3: HÀM PHÂN QUYỀN GIAO DIỆN */
         function applyRolePermissions() {
             if (currentUserRole === 'guest') {
-                // Ẩn tất cả các nút Cập nhật ở giao diện chính ngoại trừ Quy trình công việc
+                // Ẩn TOÀN BỘ các nút "Cập nhật" trên giao diện chính
                 const allUpdateBtns = document.querySelectorAll('.btn-update');
                 allUpdateBtns.forEach(btn => {
-                    const isProcBtn = btn.getAttribute('onclick') === 'openProcEditModal()';
-                    if (!isProcBtn) {
-                        btn.style.display = 'none';
+                btn.style.display = 'none';
                     }
                 });
 
