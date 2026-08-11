@@ -2412,7 +2412,7 @@
                 marqueeEl.innerHTML = "Tuần này hiện chưa có lịch kiểm hàng / audit phát sinh.";
             } else {
                 const marqueeItems = thisWeekAudits.map(item => {
-                    return ` ${formatDate(item.date)} ${escapeHtml(item.customer)}`;
+                    return ` ${formatDate(item.date)}-- ${escapeHtml(item.customer)}`;
             });
                 marqueeEl.innerHTML = marqueeItems.join(' &nbsp;&nbsp;&nbsp;    |    &nbsp;&nbsp;&nbsp; ');
             }
