@@ -1589,24 +1589,21 @@
             currentUserRole = 'admin';
         }
 
-        /* 📍 BƯỚC 3: HÀM PHÂN QUYỀN GIAO DIỆN */
+        /* 📍 BƯỚC 3: HÀM PHÂN QUYỀN GIAO DIỆN (ĐÃ BỎ QUYỀN CẬP NHẬT CỦA GUEST CHO TẤT CẢ TÍNH NĂNG) */
         function applyRolePermissions() {
             if (currentUserRole === 'guest') {
-                // Ẩn tất cả các nút Cập nhật ở giao diện chính ngoại trừ Quy trình công việc
+                // Ẩn toàn bộ nút Cập nhật trên giao diện chính nếu là guest
                 const allUpdateBtns = document.querySelectorAll('.btn-update');
                 allUpdateBtns.forEach(btn => {
-                    const isProcBtn = btn.getAttribute('onclick') === 'openProcEditModal()';
-                    if (!isProcBtn) {
-                        btn.style.display = 'none';
-                    }
+                    btn.style.display = 'none';
                 });
 
                 // Khóa/Ẩn nút "Cập nhật số lượng" trong Popup Nhân sự
                 const popoverEditBtns = document.querySelectorAll('#orgModalFooter .btn-update');
                 popoverEditBtns.forEach(btn => btn.style.display = 'none');
 
-                // Vô hiệu hóa tính năng thêm/xóa/sửa file PDF ở các Modal không phải Proc
-                const restrictedModals = ['#reportModal', '#sopModal', '#inspModal', '#editModal', '#qaEditModal', '#companyEditModal'];
+                // Vô hiệu hóa tính năng thêm/xóa/sửa ở toàn bộ các Modal
+                const restrictedModals = ['#procModal', '#reportModal', '#sopModal', '#inspModal', '#editModal', '#qaEditModal', '#companyEditModal'];
                 restrictedModals.forEach(selector => {
                     const modal = document.querySelector(selector);
                     if (modal) {
@@ -1934,10 +1931,10 @@
             container.appendChild(rowDiv);
         }
 
-        /* 📍 BƯỚC 5: CHẶN QUYỀN LƯU DỮ LIỆU (PHÍA CLIENT) */
+        /* 📍 BƯỚC 5: CHẶN QUYỀN LƯU DỮ LIỆU ĐỐI VỚI KHÁCH */
         async function saveToGoogleSheet(sheetName, data, callbackClose, btnId) {
-            if (currentUserRole === 'guest' && sheetName !== 'proc') {
-                alert("Bạn đang đăng nhập với tài khoản Khách. Bạn chỉ có quyền chỉnh sửa 'Sổ tay Quy trình công việc'!");
+            if (currentUserRole === 'guest') {
+                alert("Tài khoản Khách chỉ có quyền xem, không được phép lưu hoặc chỉnh sửa dữ liệu!");
                 return;
             }
 
