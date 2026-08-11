@@ -21,7 +21,27 @@
         .doc-title { font-weight: 700; color: #1e293b; margin-bottom: 4px; font-size: 15px; }
         .doc-desc { color: #64748b; font-size: 13px; margin: 0; }
         .btn-view { background: #1a73e8; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; border: none; }
-        .btn-update { background: #1a73e8; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 25px; float: right; display: flex; align-items: center; gap: 6px; }
+        
+        /* 🔒 Mặc định ẨN HẲN nút cập nhật bằng CSS !important để tránh bị giật giao diện */
+        .btn-update { 
+            background: #1a73e8; 
+            color: #fff; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            margin-top: 25px; 
+            float: right; 
+            display: none !important; /* Mặc định ẩn hoàn toàn */
+            align-items: center; 
+            gap: 6px; 
+        }
+
+        /* Lớp CSS này chỉ được kích hoạt khi tài khoản có quyền Admin/Staff */
+        .btn-update.show-admin {
+            display: flex !important;
+        }
 
         /* Modal Styles */
         .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
@@ -54,7 +74,8 @@
             <p>Đang tải dữ liệu...</p>
         </div>
 
-        <button class="btn-update" onclick="openModal()">✏️ Cập nhật Danh sách</button>
+        <!-- Nút Cập nhật (Mặc định ẩn hoàn toàn) -->
+        <button class="btn-update" id="btnUpdateList" onclick="openModal()">✏️ Cập nhật Danh sách</button>
         <div style="clear: both;"></div>
     </div>
 
@@ -72,14 +93,54 @@
     </div>
 
     <script>
-        // URL Web App từ Google Apps Script
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec';
-        // Tab dữ liệu riêng cho Bộ phận Cắt trên Google Sheets
         const SHEET_NAME = 'cutting_docs';
 
         let currentCuttingList = [];
 
-        // Hàm mở file PDF hoặc Link web an toàn
+        // 🔒 HÀM XÁC THỰC QUYỀN
+        function checkCanEdit() {
+            try {
+                // Quét thông tin từ localStorage và sessionStorage
+                const storageData = {
+                    role: localStorage.getItem('role') || sessionStorage.getItem('role'),
+                    userRole: localStorage.getItem('userRole') || sessionStorage.getItem('userRole'),
+                    user: JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}'),
+                    account: JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}')
+                };
+
+                const roleStr = (
+                    storageData.role || 
+                    storageData.userRole || 
+                    storageData.user.role || 
+                    storageData.user.type ||
+                    storageData.account.role || 
+                    ''
+                ).toString().toLowerCase();
+
+                // Kiểm tra từ khóa vai trò
+                if (roleStr.includes('admin') || roleStr.includes('manager') || roleStr.includes('editor') || roleStr.includes('staff')) {
+                    return true;
+                }
+            } catch (e) {
+                console.warn('Lỗi khi kiểm tra phân quyền:', e);
+            }
+            // Mặc định trả về false (Xem như Khách/Guest)
+            return false;
+        }
+
+        // Bật/tắt giao diện dựa trên quyền
+        function applyPermissionUI() {
+            const btnUpdate = document.getElementById('btnUpdateList');
+            if (btnUpdate) {
+                if (checkCanEdit()) {
+                    btnUpdate.classList.add('show-admin');
+                } else {
+                    btnUpdate.classList.remove('show-admin');
+                }
+            }
+        }
+
         function openDocument(url) {
             if (!url || url === '#') return;
             
@@ -104,7 +165,6 @@
             }
         }
 
-        // 1. Tải dữ liệu từ tab 'cutting_docs' trên Google Sheets
         async function loadCuttingDocsData() {
             const container = document.getElementById('docListContainer');
             if (container) container.innerHTML = '<p>Đang tải dữ liệu từ Google Sheets...</p>';
@@ -113,9 +173,7 @@
                 const res = await fetch(SCRIPT_URL);
                 const result = await res.json();
                 
-                // Lấy mảng dữ liệu thuộc tab 'cutting_docs'
                 currentCuttingList = result[SHEET_NAME] || [];
-
                 renderList(currentCuttingList);
             } catch (err) {
                 console.error('Lỗi khi tải dữ liệu:', err);
@@ -123,7 +181,6 @@
             }
         }
 
-        // 2. Render danh sách tài liệu ra màn hình
         function renderList(list) {
             const container = document.getElementById('docListContainer');
             container.innerHTML = '';
@@ -150,8 +207,12 @@
             });
         }
 
-        // 3. Quản lý Modal Cập Nhật
         function openModal() {
+            if (!checkCanEdit()) {
+                alert("Tài khoản của bạn không có quyền cập nhật danh sách!");
+                return;
+            }
+
             const container = document.getElementById('modalRowContainer');
             container.innerHTML = '';
             
@@ -198,8 +259,12 @@
             }
         }
 
-        // 4. Lưu dữ liệu về Google Sheets (tab cutting_docs)
         async function saveData() {
+            if (!checkCanEdit()) {
+                alert("Tài khoản của bạn không có quyền thực hiện thao tác này!");
+                return;
+            }
+
             const rows = document.querySelectorAll('#modalRowContainer .edit-row');
             const updateData = [];
 
@@ -223,7 +288,7 @@
                     method: 'POST',
                     body: JSON.stringify({
                         action: 'updateSheet',
-                        sheetName: SHEET_NAME, // Định hướng lưu về tab 'cutting_docs'
+                        sheetName: SHEET_NAME,
                         data: updateData
                     })
                 });
@@ -232,7 +297,7 @@
                 if (result.status === 'success') {
                     alert('Đã cập nhật danh sách vào Google Sheet thành công!');
                     closeModal();
-                    loadCuttingDocsData(); // Tải lại dữ liệu sau khi cập nhật thành công
+                    loadCuttingDocsData();
                 } else {
                     alert('Lưu thất bại: ' + (result.message || 'Có lỗi xảy ra!'));
                 }
@@ -245,7 +310,8 @@
             }
         }
 
-        // Tải dữ liệu ban đầu
+        // Thực thi kiểm tra phân quyền và tải dữ liệu ban đầu
+        applyPermissionUI();
         loadCuttingDocsData();
     </script>
 </body>
