@@ -328,12 +328,12 @@
 
         /* STYLES CHO WIDGET LỊCH TƯƠNG TÁC (TINH CHỈNH MÀU SẮC ĐẸP & GỌN GÀNG HƠN) */
         .mini-calendar-widget {
-            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            background: linear-gradient(145deg, #1e293b, #0f172a);
             padding: 18px;
             border-radius: 20px;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.08);
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.3);
             margin-bottom: 20px;
-            border: 1px solid #e2e8f0;
+            border: 3px solid #334155;
         }
         .cal-header {
             display: flex;
@@ -345,21 +345,21 @@
         .cal-header h4 {
             margin: 0;
             font-size: 16px;
-            color: #1e293b;
+            color: #f8fafc;
             font-weight: 700;
             letter-spacing: 0.3px;
         }
         .cal-nav-btn {
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
+            background: #334155;
+            border: 1px solid #475569;
             border-radius: 8px;
             padding: 5px 12px;
             cursor: pointer;
             font-weight: bold;
-            color: #334155;
+            color: #f8fafc;
             font-size: 14px;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .cal-nav-btn:hover {
             background: #2563eb;
@@ -375,7 +375,7 @@
         .cal-day-name {
             font-size: 12px;
             font-weight: 700;
-            color: #64748b;
+            color: #94a3b8;
             padding-bottom: 8px;
             text-transform: uppercase;
         }
@@ -387,42 +387,42 @@
             justify-content: center;
             font-size: 13px;
             font-weight: 600;
-            color: #334155;
-            background-color: #ffffff;
-            border: 1px solid #f1f5f9;
+            color: #f1f5f9;
+            background-color: #334155;
+            border: 1px solid #475569;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
         .cal-cell:hover {
-            background-color: #eff6ff;
-            color: #2563eb;
-            border-color: #bfdbfe;
+            background-color: #475569;
+            color: #ffffff;
+            border-color: #64748b;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
         .cal-cell.other-month {
-            color: #cbd5e1;
-            background-color: #f8fafc;
+            color: #64748b;
+            background-color: #1e293b;
             border-color: transparent;
         }
         .cal-cell.today {
-            background-color: #eff6ff;
-            border: 2px solid #2563eb;
-            color: #2563eb;
+            background-color: #1e293b;
+            border: 2px solid #3b82f6;
+            color: #60a5fa;
             font-weight: 700;
         }
         /* Style cho ngày được đánh dấu hoặc có ghi chú */
         .cal-cell.marked-day {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-color: #f59e0b;
-            color: #b45309;
+            background: linear-gradient(135deg, #78350f, #92400e);
+            border-color: #d97706;
+            color: #fde68a;
             font-weight: 700;
-            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
+            box-shadow: 0 2px 6px rgba(217, 119, 6, 0.4);
         }
         .cal-cell.marked-day:hover {
-            background: linear-gradient(135deg, #fde68a, #fcd34d);
+            background: linear-gradient(135deg, #92400e, #b45309);
         }
         .cal-cell.has-event::after {
             content: '';
@@ -430,7 +430,7 @@
             bottom: 4px;
             width: 5px;
             height: 5px;
-            background-color: #dc2626;
+            background-color: #ef4444;
             border-radius: 50%;
         }
         /* Hiển thị tóm tắt ghi chú trực tiếp siêu nhỏ trên ô lịch nếu có */
@@ -440,7 +440,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            color: #92400e;
+            color: #fde68a;
             margin-top: 2px;
         }
 
@@ -2688,84 +2688,56 @@
             saveToGoogleSheet('insp', newData, closeInspEditModal, 'btnSaveInsp');
         }
 
-        /* 📢 HÀM TỰ ĐỘNG CẬP NHẬT CHỮ CHẠY VỀ LỊCH KIỂM HÀNG TUẦN HIỆN TẠI */
-        function updateMarqueeSchedule(data) {
-            const marqueeEl = document.getElementById('marqueeAuditSchedule');
-            if (!marqueeEl) return;
-
-            if (!data || data.length === 0) {
-                marqueeEl.innerHTML = "Không có lịch kiểm hàng / audit nào trong tuần hiện tại.";
-                return;
-            }
-
-            const now = new Date();
-            const currentDay = now.getDay();
-            const distanceToMonday = (currentDay === 0 ? -6 : 1 - currentDay);
-            
-            const monday = new Date(now);
-            monday.setDate(now.getDate() + distanceToMonday);
-            monday.setHours(0, 0, 0, 0);
-
-            const sunday = new Date(monday);
-            sunday.setDate(monday.getDate() + 6);
-            sunday.setHours(23, 59, 59, 999);
-
-            const thisWeekAudits = data.filter(item => {
-                if (!item.date) return false;
-                const itemDate = new Date(item.date);
-                return !isNaN(itemDate.getTime()) && itemDate >= monday && itemDate <= sunday;
-            });
-
-            if (thisWeekAudits.length === 0) {
-                marqueeEl.innerHTML = "Tuần này hiện chưa có lịch kiểm hàng / audit phát sinh.";
-            } else {
-                const marqueeItems = thisWeekAudits.map(item => {
-                    return ` ◆ ${formatDate(item.date)} -- ${escapeHtml(item.customer)}`;
-            });
-                marqueeEl.innerHTML = marqueeItems.join(' &nbsp;&nbsp;&nbsp;                &nbsp;&nbsp;&nbsp; ');
-            }
-        }
-
         function renderAudit(data) {
             const tbody = document.querySelector('#auditTable tbody');
             tbody.innerHTML = '';
 
+            const marqueeContent = document.getElementById('marqueeAuditSchedule');
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const currentWeek = getWeekNumber(now);
+
+            let currentWeekAudits = [];
+
             data.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.className = 'table-row-border';
-                
-                let typeColor = '#1a73e8';
-                if (item.type && item.type.toLowerCase().includes('audit')) typeColor = '#d93025';
-                if (item.type && item.type.toLowerCase().includes('pre')) typeColor = '#137333';
+                const linkCell = createViewLinkWithPopover(item.docLink, `📅 Lịch Kiểm Hàng - ${item.customer}`, item.note);
 
-                const info = `Khách hàng: ${item.customer} | Loại: ${item.type} | Nhà máy: ${item.factory}`;
-                
-                let docCell = '';
-                if (isGuestAccount()) {
-                    docCell = `
-                        <div class="doc-popover-wrapper">
-                            <span class="view-link" onclick="alert('Báo cáo nội bộ');">Xem</span>
-                            <div class="doc-popover">
-                                <div class="doc-popover-title">${escapeHtml("📂 Tài liệu Audit/Kiểm hàng")}</div>
-                                <div class="doc-popover-body">
-                                    <p style="margin: 2px 0;"><strong>Chi tiết:</strong> ${escapeHtml(info)}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    docCell = createViewLinkWithPopover(item.docLink, "📂 Tài liệu Audit/Kiểm hàng", info);
+                if (item.date) {
+                    const itemDate = new Date(item.date);
+                    if (!isNaN(itemDate.getTime())) {
+                        if (itemDate.getFullYear() === currentYear && getWeekNumber(itemDate) === currentWeek) {
+                            currentWeekAudits.push(`${item.customer} (${formatDate(item.date)})`);
+                        }
+                    }
                 }
 
                 tr.innerHTML = `
                     <td class="cell-text-bold">${escapeHtml(item.customer)}</td>
                     <td class="cell-date">${escapeHtml(formatDate(item.date))}</td>
-                    <td class="cell-note" style="color: ${typeColor}; font-weight: 600;">${escapeHtml(item.type)}</td>
+                    <td class="cell-content">${escapeHtml(item.type)}</td>
                     <td class="cell-note text-center">${escapeHtml(item.factory)}</td>
-                    <td class="cell-date text-center">${docCell}</td>
+                    <td class="cell-note text-center">${linkCell}</td>
                 `;
                 tbody.appendChild(tr);
             });
+
+            if (marqueeContent) {
+                if (currentWeekAudits.length > 0) {
+                    marqueeContent.innerText = `Lịch kiểm hàng tuần này: ${currentWeekAudits.join(' | ')}`;
+                } else {
+                    marqueeContent.innerText = `Tuần này (${currentWeek}) hiện chưa có lịch kiểm hàng hoặc audit nào được lên lịch.`;
+                }
+            }
+        }
+
+        function getWeekNumber(d) {
+            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+            return weekNo;
         }
 
         function openEditModal() {
@@ -2786,12 +2758,12 @@
             rowDiv.className = 'edit-row-audit';
             rowDiv.innerHTML = `
                 <input type="text" placeholder="Khách hàng" value="${escapeHtml(customer)}">
-                <input type="text" placeholder="Ngày" value="${escapeHtml(date)}">
+                <input type="text" placeholder="Ngày (YYYY-MM-DD)" value="${escapeHtml(date)}">
                 <input type="text" placeholder="Loại" value="${escapeHtml(type)}">
                 <input type="text" placeholder="Nhà máy" value="${escapeHtml(factory)}">
-                <input type="text" class="link-input" placeholder="Link hoặc PDF" value="${escapeHtml(docLink)}">
+                <input type="text" class="link-input" placeholder="Link hoặc chọn PDF" value="${escapeHtml(docLink)}">
                 <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
-                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 Tải PDF</button>
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
             `;
             container.appendChild(rowDiv);
@@ -2811,100 +2783,174 @@
                 const factory = inputs[3].value.trim();
                 const docLink = inputs[4].value.trim();
 
-                if (customer || date || type) {
+                if (customer || date) {
                     newData.push({ customer, date, type, factory, docLink });
                 }
             });
 
             globalData.audit = newData;
-            updateMarqueeSchedule(newData);
             saveToGoogleSheet('audit', newData, closeEditModal, 'btnSaveAudit');
         }
 
-        function translatePage(lang, btn) {
+        function translatePage(lang, btnElement) {
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
+            if (btnElement) btnElement.classList.add('active');
 
             if (lang === 'vi') {
                 location.reload();
                 return;
             }
 
-            const frame = document.querySelector('.goog-te-banner-frame');
-            let select = document.querySelector('.goog-te-combo');
-            if (!select) {
-                new google.translate.TranslateElement({ pageLanguage: 'vi', includedLanguages: 'en,ko,vi', autoDisplay: false }, 'google_translate_element');
-                setTimeout(() => {
-                    select = document.querySelector('.goog-te-combo');
-                    if (select) {
-                        select.value = lang;
-                        select.dispatchEvent(new Event('change'));
-                    }
-                }, 1000);
-            } else {
-                select.value = lang;
-                select.dispatchEvent(new Event('change'));
-            }
-        }
-
-        function initAutoComplete() {
-            const dataToSearch = [];
-            globalData.reports.forEach(r => dataToSearch.push({ title: r.title, category: 'Báo cáo', link: r.link }));
-            globalData.proc.forEach(p => dataToSearch.push({ title: p.name, category: 'Quy trình', link: p.link }));
-            globalData.insp.forEach(i => dataToSearch.push({ title: i.name, category: 'Hướng dẫn Audit', link: i.link }));
-
-            const config = {
-                selector: "#autoComplete",
-                placeHolder: "🔍 Tìm kiếm báo cáo, quy trình...",
-                data: {
-                    src: dataToSearch,
-                    keys: ["title"]
+            const transMap = {
+                en: {
+                    title: "QUALITY CONTROL DEPARTMENT INFORMATION",
+                    marqueeLabel: "📌 This Week's Inspection Schedule",
+                    reportsTitle: "📊 Reports List",
+                    updateBtn: "Update",
+                    docsTitle: "📂 Documents & Guidelines",
+                    procTitle: "📖 Work Process Manual",
+                    inspTitle: "🔍 CUSTOMER AUDIT PREPARATION",
+                    auditTitle: "📅 Inspection & Audit Schedule",
+                    sopTitle: "📋 SOP & Business Evaluation Schedule",
+                    mapTitle: "📍 Company Location (Google Maps)",
+                    orgTitle: "👥 Information and Personnel",
+                    companyBtn: "Hai Vina",
+                    qaBtn: "QA Quantity",
+                    calibrationBtn: "Calibration",
+                    isoBtn: "ISO 9001",
+                    equipmentBtn: "Equipment Management",
+                    trainingBtn: "QC Training & Evaluation",
+                    customersTitle: "🏷️ MAJOR CUSTOMERS",
+                    footerTitle: "Information Page",
+                    footerInfo: "Quality Control Department - Hai Vina Co., Ltd",
+                    footerAddress: "Headquarters: Lang Xuyen hamlet, Gia Loc commune, Hai Phong city, Vietnam / Phone: 02203717500",
+                    topBtn: "⬆ Top",
+                    rights: "© 08-2026. Copyright by ISO team",
+                    loading: "⏳ Loading data, please wait..."
                 },
-                resultsList: {
-                    element: (list, data) => {
-                        const results = document.getElementById("autoComplete_list");
-                        if (data.results.length === 0) {
-                            results.innerHTML = `<div class="autoComplete_result"><span class="search-item-title" style="color: #94a3b8;">Không tìm thấy kết quả phù hợp</span></div>`;
-                        }
-                    },
-                    maxResults: 10,
-                    noResults: true,
-                    tab: true
-                },
-                resultItem: {
-                    element: (item, data) => {
-                        item.innerHTML = `
-                            <span class="search-item-title">${escapeHtml(data.value.title)}</span>
-                            <span class="search-item-category">${escapeHtml(data.value.category)}</span>
-                        `;
-                    },
-                    highlight: true
-                },
-                events: {
-                    input: {
-                        selection: (event) => {
-                            const selection = event.detail.selection.value;
-                            document.getElementById("autoComplete").value = selection.title;
-                            openDocument(selection.link);
-                        }
-                    }
+                ko: {
+                    title: "품질부 정보 페이지",
+                    marqueeLabel: "📌 이번주 검품 일정",
+                    reportsTitle: "📊 보고서 목록",
+                    updateBtn: "업데이트",
+                    docsTitle: "📂 문서 및 지침",
+                    procTitle: "📖 업무 표준 절차서",
+                    inspTitle: "🔍 고객사 심사 준비",
+                    auditTitle: "📅 검품 및 심사 일정",
+                    sopTitle: "📋 SOP 및 업무 평가 일정",
+                    mapTitle: "📍 회사 위치 (구글 맵)",
+                    orgTitle: "👥 정보 및 인사",
+                    companyBtn: "하이비나",
+                    qaBtn: "QA 인원",
+                    calibrationBtn: "교정",
+                    isoBtn: "ISO 9001",
+                    equipmentBtn: "장비 관리",
+                    trainingBtn: "QC 교육 및 평가",
+                    customersTitle: "🏷️ 주요 고객사",
+                    footerTitle: "정보 페이지",
+                    footerInfo: "품질부 - 하이비나 유한회사",
+                    footerAddress: "본사: 베트남 하이퐁시 지아록 랑쑤옌 마을 / 전화번호: 02203717500",
+                    topBtn: "⬆ 맨 위로",
+                    rights: "© 08-2026. ISO 팀 저작권",
+                    loading: "⏳ 데이터를 불러오는 중입니다..."
                 }
             };
 
-            if (document.querySelector("#autoComplete")) new autoComplete(config);
-            if (document.querySelector("#autoCompleteFooter")) {
-                let footerConfig = Object.assign({}, config, { selector: "#autoCompleteFooter" });
-                new autoComplete(footerConfig);
-            }
+            const t = transMap[lang];
+            if (!t) return;
+
+            const mainTitle = document.querySelector('.main-title-box h2');
+            if (mainTitle) mainTitle.innerText = t.title;
+
+            const marqueeLabel = document.querySelector('.marquee-label');
+            if (marqueeLabel) marqueeLabel.innerText = t.marqueeLabel;
+
+            const reportsHeading = document.querySelector('.dashboard-grid .card-box:nth-child(1) .card-box-title');
+            if (reportsHeading) reportsHeading.innerText = t.reportsTitle;
+
+            const docsHeading = document.querySelector('.dashboard-grid .card-box:nth-child(2) .card-box-title');
+            if (docsHeading) docsHeading.innerText = t.docsTitle;
+
+            const procTitleCell = document.querySelector('#procTable .doc-section-title td');
+            if (procTitleCell) procTitleCell.innerText = t.procTitle;
+
+            const inspTitleCell = document.querySelector('#inspTable .doc-section-title td');
+            if (inspTitleCell) inspTitleCell.innerText = t.inspTitle;
+
+            const auditHeading = document.querySelector('.card-box h3');
+            // Cập nhật các tiêu đề card tùy theo vị trí
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             initWeatherAndDate();
-            loadAllDataFromGoogleSheet().then(() => {
-                initAutoComplete();
-                updateMarqueeSchedule(globalData.audit);
-            });
-            renderMiniCalendar();
+            loadAllDataFromGoogleSheet();
+
+            // Khởi tạo thư viện AutoComplete cho Header và Footer
+            if (typeof autoComplete !== 'undefined') {
+                const searchDataSource = () => {
+                    let results = [];
+                    if (globalData.reports) {
+                        globalData.reports.forEach(r => results.push({ title: r.title, category: 'Báo cáo' }));
+                    }
+                    if (globalData.proc) {
+                        globalData.proc.forEach(p => results.push({ title: p.name, category: 'Quy trình' }));
+                    }
+                    if (globalData.insp) {
+                        globalData.insp.forEach(i => results.push({ title: i.name, category: 'Hướng dẫn' }));
+                    }
+                    if (globalData.audit) {
+                        globalData.audit.forEach(a => results.push({ title: `${a.customer} - ${a.type}`, category: 'Audit' }));
+                    }
+                    return results;
+                };
+
+                const config = {
+                    selector: "#autoComplete",
+                    placeHolder: "🔍 Tìm kiếm báo cáo, quy trình...",
+                    data: {
+                        src: searchDataSource,
+                        keys: ["title"]
+                    },
+                    resultsList: {
+                        element: (list, data) => {
+                            const results = document.getElementById("autoComplete_list");
+                            if (data.results.length === 0) {
+                                results.style.display = "none";
+                            }
+                        },
+                        noResults: true,
+                        maxResults: 10,
+                        tabSelect: true
+                    },
+                    resultItem: {
+                        element: (item, data) => {
+                            item.style = "display: flex; justify-content: space-between; align-items: center;";
+                            item.innerHTML = `
+                                <span class="search-item-title">${data.value.title}</span>
+                                <span class="search-item-category">${data.value.category}</span>
+                            `;
+                        },
+                        highlight: true
+                    },
+                    events: {
+                        input: {
+                            selection: (event) => {
+                                const selection = event.detail.selection.value;
+                                document.getElementById("autoComplete").value = selection.title;
+                                alert(`Đã chọn: ${selection.title} (${selection.category})`);
+                            }
+                        }
+                    }
+                };
+
+                new autoComplete(config);
+
+                const configFooter = {
+                    ...config,
+                    selector: "#autoCompleteFooter"
+                };
+                new autoComplete(configFooter);
+            }
         });
     </script>
 </body>
