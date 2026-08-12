@@ -326,6 +326,87 @@
             white-space: nowrap;
         }
 
+        /* STYLES CHO WIDGET LỊCH TƯƠNG TÁC */
+        .mini-calendar-widget {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+        .cal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .cal-header h4 {
+            margin: 0;
+            font-size: 15px;
+            color: #1e293b;
+            font-weight: 700;
+        }
+        .cal-nav-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #334155;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .cal-nav-btn:hover {
+            background: #e2e8f0;
+            color: #1a73e8;
+        }
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            text-align: center;
+        }
+        .cal-day-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            padding-bottom: 6px;
+        }
+        .cal-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .cal-cell:hover {
+            background-color: #f1f5f9;
+            color: #1a73e8;
+        }
+        .cal-cell.other-month {
+            color: #cbd5e1;
+        }
+        .cal-cell.today {
+            border: 2px solid #2563eb;
+            color: #2563eb;
+        }
+        .cal-cell.has-event::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            width: 4px;
+            height: 4px;
+            background-color: #dc2626;
+            border-radius: 50%;
+        }
+
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1241,6 +1322,25 @@
 
             <!-- CỘT BÊN PHẢI -->
             <div>
+                <!-- KHỐI LỊCH TƯƠNG TÁC (WIDGET GỌN GÀNG) -->
+                <div class="mini-calendar-widget">
+                    <div class="cal-header">
+                        <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+                        <h4 id="calendarMonthYear">Tháng 8, 2026</h4>
+                        <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+                    </div>
+                    <div class="cal-grid">
+                        <div class="cal-day-name">T2</div>
+                        <div class="cal-day-name">T3</div>
+                        <div class="cal-day-name">T4</div>
+                        <div class="cal-day-name">T5</div>
+                        <div class="cal-day-name">T6</div>
+                        <div class="cal-day-name">T7</div>
+                        <div class="cal-day-name">CN</div>
+                    </div>
+                    <div class="cal-grid" id="calendarDaysContainer" style="margin-top: 4px;"></div>
+                </div>
+
                 <!-- KHỐI 1: LỊCH KIỂM HÀNG & AUDIT -->
                 <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
                     <h3 class="card-box-title">📅 Lịch Kiểm Hàng & Audit</h3>
@@ -1623,6 +1723,75 @@
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('username');
             window.location.replace("index.html");
+        }
+
+        /* LOGIC LỊCH TƯƠNG TÁC MINI */
+        let currentCalendarDate = new Date();
+
+        function renderMiniCalendar() {
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+
+            const monthNames = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
+            document.getElementById('calendarMonthYear').innerText = `${monthNames[month]}, ${year}`;
+
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            // Điều chỉnh để tuần bắt đầu từ Thứ 2 (Chủ nhật = 6 hoặc 0)
+            const adjustedFirstDay = (firstDayIndex === 0) ? 6 : firstDayIndex - 1;
+
+            const totalDays = new Date(year, month + 1, 0).getDate();
+            const prevTotalDays = new Date(year, month, 0).getDate();
+
+            const container = document.getElementById('calendarDaysContainer');
+            container.innerHTML = '';
+
+            const today = new Date();
+
+            // Ngày tháng trước bù vào
+            for (let i = adjustedFirstDay; i > 0; i--) {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'cal-cell other-month';
+                dayDiv.innerText = prevTotalDays - i + 1;
+                container.appendChild(dayDiv);
+            }
+
+            // Ngày trong tháng hiện tại
+            for (let i = 1; i <= totalDays; i++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'cal-cell';
+                dayDiv.innerText = i;
+
+                if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    dayDiv.classList.add('today');
+                }
+
+                // Kiểm tra xem ngày này có lịch audit hay không để chấm đỏ
+                const checkDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                if (globalData.audit && globalData.audit.some(item => item.date && item.date.startsWith(checkDateStr))) {
+                    dayDiv.classList.add('has-event');
+                }
+
+                dayDiv.onclick = () => {
+                    alert(`Ngày ${i}/${month + 1}/${year}`);
+                };
+
+                container.appendChild(dayDiv);
+            }
+
+            // Ngày tháng sau bù vào cho đủ lưới
+            const totalCellsSoFar = adjustedFirstDay + totalDays;
+            const remainingCells = (totalCellsSoFar <= 35) ? (35 - totalCellsSoFar) : (42 - totalCellsSoFar);
+            for (let i = 1; i <= remainingCells; i++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'cal-cell other-month';
+                dayDiv.innerText = i;
+                container.appendChild(dayDiv);
+            }
+        }
+
+        function changeMonth(direction) {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+            renderMiniCalendar();
         }
 
         /* HÀM KHỞI TẠO VÀ CẬP NHẬT NGÀY THÁNG, THỜI TIẾT TỰ ĐỘNG */
@@ -2090,6 +2259,7 @@
                 renderAudit(globalData.audit);
                 renderCompanyTeam(globalData.companyTeam);
                 renderQaTeam(globalData.qaTeam);
+                renderMiniCalendar();
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
             } finally {
@@ -2534,6 +2704,7 @@
             });
 
             updateMarqueeSchedule(data);
+            renderMiniCalendar();
         }
 
         function openEditModal() {
@@ -2707,6 +2878,7 @@
             initWeatherAndDate();
             renderCompanyTeam(defaultCompanyTeam);
             renderQaTeam(defaultQaTeam);
+            renderMiniCalendar();
             initAutoComplete();
             loadAllDataFromGoogleSheet();
         });
@@ -2719,19 +2891,35 @@
             }, 'google_translate_element');
         }
 
-        function translatePage(langCode, btn) {
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        function translatePage(lang, btn) {
+            const buttons = document.querySelectorAll('.lang-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
 
-            var selectObj = document.querySelector('.goog-te-combo');
-            if (selectObj) {
-                selectObj.value = langCode;
-                selectObj.dispatchEvent(new Event('change'));
+            if (lang === 'vi') {
+                location.reload();
+                return;
+            }
+
+            const select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = lang;
+                select.dispatchEvent(new Event('change'));
+            } else {
+                const script = document.createElement('script');
+                script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+                document.body.appendChild(script);
+
+                setTimeout(() => {
+                    const retrySelect = document.querySelector('.goog-te-combo');
+                    if (retrySelect) {
+                        retrySelect.value = lang;
+                        retrySelect.dispatchEvent(new Event('change'));
+                    }
+                }, 1500);
             }
         }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
 </body>
 </html>
-```[cite: 11, 12]
