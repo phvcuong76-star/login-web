@@ -326,124 +326,6 @@
             white-space: nowrap;
         }
 
-        /* STYLES CHO WIDGET LỊCH TƯƠNG TÁC (TINH CHỈNH MÀU SẮC ĐẸP & GỌN GÀNG HƠN) */
-        .mini-calendar-widget {
-            background: linear-gradient(145deg, #334155, #1e293b);
-            padding: 18px;
-            border-radius: 20px;
-            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.3);
-            margin-bottom: 20px;
-            border: 3px solid #334155;
-        }
-        .cal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 0 4px;
-        }
-        .cal-header h4 {
-            margin: 0;
-            font-size: 16px;
-            color: #f8fafc;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-        }
-        .cal-nav-btn {
-            background: #334155;
-            border: 1px solid #475569;
-            border-radius: 8px;
-            padding: 5px 12px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #f8fafc;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        .cal-nav-btn:hover {
-            background: #2563eb;
-            color: #ffffff;
-            border-color: #2563eb;
-        }
-        .cal-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-            text-align: center;
-        }
-        .cal-day-name {
-            font-size: 12px;
-            font-weight: 700;
-            color: #94a3b8;
-            padding-bottom: 8px;
-            text-transform: uppercase;
-        }
-        .cal-cell {
-            aspect-ratio: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 600;
-            color: #f1f5f9;
-            background-color: #334155;
-            border: 1px solid #475569;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-        .cal-cell:hover {
-            background-color: #475569;
-            color: #ffffff;
-            border-color: #64748b;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-        .cal-cell.other-month {
-            color: #64748b;
-            background-color: #1e293b;
-            border-color: transparent;
-        }
-        .cal-cell.today {
-            background-color: #1e293b;
-            border: 2px solid #3b82f6;
-            color: #60a5fa;
-            font-weight: 700;
-        }
-        /* Style cho ngày được đánh dấu hoặc có ghi chú */
-        .cal-cell.marked-day {
-            background: linear-gradient(135deg, #78350f, #92400e);
-            border-color: #d97706;
-            color: #fde68a;
-            font-weight: 700;
-            box-shadow: 0 2px 6px rgba(217, 119, 6, 0.4);
-        }
-        .cal-cell.marked-day:hover {
-            background: linear-gradient(135deg, #92400e, #b45309);
-        }
-        .cal-cell.has-event::after {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            width: 5px;
-            height: 5px;
-            background-color: #ef4444;
-            border-radius: 50%;
-        }
-        /* Hiển thị tóm tắt ghi chú trực tiếp siêu nhỏ trên ô lịch nếu có */
-        .cal-note-text {
-            font-size: 8px;
-            max-width: 90%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            color: #fde68a;
-            margin-top: 2px;
-        }
-
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1359,25 +1241,6 @@
 
             <!-- CỘT BÊN PHẢI -->
             <div>
-                <!-- KHỐI LỊCH TƯƠNG TÁC (WIDGET GỌN GÀNG) -->
-                <div class="mini-calendar-widget">
-                    <div class="cal-header">
-                        <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
-                        <h4 id="calendarMonthYear">Tháng 8, 2026</h4>
-                        <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
-                    </div>
-                    <div class="cal-grid">
-                        <div class="cal-day-name">T2</div>
-                        <div class="cal-day-name">T3</div>
-                        <div class="cal-day-name">T4</div>
-                        <div class="cal-day-name">T5</div>
-                        <div class="cal-day-name">T6</div>
-                        <div class="cal-day-name">T7</div>
-                        <div class="cal-day-name">CN</div>
-                    </div>
-                    <div class="cal-grid" id="calendarDaysContainer" style="margin-top: 6px;"></div>
-                </div>
-
                 <!-- KHỐI 1: LỊCH KIỂM HÀNG & AUDIT -->
                 <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
                     <h3 class="card-box-title">📅 Lịch Kiểm Hàng & Audit</h3>
@@ -1760,102 +1623,6 @@
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('username');
             window.location.replace("index.html");
-        }
-
-        /* LOGIC LỊCH TƯƠNG TÁC MINI (Đã nâng cấp đánh dấu & chèn ghi chú) */
-        let currentCalendarDate = new Date();
-        // Lưu trữ ghi chú theo định dạng: "YYYY-MM-DD": "Nội dung ghi chú"
-        let calendarNotes = JSON.parse(localStorage.getItem('calendarNotes') || '{}');
-
-        function renderMiniCalendar() {
-            const year = currentCalendarDate.getFullYear();
-            const month = currentCalendarDate.getMonth();
-
-            const monthNames = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
-            document.getElementById('calendarMonthYear').innerText = `${monthNames[month]}, ${year}`;
-
-            const firstDayIndex = new Date(year, month, 1).getDay();
-            const adjustedFirstDay = (firstDayIndex === 0) ? 6 : firstDayIndex - 1;
-
-            const totalDays = new Date(year, month + 1, 0).getDate();
-            const prevTotalDays = new Date(year, month, 0).getDate();
-
-            const container = document.getElementById('calendarDaysContainer');
-            container.innerHTML = '';
-
-            const today = new Date();
-
-            // Ngày tháng trước bù vào
-            for (let i = adjustedFirstDay; i > 0; i--) {
-                const dayDiv = document.createElement('div');
-                dayDiv.className = 'cal-cell other-month';
-                dayDiv.innerText = prevTotalDays - i + 1;
-                container.appendChild(dayDiv);
-            }
-
-            // Ngày trong tháng hiện tại
-            for (let i = 1; i <= totalDays; i++) {
-                const dayDiv = document.createElement('div');
-                dayDiv.className = 'cal-cell';
-                
-                const spanNum = document.createElement('span');
-                spanNum.innerText = i;
-                dayDiv.appendChild(spanNum);
-
-                if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-                    dayDiv.classList.add('today');
-                }
-
-                // Kiểm tra định dạng ngày chuỗi YYYY-MM-DD
-                const checkDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-                
-                // Hiển thị đánh dấu và ghi chú nếu có
-                if (calendarNotes[checkDateStr]) {
-                    dayDiv.classList.add('marked-day');
-                    const noteSpan = document.createElement('span');
-                    noteSpan.className = 'cal-note-text';
-                    noteSpan.innerText = calendarNotes[checkDateStr];
-                    noteSpan.title = calendarNotes[checkDateStr];
-                    dayDiv.appendChild(noteSpan);
-                }
-
-                if (globalData.audit && globalData.audit.some(item => item.date && item.date.startsWith(checkDateStr))) {
-                    dayDiv.classList.add('has-event');
-                }
-
-                // Nhấp vào ngày để thêm hoặc sửa ghi chú trực tiếp
-                dayDiv.onclick = () => {
-                    const currentNote = calendarNotes[checkDateStr] || '';
-                    const newNote = prompt(`Nhập ghi chú cho ngày ${i}/${month + 1}/${year} (Để trống nếu muốn xóa ghi chú):`, currentNote);
-                    
-                    if (newNote !== null) {
-                        if (newNote.trim() === '') {
-                            delete calendarNotes[checkDateStr];
-                        } else {
-                            calendarNotes[checkDateStr] = newNote.trim();
-                        }
-                        localStorage.setItem('calendarNotes', JSON.stringify(calendarNotes));
-                        renderMiniCalendar();
-                    }
-                };
-
-                container.appendChild(dayDiv);
-            }
-
-            // Ngày tháng sau bù vào cho đủ lưới
-            const totalCellsSoFar = adjustedFirstDay + totalDays;
-            const remainingCells = (totalCellsSoFar <= 35) ? (35 - totalCellsSoFar) : (42 - totalCellsSoFar);
-            for (let i = 1; i <= remainingCells; i++) {
-                const dayDiv = document.createElement('div');
-                dayDiv.className = 'cal-cell other-month';
-                dayDiv.innerText = i;
-                container.appendChild(dayDiv);
-            }
-        }
-
-        function changeMonth(direction) {
-            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
-            renderMiniCalendar();
         }
 
         /* HÀM KHỞI TẠO VÀ CẬP NHẬT NGÀY THÁNG, THỜI TIẾT TỰ ĐỘNG */
@@ -2323,7 +2090,6 @@
                 renderAudit(globalData.audit);
                 renderCompanyTeam(globalData.companyTeam);
                 renderQaTeam(globalData.qaTeam);
-                renderMiniCalendar();
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
             } finally {
@@ -2688,56 +2454,86 @@
             saveToGoogleSheet('insp', newData, closeInspEditModal, 'btnSaveInsp');
         }
 
+        /* 📢 HÀM TỰ ĐỘNG CẬP NHẬT CHỮ CHẠY VỀ LỊCH KIỂM HÀNG TUẦN HIỆN TẠI */
+        function updateMarqueeSchedule(data) {
+            const marqueeEl = document.getElementById('marqueeAuditSchedule');
+            if (!marqueeEl) return;
+
+            if (!data || data.length === 0) {
+                marqueeEl.innerHTML = "Không có lịch kiểm hàng / audit nào trong tuần hiện tại.";
+                return;
+            }
+
+            const now = new Date();
+            const currentDay = now.getDay();
+            const distanceToMonday = (currentDay === 0 ? -6 : 1 - currentDay);
+            
+            const monday = new Date(now);
+            monday.setDate(now.getDate() + distanceToMonday);
+            monday.setHours(0, 0, 0, 0);
+
+            const sunday = new Date(monday);
+            sunday.setDate(monday.getDate() + 6);
+            sunday.setHours(23, 59, 59, 999);
+
+            const thisWeekAudits = data.filter(item => {
+                if (!item.date) return false;
+                const itemDate = new Date(item.date);
+                return !isNaN(itemDate.getTime()) && itemDate >= monday && itemDate <= sunday;
+            });
+
+            if (thisWeekAudits.length === 0) {
+                marqueeEl.innerHTML = "Tuần này hiện chưa có lịch kiểm hàng / audit phát sinh.";
+            } else {
+                const marqueeItems = thisWeekAudits.map(item => {
+                    return ` ◆ ${formatDate(item.date)} -- ${escapeHtml(item.customer)}`;
+            });
+                marqueeEl.innerHTML = marqueeItems.join(' &nbsp;&nbsp;&nbsp;                &nbsp;&nbsp;&nbsp; ');
+            }
+        }
+
         function renderAudit(data) {
             const tbody = document.querySelector('#auditTable tbody');
             tbody.innerHTML = '';
 
-            const marqueeContent = document.getElementById('marqueeAuditSchedule');
-            const now = new Date();
-            const currentYear = now.getFullYear();
-            const currentWeek = getWeekNumber(now);
-
-            let currentWeekAudits = [];
-
             data.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.className = 'table-row-border';
-                const linkCell = createViewLinkWithPopover(item.docLink, `📅 Lịch Kiểm Hàng - ${item.customer}`, item.note);
+                
+                let typeColor = '#1a73e8';
+                if (item.type && item.type.toLowerCase().includes('audit')) typeColor = '#d93025';
+                if (item.type && item.type.toLowerCase().includes('pre')) typeColor = '#137333';
 
-                if (item.date) {
-                    const itemDate = new Date(item.date);
-                    if (!isNaN(itemDate.getTime())) {
-                        if (itemDate.getFullYear() === currentYear && getWeekNumber(itemDate) === currentWeek) {
-                            currentWeekAudits.push(`${item.customer} (${formatDate(item.date)})`);
-                        }
-                    }
+                const info = `Khách hàng: ${item.customer} | Loại: ${item.type} | Nhà máy: ${item.factory}`;
+                
+                let docCell = '';
+                if (isGuestAccount()) {
+                    docCell = `
+                        <div class="doc-popover-wrapper">
+                            <span class="view-link" onclick="alert('Báo cáo nội bộ');">Xem</span>
+                            <div class="doc-popover">
+                                <div class="doc-popover-title">${escapeHtml("📂 Tài liệu Audit/Kiểm hàng")}</div>
+                                <div class="doc-popover-body">
+                                    <p style="margin: 2px 0;"><strong>Chi tiết:</strong> ${escapeHtml(info)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    docCell = createViewLinkWithPopover(item.docLink, `📂 Tài liệu Audit/Kiểm hàng`, info);
                 }
 
                 tr.innerHTML = `
                     <td class="cell-text-bold">${escapeHtml(item.customer)}</td>
                     <td class="cell-date">${escapeHtml(formatDate(item.date))}</td>
-                    <td class="cell-content">${escapeHtml(item.type)}</td>
-                    <td class="cell-note text-center">${escapeHtml(item.factory)}</td>
-                    <td class="cell-note text-center">${linkCell}</td>
+                    <td class="cell-date" style="color: ${typeColor}; font-weight: 600;">${escapeHtml(item.type)}</td>
+                    <td class="cell-text-bold text-center">${escapeHtml(item.factory)}</td>
+                    <td class="cell-date text-center">${docCell}</td>
                 `;
                 tbody.appendChild(tr);
             });
 
-            if (marqueeContent) {
-                if (currentWeekAudits.length > 0) {
-                    marqueeContent.innerText = `Lịch kiểm hàng tuần này: ${currentWeekAudits.join(' | ')}`;
-                } else {
-                    marqueeContent.innerText = `Tuần này (${currentWeek}) hiện chưa có lịch kiểm hàng hoặc audit nào được lên lịch.`;
-                }
-            }
-        }
-
-        function getWeekNumber(d) {
-            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-            var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-            return weekNo;
+            updateMarqueeSchedule(data);
         }
 
         function openEditModal() {
@@ -2758,12 +2554,12 @@
             rowDiv.className = 'edit-row-audit';
             rowDiv.innerHTML = `
                 <input type="text" placeholder="Khách hàng" value="${escapeHtml(customer)}">
-                <input type="text" placeholder="Ngày (YYYY-MM-DD)" value="${escapeHtml(date)}">
+                <input type="text" placeholder="Ngày" value="${escapeHtml(date)}">
                 <input type="text" placeholder="Loại" value="${escapeHtml(type)}">
                 <input type="text" placeholder="Nhà máy" value="${escapeHtml(factory)}">
-                <input type="text" class="link-input" placeholder="Link hoặc chọn PDF" value="${escapeHtml(docLink)}">
+                <input type="text" class="link-input" placeholder="Link hoặc upload PDF" value="${escapeHtml(docLink)}">
                 <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
-                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 Tải PDF</button>
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
                 <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
             `;
             container.appendChild(rowDiv);
@@ -2783,7 +2579,7 @@
                 const factory = inputs[3].value.trim();
                 const docLink = inputs[4].value.trim();
 
-                if (customer || date) {
+                if (customer || date || type || factory || docLink) {
                     newData.push({ customer, date, type, factory, docLink });
                 }
             });
@@ -2792,166 +2588,150 @@
             saveToGoogleSheet('audit', newData, closeEditModal, 'btnSaveAudit');
         }
 
-        function translatePage(lang, btnElement) {
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            if (btnElement) btnElement.classList.add('active');
+        /* 🔍 CẤU HÌNH TỔNG HỢP DỮ LIỆU & KHỞI TẠO AUTOCOMPLETE.JS */
+        function getAllSearchableData() {
+            const items = [];
 
-            if (lang === 'vi') {
-                location.reload();
-                return;
-            }
+            (globalData.reports || []).forEach(r => {
+                if (r.title) {
+                    items.push({
+                        title: r.title,
+                        category: "Báo cáo",
+                        link: r.link
+                    });
+                }
+            });
 
-            const transMap = {
-                en: {
-                    title: "QUALITY CONTROL DEPARTMENT INFORMATION",
-                    marqueeLabel: "📌 This Week's Inspection Schedule",
-                    reportsTitle: "📊 Reports List",
-                    updateBtn: "Update",
-                    docsTitle: "📂 Documents & Guidelines",
-                    procTitle: "📖 Work Process Manual",
-                    inspTitle: "🔍 CUSTOMER AUDIT PREPARATION",
-                    auditTitle: "📅 Inspection & Audit Schedule",
-                    sopTitle: "📋 SOP & Business Evaluation Schedule",
-                    mapTitle: "📍 Company Location (Google Maps)",
-                    orgTitle: "👥 Information and Personnel",
-                    companyBtn: "Hai Vina",
-                    qaBtn: "QA Quantity",
-                    calibrationBtn: "Calibration",
-                    isoBtn: "ISO 9001",
-                    equipmentBtn: "Equipment Management",
-                    trainingBtn: "QC Training & Evaluation",
-                    customersTitle: "🏷️ MAJOR CUSTOMERS",
-                    footerTitle: "Information Page",
-                    footerInfo: "Quality Control Department - Hai Vina Co., Ltd",
-                    footerAddress: "Headquarters: Lang Xuyen hamlet, Gia Loc commune, Hai Phong city, Vietnam / Phone: 02203717500",
-                    topBtn: "⬆ Top",
-                    rights: "© 08-2026. Copyright by ISO team",
-                    loading: "⏳ Loading data, please wait..."
+            (globalData.proc || []).forEach(p => {
+                if (p.name) {
+                    items.push({
+                        title: p.name,
+                        category: "Quy trình",
+                        link: p.link
+                    });
+                }
+            });
+
+            (globalData.insp || []).forEach(i => {
+                if (i.name) {
+                    items.push({
+                        title: i.name,
+                        category: "Tài liệu Audit",
+                        link: i.link
+                    });
+                }
+            });
+
+            (globalData.audit || []).forEach(a => {
+                if (a.customer) {
+                    items.push({
+                        title: `${a.customer} - ${a.type || 'Audit'} (${a.factory || ''})`,
+                        category: "Lịch Audit",
+                        link: a.docLink
+                    });
+                }
+            });
+
+            (globalData.sop || []).forEach(s => {
+                if (s.factory || s.content) {
+                    items.push({
+                        title: `SOP: ${s.factory || s.content}`,
+                        category: "Lịch SOP",
+                        link: s.checklistLink
+                    });
+                }
+            });
+
+            return items;
+        }
+
+        function initAutoComplete() {
+            const autoCompleteConfig = {
+                placeHolder: "🔍 Tìm kiếm báo cáo, tài liệu...",
+                data: {
+                    src: async () => {
+                        return getAllSearchableData();
+                    },
+                    keys: ["title", "category"]
                 },
-                ko: {
-                    title: "품질부 정보 페이지",
-                    marqueeLabel: "📌 이번주 검품 일정",
-                    reportsTitle: "📊 보고서 목록",
-                    updateBtn: "업데이트",
-                    docsTitle: "📂 문서 및 지침",
-                    procTitle: "📖 업무 표준 절차서",
-                    inspTitle: "🔍 고객사 심사 준비",
-                    auditTitle: "📅 검품 및 심사 일정",
-                    sopTitle: "📋 SOP 및 업무 평가 일정",
-                    mapTitle: "📍 회사 위치 (구글 맵)",
-                    orgTitle: "👥 정보 및 인사",
-                    companyBtn: "하이비나",
-                    qaBtn: "QA 인원",
-                    calibrationBtn: "교정",
-                    isoBtn: "ISO 9001",
-                    equipmentBtn: "장비 관리",
-                    trainingBtn: "QC 교육 및 평가",
-                    customersTitle: "🏷️ 주요 고객사",
-                    footerTitle: "정보 페이지",
-                    footerInfo: "품질부 - 하이비나 유한회사",
-                    footerAddress: "본사: 베트남 하이퐁시 지아록 랑쑤옌 마을 / 전화번호: 02203717500",
-                    topBtn: "⬆ 맨 위로",
-                    rights: "© 08-2026. ISO 팀 저작권",
-                    loading: "⏳ 데이터를 불러오는 중입니다..."
+                resultsList: {
+                    element: (list, data) => {
+                        if (!data.results.length) {
+                            const message = document.createElement("div");
+                            message.setAttribute("class", "autoComplete_result");
+                            message.innerHTML = `<span>Không tìm thấy kết quả phù hợp</span>`;
+                            list.prepend(message);
+                        }
+                    },
+                    noResults: true,
+                    maxResults: 10
+                },
+                resultItem: {
+                    element: (item, data) => {
+                        item.innerHTML = `
+                            <span class="search-item-title">${data.value.title}</span>
+                            <span class="search-item-category">${data.value.category}</span>
+                        `;
+                    }
+                },
+                events: {
+                    input: {
+                        selection: (event) => {
+                            const selection = event.detail.selection.value;
+                            if (isGuestAccount() && selection.category !== "Quy trình") {
+                                alert("Báo cáo nội bộ");
+                                return;
+                            }
+                            if (selection.link && selection.link !== '#') {
+                                openDocument(selection.link);
+                            } else {
+                                alert(`Bạn đã chọn: ${selection.title}`);
+                            }
+                        }
+                    }
                 }
             };
 
-            const t = transMap[lang];
-            if (!t) return;
+            new autoComplete({
+                ...autoCompleteConfig,
+                selector: "#autoComplete"
+            });
 
-            const mainTitle = document.querySelector('.main-title-box h2');
-            if (mainTitle) mainTitle.innerText = t.title;
-
-            const marqueeLabel = document.querySelector('.marquee-label');
-            if (marqueeLabel) marqueeLabel.innerText = t.marqueeLabel;
-
-            const reportsHeading = document.querySelector('.dashboard-grid .card-box:nth-child(1) .card-box-title');
-            if (reportsHeading) reportsHeading.innerText = t.reportsTitle;
-
-            const docsHeading = document.querySelector('.dashboard-grid .card-box:nth-child(2) .card-box-title');
-            if (docsHeading) docsHeading.innerText = t.docsTitle;
-
-            const procTitleCell = document.querySelector('#procTable .doc-section-title td');
-            if (procTitleCell) procTitleCell.innerText = t.procTitle;
-
-            const inspTitleCell = document.querySelector('#inspTable .doc-section-title td');
-            if (inspTitleCell) inspTitleCell.innerText = t.inspTitle;
-
-            const auditHeading = document.querySelector('.card-box h3');
-            // Cập nhật các tiêu đề card tùy theo vị trí
+            new autoComplete({
+                ...autoCompleteConfig,
+                selector: "#autoCompleteFooter"
+            });
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             initWeatherAndDate();
+            renderCompanyTeam(defaultCompanyTeam);
+            renderQaTeam(defaultQaTeam);
+            initAutoComplete();
             loadAllDataFromGoogleSheet();
-
-            // Khởi tạo thư viện AutoComplete cho Header và Footer
-            if (typeof autoComplete !== 'undefined') {
-                const searchDataSource = () => {
-                    let results = [];
-                    if (globalData.reports) {
-                        globalData.reports.forEach(r => results.push({ title: r.title, category: 'Báo cáo' }));
-                    }
-                    if (globalData.proc) {
-                        globalData.proc.forEach(p => results.push({ title: p.name, category: 'Quy trình' }));
-                    }
-                    if (globalData.insp) {
-                        globalData.insp.forEach(i => results.push({ title: i.name, category: 'Hướng dẫn' }));
-                    }
-                    if (globalData.audit) {
-                        globalData.audit.forEach(a => results.push({ title: `${a.customer} - ${a.type}`, category: 'Audit' }));
-                    }
-                    return results;
-                };
-
-                const config = {
-                    selector: "#autoComplete",
-                    placeHolder: "🔍 Tìm kiếm báo cáo, quy trình...",
-                    data: {
-                        src: searchDataSource,
-                        keys: ["title"]
-                    },
-                    resultsList: {
-                        element: (list, data) => {
-                            const results = document.getElementById("autoComplete_list");
-                            if (data.results.length === 0) {
-                                results.style.display = "none";
-                            }
-                        },
-                        noResults: true,
-                        maxResults: 10,
-                        tabSelect: true
-                    },
-                    resultItem: {
-                        element: (item, data) => {
-                            item.style = "display: flex; justify-content: space-between; align-items: center;";
-                            item.innerHTML = `
-                                <span class="search-item-title">${data.value.title}</span>
-                                <span class="search-item-category">${data.value.category}</span>
-                            `;
-                        },
-                        highlight: true
-                    },
-                    events: {
-                        input: {
-                            selection: (event) => {
-                                const selection = event.detail.selection.value;
-                                document.getElementById("autoComplete").value = selection.title;
-                                alert(`Đã chọn: ${selection.title} (${selection.category})`);
-                            }
-                        }
-                    }
-                };
-
-                new autoComplete(config);
-
-                const configFooter = {
-                    ...config,
-                    selector: "#autoCompleteFooter"
-                };
-                new autoComplete(configFooter);
-            }
         });
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'vi',
+                includedLanguages: 'en,ko,vi',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        function translatePage(langCode, btn) {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            var selectObj = document.querySelector('.goog-te-combo');
+            if (selectObj) {
+                selectObj.value = langCode;
+                selectObj.dispatchEvent(new Event('change'));
+            }
+        }
     </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
+```[cite: 11, 12]
