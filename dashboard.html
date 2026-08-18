@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRANG THÔNG TIN PHÒNG CHẤT LƯỢNG</title>
 
+    <!-- 🛡️ BẢO VỆ TRANG: KIỂM TRA ĐĂNG NHẬP NGAY KHI TẢI HEAD -->
     <script>
         (function() {
             const isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -15,6 +16,7 @@
         })();
     </script>
 
+    <!-- 🔍 THƯ VIỆN AUTOCOMPLETE.JS (CDN CSS & JS) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.02.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
 
@@ -235,4 +237,2567 @@
             white-space: nowrap;
         }
 
-        /* 🔍 TÙY CHỈNH Ô
+        /* 🔍 TÙY CHỈNH Ô TÌM KIẾM */
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        /* 🔍 TÙY CHỈNH Ô TÌM KIẾM FOOTER */
+        .footer-search-container {
+            position: relative;
+            width: 100%;
+            max-width: 280px;
+            margin-top: 6px;
+            margin-left: auto;
+        }
+
+        .autoComplete_wrapper {
+            width: 100%;
+        }
+
+        #autoComplete, #autoCompleteFooter {
+            width: 100% !important;
+            height: 34px !important;
+            padding: 0 15px !important;
+            font-size: 13px !important;
+            border-radius: 25px !important;
+            border: 1px solid #cbd5e1 !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+            outline: none !important;
+            background-image: none !important;
+            transition: all 0.3s ease;
+        }
+        #autoComplete:focus, #autoCompleteFooter:focus {
+            border-color: #1a73e8 !important;
+            box-shadow: 0 4px 15px rgba(26, 115, 232, 0.2) !important;
+        }
+
+        /* POPUP GỢI Ý TÌM KIẾM CHO FOOTER */
+        .footer-search-container ul {
+            bottom: 100% !important;
+            top: auto !important;
+            margin-bottom: 5px !important;
+            margin-top: 0 !important;
+        }
+
+        #autoComplete_list, .footer-search-container ul {
+            position: absolute !important;
+            left: 0 !important;
+            right: 0 !important;
+            z-index: 1000 !important;
+            padding: 0 !important;
+            border-radius: 12px !important;
+            background-color: #ffffff !important;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+            border: 1px solid #e2e8f0 !important;
+            max-height: 250px !important;
+            overflow-y: auto !important;
+            list-style: none !important;
+        }
+        .autoComplete_result {
+            padding: 10px 15px !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            cursor: pointer !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            text-align: left !important;
+            font-size: 13px !important;
+        }
+        .autoComplete_result:last-child {
+            border-bottom: none !important;
+        }
+        .autoComplete_result:hover, .autoComplete_selected {
+            background-color: #f1f5f9 !important;
+        }
+        .search-item-title {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .search-item-category {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            text-align: left;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+
+        .card-box {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+
+        /* CHỈNH SỬA CARD-BOX TỐI ƯU CHIỀU CAO FOOTER */
+        .footer-card-box {
+            background: #ffffff;
+            padding: 12px 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            margin-bottom: 0;
+        }
+
+        .card-box-title {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        /* 📜 KHUNG CHỨA DANH SÁCH BÁO CÁO (CỐ ĐỊNH CHIỀU CAO & THANH CUỘN DỌC) */
+        #reportListContainer {
+            max-height: 1000px;
+            overflow-y: auto;
+            padding-right: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Tùy chỉnh thanh cuộn đẹp mắt cho khối Danh Sách Báo Cáo */
+        #reportListContainer::-webkit-scrollbar {
+            width: 6px;
+        }
+        #reportListContainer::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        #reportListContainer::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        #reportListContainer::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* FOOTER HEADER & TOP BAR CÙNG HÀNG */
+        .footer-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .footer-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-header img {
+            height: 30px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .footer-header h3 {
+            margin: 0;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 295px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .report-card-wrapper {
+            position: relative;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .report-card-wrapper:last-child {
+            margin-bottom: 0;
+        }
+
+        .link-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            word-break: break-word;
+            gap: 10px;
+            width: 100%;
+        }
+        .link-card-main {
+            font-weight: 700;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            min-width: 0;
+        }
+        .link-card-sub {
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 0.8;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .sheet-link {
+            background-color: #e6f4ea;
+            color: #137333;
+            border: 1px solid #ceead6;
+        }
+        .sheet-link:hover {
+            background-color: #ceead6;
+        }
+        .sheet-link .link-card-sub {
+            color: #2e7d32;
+        }
+        .appsheet-link {
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            border: 1px solid #d2e3fc;
+        }
+        .appsheet-link .link-card-sub {
+            color: #1565c0;
+        }
+
+        .report-popover {
+            visibility: hidden;
+            opacity: 0;
+            width: 320px;
+            background-color: #ffffff;
+            color: #333;
+            text-align: left;
+            border-radius: 10px;
+            padding: 12px 15px;
+            position: absolute;
+            z-index: 100;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%) translateY(8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+            border: 1px solid #cbd5e1;
+            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+            pointer-events: none;
+        }
+        .report-popover::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -7px;
+            border-width: 7px;
+            border-style: solid;
+            border-color: #ffffff transparent transparent transparent;
+        }
+        .report-card-wrapper:hover .report-popover {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .report-popover h5 {
+            margin: 0 0 6px 0;
+            font-size: 13px;
+            color: #1a73e8;
+            font-weight: 700;
+        }
+        .report-popover p {
+            margin: 3px 0;
+            font-size: 12px;
+            color: #475569;
+            line-height: 1.4;
+        }
+
+        .doc-popover-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .doc-popover {
+            visibility: hidden;
+            opacity: 0;
+            width: 260px;
+            background-color: #ffffff;
+            color: #333;
+            text-align: left;
+            border-radius: 8px;
+            padding: 10px 12px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%) translateY(6px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+            border: 1px solid #cbd5e1;
+            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+            pointer-events: none;
+        }
+
+        .doc-popover::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: #ffffff transparent transparent transparent;
+        }
+
+        .doc-popover-wrapper:hover .doc-popover {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .doc-popover-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1a73e8;
+            margin-bottom: 4px;
+        }
+
+        .doc-popover-body {
+            font-size: 11px;
+            color: #475569;
+            word-break: break-all;
+            line-height: 1.3;
+        }
+
+        .btn-update {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #2563eb;
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-update:hover {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-org {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: 1px solid #d2e3fc;
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+        .btn-org:hover {
+            background-color: #1a73e8;
+            color: #ffffff;
+            border-color: #1a73e8;
+            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.25);
+        }
+
+        .btn-detail-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #1a73e8;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+        .btn-detail-link:hover {
+            background-color: #1557b0;
+        }
+
+        .org-btn-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .org-popover {
+            visibility: hidden;
+            opacity: 0;
+            width: 480px;
+            background-color: #ffffff;
+            color: #333;
+            text-align: left;
+            border-radius: 12px;
+            padding: 15px;
+            position: absolute;
+            z-index: 100;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+            border: 1px solid #cbd5e1;
+            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+        }
+
+        .org-popover::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -8px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: #ffffff transparent transparent transparent;
+        }
+
+        .org-btn-wrapper:hover .org-popover {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .org-popover h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #1a73e8;
+        }
+
+        /* KHU VỰC TIÊU CHUẨN NGÀNH MAY */
+        .standards-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-around;
+            gap: 12px;
+            padding: 15px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .standard-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .standard-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            border-color: #1a73e8;
+        }
+
+        .standard-item img {
+            height: 38px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .scrollable-table-wrapper {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+
+        .sop-scrollable-table-wrapper {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+
+        .scrollable-table-wrapper th,
+        .sop-scrollable-table-wrapper th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: #f8f9fa;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .table-row-border {
+            border-bottom: 1px solid #f1f3f5;
+        }
+        .table-header-row {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .table-header-cell {
+            padding: 10px;
+            font-size: 13px;
+        }
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        .text-nowrap { white-space: nowrap; }
+
+        .cell-date {
+            padding: 10px;
+            font-size: 13px;
+            color: #666;
+            white-space: nowrap;
+        }
+        .cell-content {
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .cell-title {
+            padding: 8px 10px 8px 15px;
+            font-size: 13px;
+        }
+        .cell-note {
+            padding: 8px 10px;
+            font-size: 13px;
+            color: #666;
+            white-space: nowrap;
+        }
+        .cell-text-bold {
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+            white-space: nowrap;
+        }
+        .cell-subtext {
+            color: #94a3b8;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 15px;
+        }
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 850px;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+        .modal-header h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #1e293b;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .edit-row {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 2fr 40px;
+            gap: 8px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .edit-row-insp {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr 2fr auto 40px;
+            gap: 8px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .edit-row-report {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 2fr 40px;
+            gap: 8px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .edit-row-sop {
+            display: grid;
+            grid-template-columns: 1.5fr 1.5fr 2fr auto 35px;
+            gap: 6px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .edit-row-audit {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1.5fr 1.2fr 2fr auto 35px;
+            gap: 6px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .edit-row-qa {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .edit-row-company {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input, .edit-row-company input {
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 13px;
+            width: 100%;
+        }
+        .btn-pdf-upload {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .btn-pdf-upload:hover {
+            background: #dbeafe;
+        }
+        .btn-delete-row {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+            border-radius: 6px;
+            height: 34px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-add-row {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px dashed #cbd5e1;
+            padding: 8px;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+        }
+        .btn-save {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-save:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+        .btn-cancel {
+            background: #e2e8f0;
+            color: #475569;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .lang-switch {
+            display: inline-flex;
+            background-color: #e9ecef;
+            padding: 4px;
+            border-radius: 20px;
+            gap: 4px;
+        }
+        .lang-btn {
+            border: none;
+            background: transparent;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c757d;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .lang-btn.active {
+            background-color: #1a73e8;
+            color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        #google_translate_element, .goog-te-banner-frame, .goog-te-gadget {
+            display: none !important;
+        }
+
+        .doc-section-title {
+            background-color: #f1f3f5;
+            font-weight: bold;
+            font-size: 13px;
+            color: #1a73e8;
+            padding: 10px;
+        }
+        .view-link {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .footer-info {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+            font-size: 12px; 
+            font-weight: 500; 
+            color: #94a3b8;
+        }
+
+        .org-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .org-table th, .org-table td {
+            border: 1px solid #cbd5e1;
+            padding: 10px;
+            font-size: 13px;
+        }
+        .org-table th {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        /* STYLES CHO NÚT ĐẦU TRANG */
+        .btn-back-to-top {
+            background-color: #1a73e8;
+            color: #ffffff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 1300px) {
+            .side-banner { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 12px 10px; }
+            .company-logo { height: 50px; }
+            .header-top-bar { justify-content: center; }
+            .header-right-group { justify-content: center; width: 100%; }
+            
+            .header-center-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .main-title-box h2 { font-size: 16px; }
+            .search-container, .footer-search-container {
+                max-width: 100%;
+            }
+
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .card-box { padding: 15px; margin-bottom: 15px; border-radius: 12px; }
+            .card-box h3 { font-size: 16px !important; margin-bottom: 12px !important; }
+            .link-card { font-size: 13px; padding: 10px 12px; }
+            .footer-top-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .footer-info { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .footer-info div:last-child { white-space: normal; width: 100%; text-align: left !important; }
+            .modal-content { padding: 15px; }
+            .edit-row, .edit-row-insp, .edit-row-report, .edit-row-audit, .edit-row-sop, .edit-row-qa, .edit-row-company {
+                display: flex; flex-direction: column; background: #f8fafc; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; position: relative;
+            }
+            .edit-row input, .edit-row-insp input, .edit-row-report input, .edit-row-audit input, .edit-row-sop input, .edit-row-qa input, .edit-row-company input { width: 100%; }
+            .btn-delete-row { width: 100%; margin-top: 5px; }
+            .btn-pdf-upload { width: 100%; padding: 8px; }
+            .org-popover { width: 290px; }
+            .report-popover { width: 260px; }
+            .doc-popover { width: 220px; }
+            .standards-container { gap: 8px; padding: 10px; }
+            .standard-item img { height: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BANNER HAI BÊN -->
+    <div class="side-banner banner-left">
+        <img src="images nha may 2.jpg" alt="Nhà máy 2">
+    </div>
+    <div class="side-banner banner-right">
+        <img src="images nha may 3.jpg" alt="Nhà máy 3">
+    </div>
+
+    <!-- TOÀN BỘ NỘI DUNG CHÍNH -->
+    <div class="main-wrapper">
+        <div class="header-top-bar">
+            <div class="logo-box">
+                <img src="QA APPROVED.png" alt="Logo Công ty" class="company-logo">
+            </div>
+
+            <!-- CỤM BÊN PHẢI: THỜI TIẾT, NGÀY THÁNG, NGÔN NGỮ & ĐĂNG XUẤT -->
+            <div class="header-right-group">
+                <!-- WIDGET THỜI TIẾT & NGÀY THÁNG -->
+                <div class="weather-date-widget">
+                    <div class="weather-info">
+                        <select class="location-select" id="locationSelect" onchange="fetchWeatherData()">
+                            <option value="haiphong" selected>Hải Phòng</option>
+                            <option value="hanoi">Hà Nội</option>
+                        </select>
+                        <div class="weather-detail">
+                            <span class="weather-icon" id="weatherIcon">☀️</span>
+                            <span class="temp" id="weatherTemp">30°C</span>
+                        </div>
+                    </div>
+
+                    <div class="widget-divider"></div>
+
+                    <div class="date-info">
+                        <span id="currentDateDisplay">Thứ bảy, 1/8/2026</span>
+                    </div>
+                </div>
+
+                <!-- CHUYỂN ĐỔI NGÔN NGỮ -->
+                <div class="lang-switch-container notranslate" translate="no">
+                    <div class="lang-switch">
+                        <button class="lang-btn" onclick="translatePage('ko', this)">KR</button>
+                        <button class="lang-btn" onclick="translatePage('en', this)">EN</button>
+                        <button class="lang-btn active" onclick="translatePage('vi', this)">VN</button>
+                    </div>
+                </div>
+
+                <!-- NÚT ĐĂNG XUẤT -->
+                <button class="btn-logout" onclick="handleLogout()">🚪 Thoát</button>
+            </div>
+        </div>
+
+        <!-- DÒNG THÔNG BÁO TẢI DỮ LIỆU -->
+        <div id="loading-notice">
+            ⏳ Đang tải dữ liệu, xin chờ một lát...
+        </div>
+
+        <!-- 🎯 KHỐI CHỨA TIÊU ĐỀ (CĂN TRÁI VỚI ACCENT BAR) & Ô TÌM KIẾM (BÊN PHẢI) -->
+        <div class="header-center-container">
+            <div class="main-title-box">
+                <h2>TRANG THÔNG TIN PHÒNG CHẤT LƯỢNG</h2>
+            </div>
+
+            <!-- 🔍 Ô TÌM KIẾM THÔNG MINH HEADER -->
+            <div class="search-container">
+                <input id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" capitalize="off">
+            </div>
+        </div>
+
+        <!-- 📢 DÒNG CHỮ CHẠY (MARQUEE) HIỂN THỊ LỊCH KIỂM HÀNG TUẦN HIỆN TẠI -->
+        <div class="marquee-container">
+            <span class="marquee-label">📌 Lịch Kiểm Hàng Tuần Này</span>
+            <marquee class="marquee-content" id="marqueeAuditSchedule" behavior="scroll" direction="left" scrollamount="6" onmouseover="this.stop();" onmouseout="this.start();">
+                Đang cập nhật lịch kiểm hàng tuần này...
+            </marquee>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- CỘT BÊN TRÁI -->
+            <div>
+                <!-- KHỐI 1: DANH SÁCH BÁO CÁO -->
+                <div class="card-box">
+                    <h3 class="card-box-title">📊 Danh Sách Báo Cáo</h3>
+                    <div id="reportListContainer"></div>
+                    <div class="text-right">
+                        <button class="btn-update" onclick="openReportEditModal()">Cập nhật</button>
+                    </div>
+                </div>
+
+                <!-- KHỐI 2: TÀI LIỆU & HƯỚNG DẪN -->
+                <div class="card-box" style="background-color: #faf5ff; margin-bottom: 0;">
+                    <h3 class="card-box-title">📂 Tài Liệu & Hướng dẫn</h3>
+
+                    <!-- BẢNG 1: SỔ TAY QUY TRÌNH CÔNG VIỆC -->
+                    <div class="table-responsive" style="margin-bottom: 10px;">
+                        <table id="procTable">
+                            <thead>
+                                <tr class="doc-section-title">
+                                    <td colspan="3">📖 Sổ tay Quy trình công việc</td>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="text-right" style="margin-bottom: 25px;">
+                        <button class="btn-update" onclick="openProcEditModal()">Cập nhật</button>
+                    </div>
+
+                    <!-- BẢNG 2: TÀI LIỆU AUDIT -->
+                    <div class="table-responsive" style="margin-bottom: 10px;">
+                        <table id="inspTable">
+                            <thead>
+                                <tr class="doc-section-title">
+                                    <td colspan="3">🔍 CHUẨN BỊ KHÁCH HÀNG ĐÁNH GIÁ</td>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="text-right">
+                        <button class="btn-update" onclick="openInspEditModal()">Cập nhật</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CỘT BÊN PHẢI -->
+            <div>
+                <!-- KHỐI 1: LỊCH KIỂM HÀNG & AUDIT -->
+                <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
+                    <h3 class="card-box-title">📅 Lịch Kiểm Hàng & Audit</h3>
+                    <div class="table-responsive">
+                        <div class="scrollable-table-wrapper">
+                            <table id="auditTable">
+                                <thead>
+                                    <tr class="table-header-row">
+                                        <th class="table-header-cell text-nowrap" style="border-radius: 6px 0 0 6px; width: 130px;">Khách hàng</th>
+                                        <th class="table-header-cell">Ngày</th>
+                                        <th class="table-header-cell">Loại</th>
+                                        <th class="table-header-cell text-center">Nhà máy</th>
+                                        <th class="table-header-cell text-center" style="border-radius: 0 6px 6px 0;">Docs</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button class="btn-update" onclick="openEditModal()">Cập nhật</button>
+                    </div>
+                </div>
+
+                <!-- KHỐI 2: LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
+                <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
+                    <h3 class="card-box-title">📋 Lịch Đánh Giá SOP & Công tác</h3>
+                    <div class="table-responsive">
+                        <div class="sop-scrollable-table-wrapper">
+                            <table id="sopTable">
+                                <thead>
+                                    <tr class="table-header-row">
+                                        <th class="table-header-cell" style="border-radius: 6px 0 0 6px;">Ngày tháng</th>
+                                        <th class="table-header-cell text-center">Nội dung</th>
+                                        <th class="table-header-cell text-center" style="border-radius: 0 6px 6px 0;">Checklist</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button class="btn-update" onclick="openSopEditModal()">Cập nhật</button>
+                    </div>
+                </div>
+
+                <!-- KHỐI 3: KHÁCH HÀNG TIÊU BIỂU -->
+                <div class="card-box" style="margin-bottom: 20px;">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">🏷️ MỘT SỐ KHÁCH HÀNG</h3>
+                    <div class="standards-container">
+                        <!-- STRAUSS -->
+                        <a href="https://www.strauss.com/" target="_blank" class="standard-item" title="STRAUSS">
+                            <img src="https://lh3.googleusercontent.com/d/1hEWtTiGLY3FjfT_JfGCbMJ3Wi7uOPxfC" alt="STRAUSS">
+                        </a>
+
+                        <!-- ALPINESTARS S.P.A -->
+                        <a href="https://www.alpinestars.com/" target="_blank" class="standard-item" title="ALPINESTARS S.P.A">
+                            <img src="https://lh3.googleusercontent.com/d/1DFOvoR5QlTu8Dzcs5eoKAsWAZJliPdHL" alt="ALPINESTARS S.P.A">
+                        </a>
+
+                        <!-- FOX HEAD, INC. -->
+                        <a href="https://www.foxracing.com/" target="_blank" class="standard-item" title="FOX HEAD, INC.">
+                            <img src="https://lh3.googleusercontent.com/d/1j7HVwReS9fw7KuneQbYIDbVOodW2Kq3f" alt="FOX HEAD, INC.">
+                        </a>
+
+                        <!-- MECHANIX WEAR -->
+                        <a href="https://www.mechanix.com/" target="_blank" class="standard-item" title="MECHANIX WEAR">
+                            <img src="https://lh3.googleusercontent.com/d/1V7EWtqW0nq5YuVkZSiklEAm2rImMFdBR" alt="MECHANIX WEAR">
+                        </a>
+
+                        <!-- CASTELLI -->
+                        <a href="https://www.castelli-cycling.com/US/en/" target="_blank" class="standard-item" title="CASTELLI">
+                            <img src="https://lh3.googleusercontent.com/d/1wCApL05bUUdHbBGQlBGJOz_WnGJ8DXY6" alt="CASTELLI">
+                        </a>
+
+                        <!-- GIRO -->
+                        <a href="https://www.giro.com/" target="_blank" class="standard-item" title="GIRO">
+                            <img src="https://lh3.googleusercontent.com/d/1PyDAdrXX-l7rY429Mbeb_A8V-szPMuSj" alt="GIRO">
+                        </a>
+
+                        <!-- HEXARMOR -->
+                        <a href="https://www.hexarmor.com/" target="_blank" class="standard-item" title="HEXARMOR">
+                            <img src="https://lh3.googleusercontent.com/d/1LDQMXD0PCoADtywPt-MEqYyokoni-tDP" alt="HEXARMOR">
+                        </a>
+
+                        <!-- SPECIALIZED -->
+                        <a href="https://www.specialized.com/us/en" target="_blank" class="standard-item" title="SPECIALIZED">
+                            <img src="https://lh3.googleusercontent.com/d/19ceRp4qgWyUpgOXHPPpWMZh-2UIJdbFX" alt="SPECIALIZED">
+                        </a>
+
+                        <!-- KURARAY TRADING -->
+                        <a href="https://trading.kuraray.com/en/" target="_blank" class="standard-item" title="KURARAY TRADING">
+                            <img src="https://lh3.googleusercontent.com/d/1KPW7GSazChG7DGQ3x-XyNQby-RO7qRPm" alt="KURARAY TRADING">
+                        </a>
+
+                         <!-- DECATHLON -->
+                        <a href="https://www.decathlon-united.media/en_GB/home" target="_blank" class="standard-item" title="DECATHLON">
+                            <img src="https://lh3.googleusercontent.com/d/1KUsz2XI1OZRtFf0usKxxN6quM4aoEv93" alt="DECATHLON">
+                        </a>
+
+                        <!-- BURTON -->
+                        <a href="https://www.burton.com/en-us" target="_blank" class="standard-item" title="BURTON">
+                            <img src="https://lh3.googleusercontent.com/d/1RGGaJO3ZeZid3Q7qG8Ec_LBM3bDx2X-P" alt="BURTON">
+                        </a>
+
+                         <!-- DAKINE -->
+                        <a href="https://www.dakine.com/" target="_blank" class="standard-item" title="DAKINE">
+                            <img src="https://lh3.googleusercontent.com/d/1FgKv88iprpw5Q3Ismww_hPvL8aQmIVpF" alt="DAKINE">
+                        </a>
+                        
+                    </div>
+                </div>
+
+                <!-- KHỐI 4: YÊU CẦU CHẤT LƯỢNG VÀ AN TOÀN -->
+                <div class="card-box" style="margin-bottom: 20px;">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">🏷️ Tiêu chuẩn chất lượng và an toàn</h3>
+                    <div class="standards-container">
+                        <!-- ISO 9001 -->
+                        <a href="https://www.iso.org/standards/popular/iso-9000-family" target="_blank" class="standard-item" title="ISO 9001">
+                            <img src="https://lh3.googleusercontent.com/d/15DULIAPz6tfMD8mwK7JYNpeIlCgK2YkR" alt="ISO 9001">
+                        </a>
+                           <!-- ISO 14001 -->
+                        <a href="https://www.iso.org/standards/popular/iso-14000-family" target="_blank" class="standard-item" title="ISO 14001">
+                            <img src="https://lh3.googleusercontent.com/d/1ifVeQ5ZRJwepjDI1CQANM7JzvlR7Uamr" alt="ISO 9001">
+                        </a>    
+                         <!-- RCS -->
+                        <a href="https://textileexchange.org/" target="_blank" class="standard-item" title="RCS">
+                            <img src="https://lh3.googleusercontent.com/d/1DL5YIcgeMTDqWGHoHzncemhXP-iq-EPo" alt="RCS">
+                        </a>  
+                        <!-- Higg Index -->
+                        <a href="https://cascale.org/tools-programs/higg-index-tools/" target="_blank" class="standard-item" title="Higg Index">
+                            <img src="https://lh3.googleusercontent.com/d/1sGrzx4mvB7acZnkCak3m9n0u3ETnAvMS" alt="Higg Index">
+                        </a>
+                        <!-- WRAP -->
+                        <a href="https://cascale.org/tools-programs/higg-index-tools/" target="_blank" class="standard-item" title="WRAP">
+                            <img src="https://lh3.googleusercontent.com/d/135AX22no1TIzigzxnWZ7vNYkQDK8H8NP" alt="WRAP">
+                        </a>
+                        <!-- BSCI (amfori) -->
+                        <a href="https://www.amfori.org/amfori-bsci/" target="_blank" class="standard-item" title="BSCI (amfori)">
+                            <img src="https://lh3.googleusercontent.com/d/1AwamLnDRhiuU7zeU9xRYmTVRgcm9odUZ" alt="BSCI (amfori)">
+                        </a>
+                        <!-- SLCP -->
+                        <a href="https://slcp.zendesk.com/hc/en-us" target="_blank" class="standard-item" title="SLCP">
+                            <img src="https://lh3.googleusercontent.com/d/1zdseoFvZfdCeEfusHTlfjB0cCMPldd1C" alt="SLCP">
+                        </a>
+                         <!-- BetterWork -->
+                        <a href="https://betterwork.org/vietnam/" target="_blank" class="standard-item" title="BetterWork">
+                            <img src="https://lh3.googleusercontent.com/d/1-75U424bwxf-zTsrNS5_PG8wDHciYlMi" alt="BetterWork">
+                        </a>
+                        <!-- QCVN 01:2017/BCT -->
+                        <a href="https://thuvienphapluat.vn/TCVN/Cong-nghiep/QCVN-01-2017-BCT-Muc-gioi-han-ham-luong-formaldehyt-san-pham-det-may-916742.aspx" target="_blank" class="standard-item" title="QCVN 01:2017/BCT">
+                            <img src="https://lh3.googleusercontent.com/d/1l8P6ze-c5vlx-k8hRCAYA09yZVQZuWaG" alt="QCVN 01:2017/BCT">
+                        </a>
+                        <!-- SEDEX / SMETA -->
+                        <a href="https://www.sedex.com/vn/giai-phap/kiem-toan-smeta/" target="_blank" class="standard-item" title="SEDEX / SMETA">
+                            <img src="https://lh3.googleusercontent.com/d/1nQ_nMqxmHMWWiMbBL_J-c0szmkrXFLCi" alt="SEDEX / SMETA">
+                        </a>
+                    </div>
+                </div>
+
+                <!-- KHỐI 5: VỊ TRÍ CÔNG TY -->
+                <div class="card-box" style="margin-bottom: 20px;">
+                    <h3 class="card-box-title">📍 Vị Trí Công Ty (Google Maps)</h3>
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.818167888874!2d106.2917!3d20.8784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31358d341076ee2b%3A0xc33a11029c546db9!2zQ29uZyB0eSBUSlNIIEhhaSBWaW5h!5e0!3m2!1svi!2svn!4v1700000000000!5m2!1svi!2svn" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+
+                <!-- KHỐI 6: THÔNG TIN VÀ NHÂN SỰ -->
+                <div class="card-box" style="margin-bottom: 0;">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        
+                        <!-- Nút 1: Công ty Hai Vina -->
+                        <div class="org-btn-wrapper">
+                            <button class="btn-org" onclick="openOrgChart('company')">Hai Vina</button>
+                            <div class="org-popover">
+                                <h4>👥 Tình hình nhân sự công ty</h4>
+                                <table class="org-table" style="margin-top: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th>Văn phòng</th>
+                                            <th>Công nhân</th>
+                                            <th>QC kiểm hàng</th>
+                                            <th>Quản lý Hàn Quốc</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="companyPopoverBody">
+                                        <tr>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
+                            </div>
+                        </div>
+
+                        <!-- Nút 2: Số lượng QA Team -->
+                        <div class="org-btn-wrapper">
+                            <button class="btn-org" onclick="openOrgChart('qa')">Số lượng QA</button>
+                            <div class="org-popover">
+                                <h4>👥 Tình hình nhân sự Phòng chất lượng</h4>
+                                <table class="org-table" style="margin-top: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th>Tổng số QA</th>
+                                            <th>QA leader</th>
+                                            <th>QA Officer</th>
+                                            <th>Inline QA</th>
+                                            <th>Pre-final QA</th>
+                                            <th>QA gia công</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="qaPopoverBody">
+                                        <tr>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
+                            </div>
+                        </div>
+
+                        <!-- Nút 3: Hiệu chuẩn -->
+                        <a href="https://drive.google.com/drive/folders/1-lPbuZOh32wb8FVnMTazLXP9KAnqb6Ui?usp=sharing" target="_blank" class="btn-org">Hiệu chuẩn</a>
+                                               
+                        <!-- Nút 4: ISO 9001 -->
+                        <a href="https://drive.google.com/file/d/1Ql0cVzt1TpoNCz6wMuzGyM4rV7e3_tgS/view?usp=sharing" target="_blank" class="btn-org">ISO 9001</a>
+
+                        <!-- Nút 5: Quản lý thiết bị -->
+                        <a href="https://drive.google.com/drive/folders/1uQKb1izSZuVCzLkpiBJk0Z0Q8mix9L_X?usp=sharing" target="_blank" class="btn-org">Quản lý thiết bị</a>
+
+                        <!-- Nút 6: Đào tạo & đánh giá QC -->
+                        <a href="https://drive.google.com/drive/folders/1exe9URBUGZ91blq-n4j7F4BBZSIOtsbX?usp=sharing" target="_blank" class="btn-org">Đào tạo & đánh giá QC</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KHỐI FOOTER THÔNG TIN -->
+        <div class="footer-card-box">
+            <div class="footer-top-row">
+                <div class="footer-header">
+                    <img src="QA APPROVED.png" alt="Logo">
+                    <h3>Trang thông tin</h3>
+                </div>
+                <div>
+                    <button class="btn-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">⬆ Đầu trang</button>
+                </div>
+            </div>
+
+            <div class="footer-info">
+                <div>
+                    <p style="margin: 0 0 3px 0;">Phòng Chất lượng - Công ty TNHH Hai Vina</p>
+                    <p style="margin: 0;">Trụ sở chính: Thôn Lãng Xuyên, xã Gia Lộc, thành phố Hải Phòng, Việt Nam / Điện thoại: 02203717500</p>
+                </div>
+                <div style="text-align: right;">
+                    <!-- 🔍 Ô TÌM KIẾM Ở FOOTER -->
+                    <div class="footer-search-container">
+                        <input id="autoCompleteFooter" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" capitalize="off">
+                    </div>
+                    <div style="margin-top: 4px;">
+                        © 08-2026. Bản quyền thuộc ISO team
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <!-- MODAL BÁO CÁO -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Danh Sách Báo Cáo</h3>
+                <button class="close-btn" onclick="closeReportEditModal()">&times;</button>
+            </div>
+            <div id="modalReportContainer"></div>
+            <button class="btn-add-row" onclick="addReportModalRow()">+ Thêm báo cáo mới</button>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeReportEditModal()">Hủy</button>
+                <button class="btn-save" id="btnSaveReport" onclick="saveReportList()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL LỊCH ĐÁNH GIÁ SOP -->
+    <div class="modal-overlay" id="sopModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Lịch Đánh Giá SOP & Công tác</h3>
+                <button class="close-btn" onclick="closeSopEditModal()">&times;</button>
+            </div>
+            <div id="modalSopContainer"></div>
+            <button class="btn-add-row" onclick="addSopModalRow()">+ Thêm dòng mới</button>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeSopEditModal()">Hủy</button>
+                <button class="btn-save" id="btnSaveSop" onclick="saveSopTable()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL QUY TRÌNH CÔNG VIỆC -->
+    <div class="modal-overlay" id="procModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Sổ Tay Quy Trình Công Việc</h3>
+                <button class="close-btn" onclick="closeProcEditModal()">&times;</button>
+            </div>
+            <div id="modalProcContainer"></div>
+            <button class="btn-add-row" onclick="addDocModalRow('modalProcContainer')">+ Thêm quy trình mới</button>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeProcEditModal()">Hủy</button>
+                <button class="btn-save" id="btnSaveProc" onclick="saveProcTable()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL HƯỚNG DẪN KIỂM HÀNG -->
+    <div class="modal-overlay" id="inspModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Chuẩn bị đánh giá khách hàng</h3>
+                <button class="close-btn" onclick="closeInspEditModal()">&times;</button>
+            </div>
+            <div id="modalInspContainer"></div>
+            <button class="btn-add-row" onclick="addInspModalRow()">+ Thêm hướng dẫn mới</button>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeInspEditModal()">Hủy</button>
+                <button class="btn-save" id="btnSaveInsp" onclick="saveInspTable()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL LỊCH KIỂM HÀNG & AUDIT -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Lịch Kiểm Hàng & Audit</h3>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div id="modalRowContainer"></div>
+            <button class="btn-add-row" onclick="addModalRow()">+ Thêm dòng mới</button>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeEditModal()">Hủy</button>
+                <button class="btn-save" id="btnSaveAudit" onclick="saveAuditTable()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL THÔNG TIN VÀ NHÂN SỰ -->
+    <div class="modal-overlay" id="orgChartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="orgModalTitle">🏢 Sơ Đồ Tổ Chức</h3>
+                <button class="close-btn" onclick="closeOrgChartModal()">&times;</button>
+            </div>
+            <div id="orgModalBody" class="table-responsive"></div>
+            <div class="modal-footer" id="orgModalFooter">
+                <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL SỬA DỮ LIỆU QA TEAM -->
+    <div class="modal-overlay" id="qaEditModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Nhân Sự QA Team</h3>
+                <button class="close-btn" onclick="closeQaEditModal()">&times;</button>
+            </div>
+            <div id="modalQaContainer"></div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeQaEditModal()">Hủy</button>
+                <button class="btn-save" id="btnSaveQa" onclick="saveQaData()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL SỬA DỮ LIỆU HAI VINA (CÔNG TY) -->
+    <div class="modal-overlay" id="companyEditModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Cập Nhật Nhân Sự Công Ty Hai Vina</h3>
+                <button class="close-btn" onclick="closeCompanyEditModal()">&times;</button>
+            </div>
+            <div id="modalCompanyContainer"></div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeCompanyEditModal()">Hủy</button>
+                <button class="btn-save" id="btnSaveCompany" onclick="saveCompanyData()">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="google_translate_element"></div>
+
+    <script type="text/javascript">
+        const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
+        const DETAIL_SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421";
+
+        /* HÀM KIỂM TRA TÀI KHOẢN KHÁCH */
+        function isGuestAccount() {
+            const username = localStorage.getItem('username');
+            return (!username || username === 'guest' || username.toLowerCase().includes('khach'));
+        }
+
+        /* HÀM KIỂM TRA QUYỀN ADMIN */
+        function checkAdminPermission() {
+            const username = localStorage.getItem('username');
+            if (username === 'guest' || !username || username.toLowerCase().includes('khach')) {
+                alert('chỉ cấp quyền admin');
+                return false;
+            }
+            return true;
+        }
+
+        /* HÀM XỬ LÝ ĐĂNG XUẤT */
+        function handleLogout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            window.location.replace("index.html");
+        }
+
+        /* HÀM KHỞI TẠO VÀ CẬP NHẬT NGÀY THÁNG, THỜI TIẾT TỰ ĐỘNG */
+        function initWeatherAndDate() {
+            const now = new Date();
+            const days = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+            const dayName = days[now.getDay()];
+            const dateStr = `${dayName}, ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
+            document.getElementById('currentDateDisplay').textContent = dateStr;
+
+            fetchWeatherData();
+        }
+
+        async function fetchWeatherData() {
+            const locSelect = document.getElementById('locationSelect');
+            const selectedLoc = locSelect.value;
+            
+            const coords = {
+                haiphong: { lat: 20.8651, lon: 106.6838 },
+                hanoi: { lat: 21.0285, lon: 105.8542 }
+            };
+
+            const target = coords[selectedLoc] || coords.haiphong;
+
+            try {
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${target.lat}&longitude=${target.lon}&current_weather=true`);
+                const data = await res.json();
+                
+                if (data && data.current_weather) {
+                    const temp = Math.round(data.current_weather.temperature);
+                    const code = data.current_weather.weathercode;
+                    
+                    document.getElementById('weatherTemp').textContent = `${temp}°C`;
+                    document.getElementById('weatherIcon').textContent = getWeatherIcon(code);
+                }
+            } catch (err) {
+                console.error("Không thể lấy dữ liệu thời tiết:", err);
+                document.getElementById('weatherTemp').textContent = "30°C";
+            }
+        }
+
+        function getWeatherIcon(code) {
+            if (code === 0) return '☀️';
+            if (code >= 1 && code <= 3) return '⛅';
+            if (code >= 45 && code <= 48) return '🌫️';
+            if (code >= 51 && code <= 67) return '🌧️';
+            if (code >= 80 && code <= 82) return '🌦️';
+            if (code >= 95) return '⛈️';
+            return '☀️';
+        }
+
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function createViewLinkWithPopover(url, previewTitle, previewInfo) {
+            if (!url || url === '#') return `<span class="cell-subtext">-</span>`;
+            
+            let typeLabel = "🔗 Liên kết tài liệu";
+            if (url.startsWith('data:application/pdf')) {
+                typeLabel = "📄 File PDF đính kèm";
+            } else if (url.includes('drive.google.com')) {
+                typeLabel = "☁️ Google Drive";
+            } else if (url.endsWith('.html')) {
+                typeLabel = "📄 Trang quy trình nội bộ";
+            }
+
+            const safeUrl = url.replace(/'/g, "\\'");
+            return `
+                <div class="doc-popover-wrapper">
+                    <span class="view-link" onclick="openDocument('${safeUrl}')">Xem</span>
+                    <div class="doc-popover">
+                        <div class="doc-popover-title">${escapeHtml(previewTitle)}</div>
+                        <div class="doc-popover-body">
+                            <p style="margin: 2px 0;"><strong>Loại:</strong> ${typeLabel}</p>
+                            ${previewInfo ? `<p style="margin: 2px 0;"><strong>Chi tiết:</strong> ${escapeHtml(previewInfo)}</p>` : ''}
+                            <p style="margin: 4px 0 0 0; font-size: 10px; color: #94a3b8;">Nhấp để mở xem tài liệu</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openOrgChart(type) {
+            const titleEl = document.getElementById('orgModalTitle');
+            const bodyEl = document.getElementById('orgModalBody');
+            const footerEl = document.getElementById('orgModalFooter');
+
+            if (type === 'company') {
+                titleEl.innerText = "👥 Tình hình nhân sự công ty Hai Vina";
+                const company = globalData.companyTeam || defaultCompanyTeam;
+                bodyEl.innerHTML = `
+                    <table class="org-table">
+                        <thead>
+                            <tr>
+                                <th>Văn phòng</th>
+                                <th>Công nhân</th>
+                                <th>QC kiểm hàng</th>
+                                <th>Quản lý Hàn Quốc</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>${escapeHtml(company.office)}</td>
+                                <td>${escapeHtml(company.worker)}</td>
+                                <td>${escapeHtml(company.qc)}</td>
+                                <td>${escapeHtml(company.korean)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
+                `;
+                footerEl.innerHTML = `
+                    <button class="btn-update" style="margin-top:0;" onclick="if(checkAdminPermission()) { closeOrgChartModal(); openCompanyEditModal(); }">✏️ Cập nhật số lượng</button>
+                    <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
+                `;
+            } else if (type === 'qa') {
+                titleEl.innerText = "👥 Tình hình nhân sự Phòng chất lượng";
+                const qa = globalData.qaTeam || defaultQaTeam;
+                bodyEl.innerHTML = `
+                    <table class="org-table">
+                        <thead>
+                            <tr>
+                                <th>Tổng số QA</th>
+                                <th>QA leader</th>
+                                <th>QA Officer</th>
+                                <th>Inline QA</th>
+                                <th>Pre-final QA</th>
+                                <th>QA gia công</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>${escapeHtml(qa.total)}</td>
+                                <td>${escapeHtml(qa.leader)}</td>
+                                <td>${escapeHtml(qa.officer)}</td>
+                                <td>${escapeHtml(qa.inline)}</td>
+                                <td>${escapeHtml(qa.prefinal)}</td>
+                                <td>${escapeHtml(qa.giacong)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a href="${DETAIL_SPREADSHEET_URL}" target="_blank" class="btn-detail-link">Chi tiết</a>
+                `;
+                footerEl.innerHTML = `
+                    <button class="btn-update" style="margin-top:0;" onclick="if(checkAdminPermission()) { closeOrgChartModal(); openQaEditModal(); }">✏️ Cập nhật số lượng</button>
+                    <button class="btn-cancel" onclick="closeOrgChartModal()">Đóng</button>
+                `;
+            }
+
+            document.getElementById('orgChartModal').style.display = 'flex';
+        }
+
+        function closeOrgChartModal() {
+            document.getElementById('orgChartModal').style.display = 'none';
+        }
+
+        function openCompanyEditModal() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalCompanyContainer');
+            const company = globalData.companyTeam || defaultCompanyTeam;
+            container.innerHTML = `
+                <div class="edit-row-company">
+                    <div><label style="font-size:12px;font-weight:600;">Văn phòng</label><input type="number" id="company_office" value="${escapeHtml(company.office)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">Công nhân</label><input type="number" id="company_worker" value="${escapeHtml(company.worker)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">QC kiểm hàng</label><input type="number" id="company_qc" value="${escapeHtml(company.qc)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">Quản lý Hàn Quốc</label><input type="number" id="company_korean" value="${escapeHtml(company.korean)}"></div>
+                </div>
+            `;
+            document.getElementById('companyEditModal').style.display = 'flex';
+        }
+
+        function closeCompanyEditModal() {
+            document.getElementById('companyEditModal').style.display = 'none';
+        }
+
+        function saveCompanyData() {
+            if (!checkAdminPermission()) return;
+            const officeVal = document.getElementById('company_office').value.trim() || '0';
+            const workerVal = document.getElementById('company_worker').value.trim() || '0';
+            const qcVal = document.getElementById('company_qc').value.trim() || '0';
+            const koreanVal = document.getElementById('company_korean').value.trim() || '0';
+
+            globalData.companyTeam = {
+                office: officeVal,
+                worker: workerVal,
+                qc: qcVal,
+                korean: koreanVal
+            };
+            renderCompanyTeam(globalData.companyTeam);
+
+            const dataToSave = [{
+                "Văn phòng": officeVal,
+                "Công nhân": workerVal,
+                "QC kiểm hàng": qcVal,
+                "Quản lý Hàn Quốc": koreanVal
+            }];
+
+            saveToGoogleSheet('company_headcount', dataToSave, closeCompanyEditModal, 'btnSaveCompany');
+        }
+
+        function openQaEditModal() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalQaContainer');
+            const qa = globalData.qaTeam || defaultQaTeam;
+            container.innerHTML = `
+                <div class="edit-row-qa">
+                    <div><label style="font-size:12px;font-weight:600;">Tổng số QA</label><input type="number" id="qa_total" value="${escapeHtml(qa.total)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">QA Leader</label><input type="number" id="qa_leader" value="${escapeHtml(qa.leader)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">QA Officer</label><input type="number" id="qa_officer" value="${escapeHtml(qa.officer)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">Inline QA</label><input type="number" id="qa_inline" value="${escapeHtml(qa.inline)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">Pre-final QA</label><input type="number" id="qa_prefinal" value="${escapeHtml(qa.prefinal)}"></div>
+                    <div><label style="font-size:12px;font-weight:600;">QA gia công</label><input type="number" id="qa_giacong" value="${escapeHtml(qa.giacong)}"></div>
+                </div>
+            `;
+            document.getElementById('qaEditModal').style.display = 'flex';
+        }
+
+        function closeQaEditModal() {
+            document.getElementById('qaEditModal').style.display = 'none';
+        }
+
+        function saveQaData() {
+            if (!checkAdminPermission()) return;
+            const totalVal = document.getElementById('qa_total').value.trim() || '0';
+            const leaderVal = document.getElementById('qa_leader').value.trim() || '0';
+            const officerVal = document.getElementById('qa_officer').value.trim() || '0';
+            const inlineVal = document.getElementById('qa_inline').value.trim() || '0';
+            const prefinalVal = document.getElementById('qa_prefinal').value.trim() || '0';
+            const giacongVal = document.getElementById('qa_giacong').value.trim() || '0';
+
+            globalData.qaTeam = {
+                total: totalVal,
+                leader: leaderVal,
+                officer: officerVal,
+                inline: inlineVal,
+                prefinal: prefinalVal,
+                giacong: giacongVal
+            };
+            renderQaTeam(globalData.qaTeam);
+
+            const dataToSave = [{
+                "Tổng số QA": totalVal,
+                "QA leader": leaderVal,
+                "QA Officer": officerVal,
+                "Inline QA": inlineVal,
+                "Pre-final QA": prefinalVal,
+                "QA gia công": giacongVal
+            }];
+
+            saveToGoogleSheet('qa_headcount', dataToSave, closeQaEditModal, 'btnSaveQa');
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const d = new Date(dateString);
+            if (isNaN(d.getTime())) return dateString;
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        function openDocument(url) {
+            if (!url || url === '#') return;
+            if (url.startsWith('data:application/pdf')) {
+                try {
+                    const arr = url.split(',');
+                    const mime = arr[0].match(/:(.*?);/)[1];
+                    const bstr = atob(arr[1]);
+                    let n = bstr.length;
+                    const u8arr = new Uint8Array(n);
+                    while (n--) {
+                        u8arr[n] = bstr.charCodeAt(n);
+                    }
+                    const blob = new Blob([u8arr], { type: mime });
+                    const blobUrl = URL.createObjectURL(blob);
+                    window.open(blobUrl, '_blank');
+                } catch (e) {
+                    alert("Không thể mở file PDF này. File có thể bị hỏng!");
+                }
+                return;
+            }
+
+            const isInternalPage = url.endsWith('.html') || (!url.startsWith('http://') && !url.startsWith('https://'));
+
+            if (isInternalPage) {
+                window.location.href = url;
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+
+        function addDocModalRow(containerId, name = '', note = '', link = '') {
+            const container = document.getElementById(containerId);
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Tên Tài Liệu" value="${escapeHtml(name)}">
+                <input type="text" placeholder="Ghi chú" value="${escapeHtml(note)}">
+                <input type="text" placeholder="Link (URL)" value="${escapeHtml(link)}">
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        async function saveToGoogleSheet(sheetName, data, callbackClose, btnId) {
+            if (!checkAdminPermission()) return;
+            const btn = btnId ? document.getElementById(btnId) : null;
+            let originalText = "";
+            if (btn) {
+                originalText = btn.innerText;
+                btn.innerText = "⏳ Đang lưu...";
+                btn.disabled = true;
+            }
+
+            try {
+                renderReports(globalData.reports);
+                renderSop(globalData.sop);
+                renderProc(globalData.proc);
+                renderInsp(globalData.insp);
+                renderAudit(globalData.audit);
+                renderQaTeam(globalData.qaTeam);
+                renderCompanyTeam(globalData.companyTeam);
+
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'updateSheet',
+                        sheetName: sheetName,
+                        data: data
+                    })
+                });
+
+                alert("Đã gửi dữ liệu thành công! Đang đồng bộ...");
+                if (callbackClose) callbackClose();
+
+                setTimeout(() => { 
+                    loadAllDataFromGoogleSheet(); 
+                }, 3000);
+
+            } catch (e) {
+                alert("Có lỗi xảy ra khi lưu dữ liệu lên Google Sheets!");
+                console.error(e);
+            } finally {
+                if (btn) {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
+            }
+        }
+
+        const defaultReports = [];
+        const defaultSop = [];
+        const defaultProc = [
+            { name: "Quy trình bộ phận Kho", note: "Tài liệu nội bộ", link: "quy-trinh-kho.html" },
+            { name: "Quy trình bộ phận Cắt", note: "Tài liệu nội bộ", link: "quy-trinh-cat.html" },
+            { name: "Quy trình bộ phận Đặc thù", note: "Tài liệu nội bộ", link: "quy-trinh-dac-thu.html" },
+            { name: "Quy trình bộ phận Chẩn bị", note: "Tài liệu nội bộ", link: "quy-trinh-chuan-bi.html" },
+            { name: "Quy trình Chuyền may", note: "Tài liệu nội bộ", link: "quy-trinh-may.html" },
+            { name: "Quy trình Hoàn thành", note: "Tài liệu nội bộ", link: "quy-trinh-hoan-thanh.html" },
+            { name: "Quy trình Đối ứng kỹ thuật", note: "Tài liệu nội bộ", link: "quy-trinh-doi-ung.html" }
+        ];
+        const defaultInsp = [];
+        const defaultAudit = [];
+        const defaultQaTeam = { total: "0", leader: "0", officer: "0", inline: "0", prefinal: "0", giacong: "0" };
+        const defaultCompanyTeam = { office: "0", worker: "0", qc: "0", korean: "0" };
+
+        let globalData = {
+            reports: defaultReports,
+            sop: defaultSop,
+            proc: defaultProc,
+            insp: defaultInsp,
+            audit: defaultAudit,
+            qaTeam: defaultQaTeam,
+            companyTeam: defaultCompanyTeam
+        };
+
+        function renderCompanyTeam(company) {
+            const container = document.getElementById('companyPopoverBody');
+            if (!container) return;
+            const data = company || defaultCompanyTeam;
+            container.innerHTML = `
+                <tr>
+                    <td>${escapeHtml(data.office || '0')}</td>
+                    <td>${escapeHtml(data.worker || '0')}</td>
+                    <td>${escapeHtml(data.qc || '0')}</td>
+                    <td>${escapeHtml(data.korean || '0')}</td>
+                </tr>
+            `;
+        }
+
+        function renderQaTeam(qa) {
+            const container = document.getElementById('qaPopoverBody');
+            if (!container) return;
+            const data = qa || defaultQaTeam;
+            container.innerHTML = `
+                <tr>
+                    <td>${escapeHtml(data.total || '0')}</td>
+                    <td>${escapeHtml(data.leader || '0')}</td>
+                    <td>${escapeHtml(data.officer || '0')}</td>
+                    <td>${escapeHtml(data.inline || '0')}</td>
+                    <td>${escapeHtml(data.prefinal || '0')}</td>
+                    <td>${escapeHtml(data.giacong || '0')}</td>
+                </tr>
+            `;
+        }
+
+        async function loadAllDataFromGoogleSheet() {
+            if (!API_URL) return;
+
+            const notice = document.getElementById('loading-notice');
+            if (notice) notice.style.display = 'block';
+
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+
+                if (data.reports && data.reports.length > 0) globalData.reports = data.reports;
+                if (data.sop && data.sop.length > 0) globalData.sop = data.sop;
+                if (data.proc && data.proc.length > 0) globalData.proc = data.proc;
+                if (data.insp && data.insp.length > 0) globalData.insp = data.insp;
+                if (data.audit && data.audit.length > 0) globalData.audit = data.audit;
+
+                const rawCompanyData = data.company_headcount || data.companyTeam;
+                if (rawCompanyData) {
+                    const rawCompany = Array.isArray(rawCompanyData) ? rawCompanyData[0] : rawCompanyData;
+                    if (rawCompany) {
+                        globalData.companyTeam = {
+                            office: rawCompany["Văn phòng"] || rawCompany.office || rawCompany[0] || '0',
+                            worker: rawCompany["Công nhân"] || rawCompany.worker || rawCompany[1] || '0',
+                            qc: rawCompany["QC kiểm hàng"] || rawCompany.qc || rawCompany[2] || '0',
+                            korean: rawCompany["Quản lý Hàn Quốc"] || rawCompany.korean || rawCompany[3] || '0'
+                        };
+                    }
+                }
+                
+                const rawQaData = data.qa_headcount || data.qaTeam;
+                if (rawQaData) {
+                    const rawQa = Array.isArray(rawQaData) ? rawQaData[0] : rawQaData;
+                    if (rawQa) {
+                        globalData.qaTeam = {
+                            total: rawQa["Tổng số QA"] || rawQa.total || rawQa[0] || '0',
+                            leader: rawQa["QA leader"] || rawQa.leader || rawQa[1] || '0',
+                            officer: rawQa["QA Officer"] || rawQa.officer || rawQa[2] || '0',
+                            inline: rawQa["Inline QA"] || rawQa.inline || rawQa[3] || '0',
+                            prefinal: rawQa["Pre-final QA"] || rawQa.prefinal || rawQa[4] || '0',
+                            giacong: rawQa["QA gia công"] || rawQa.giacong || rawQa.gia_cong || rawQa[5] || '0'
+                        };
+                    }
+                }
+
+                renderReports(globalData.reports);
+                renderSop(globalData.sop);
+                renderProc(globalData.proc);
+                renderInsp(globalData.insp);
+                renderAudit(globalData.audit);
+                renderCompanyTeam(globalData.companyTeam);
+                renderQaTeam(globalData.qaTeam);
+            } catch (error) {
+                console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
+            } finally {
+                if (notice) notice.style.display = 'none';
+            }
+        }
+
+        function renderReports(data) {
+            const container = document.getElementById('reportListContainer');
+            container.innerHTML = '';
+            const normalReports = data.filter(item => !item.title.toLowerCase().includes('appsheet'));
+            const appsheetReports = data.filter(item => item.title.toLowerCase().includes('appsheet'));
+            const sortedData = [...normalReports, ...appsheetReports];
+
+            sortedData.forEach((item) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'report-card-wrapper';
+
+                const isAppSheet = item.title.toLowerCase().includes('appsheet');
+                const cardClass = isAppSheet ? 'link-card appsheet-link' : 'link-card sheet-link';
+                const authorText = item.author ? item.author : '';
+
+                if (isGuestAccount()) {
+                    wrapper.innerHTML = `
+                        <div class="${cardClass}" style="cursor: pointer;" onclick="alert('Báo cáo nội bộ');">
+                            <div class="link-card-main" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
+                            ${authorText ? `<div class="link-card-sub">${escapeHtml(authorText)}</div>` : ''}
+                        </div>
+                        <div class="report-popover">
+                            <h5>📋 ${escapeHtml(item.title)}</h5>
+                            <p><strong>Người nhập/Phụ trách:</strong> ${escapeHtml(authorText) || 'Chưa cập nhật'}</p>
+                        </div>
+                    `;
+                } else {
+                    wrapper.innerHTML = `
+                        <a href="${escapeHtml(item.link)}" target="_blank" class="${cardClass}">
+                            <div class="link-card-main" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
+                            ${authorText ? `<div class="link-card-sub">${escapeHtml(authorText)}</div>` : ''}
+                        </a>
+                        <div class="report-popover">
+                            <h5>📋 ${escapeHtml(item.title)}</h5>
+                            <p><strong>Người nhập/Phụ trách:</strong> ${escapeHtml(authorText) || 'Chưa cập nhật'}</p>
+                        </div>
+                    `;
+                }
+                container.appendChild(wrapper);
+            });
+        }
+
+        function addReportModalRow(title = '', author = '', link = '') {
+            const container = document.getElementById('modalReportContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-report';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Tên Báo Cáo" value="${escapeHtml(title)}">
+                <input type="text" placeholder="Người nhập" value="${escapeHtml(author)}">
+                <input type="text" placeholder="Link (URL)" value="${escapeHtml(link)}">
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function openReportEditModal() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalReportContainer');
+            container.innerHTML = '';
+            const data = globalData.reports;
+            const normalReports = data.filter(item => !item.title.toLowerCase().includes('appsheet'));
+            const appsheetReports = data.filter(item => item.title.toLowerCase().includes('appsheet'));
+            const sortedData = [...normalReports, ...appsheetReports];
+
+            sortedData.forEach(item => addReportModalRow(item.title, item.author || '', item.link));
+            document.getElementById('reportModal').style.display = 'flex';
+        }
+
+        function closeReportEditModal() {
+            document.getElementById('reportModal').style.display = 'none';
+        }
+
+        function saveReportList() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalReportContainer');
+            const editRows = container.querySelectorAll('.edit-row-report');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const title = inputs[0].value.trim();
+                const author = inputs[1].value.trim();
+                const link = inputs[2].value.trim() || '#';
+                if (title) newData.push({ title, author, link });
+            });
+
+            globalData.reports = newData;
+            saveToGoogleSheet('reports', newData, closeReportEditModal, 'btnSaveReport');
+        }
+
+        function renderSop(data) {
+            const tbody = document.querySelector('#sopTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row-border';
+                const content = item.factory || item.content || '';
+                
+                let linkCell = '';
+                if (isGuestAccount()) {
+                    linkCell = `
+                        <div class="doc-popover-wrapper">
+                            <span class="view-link" onclick="alert('Báo cáo nội bộ');">Xem</span>
+                            <div class="doc-popover">
+                                <div class="doc-popover-title">📋 Checklist SOP</div>
+                                <div class="doc-popover-body">
+                                    <p style="margin: 2px 0;"><strong>Chi tiết:</strong> ${escapeHtml(content)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    linkCell = createViewLinkWithPopover(item.checklistLink, "📋 Checklist SOP", content);
+                }
+
+                tr.innerHTML = `
+                    <td class="cell-date">${escapeHtml(formatDate(item.date))}</td>
+                    <td class="cell-content text-left">${escapeHtml(content)}</td>
+                    <td class="cell-date text-center">${linkCell}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openSopEditModal() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalSopContainer');
+            container.innerHTML = '';
+            globalData.sop.forEach(item => addSopModalRow(formatDate(item.date), item.factory || item.content || '', item.checklistLink));
+            document.getElementById('sopModal').style.display = 'flex';
+        }
+
+        function closeSopEditModal() {
+            document.getElementById('sopModal').style.display = 'none';
+        }
+
+        function addSopModalRow(date = '', factory = '', checklistLink = '') {
+            const container = document.getElementById('modalSopContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-sop';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Ngày tháng" value="${escapeHtml(date)}">
+                <input type="text" placeholder="Nội dung" value="${escapeHtml(factory)}">
+                <input type="text" class="link-input" placeholder="Link hoặc PDF Checklist" value="${escapeHtml(checklistLink)}">
+                <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function saveSopTable() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalSopContainer');
+            const editRows = container.querySelectorAll('.edit-row-sop');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const date = inputs[0].value.trim();
+                const factory = inputs[1].value.trim();
+                const checklistLink = inputs[2].value.trim();
+
+                if (date || factory || checklistLink) {
+                    newData.push({ date, factory, checklistLink });
+                }
+            });
+
+            globalData.sop = newData;
+            saveToGoogleSheet('sop', newData, closeSopEditModal, 'btnSaveSop');
+        }
+
+        function renderProc(data) {
+            const tbody = document.querySelector('#procTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row-border';
+                const linkCell = createViewLinkWithPopover(item.link, `📖 ${item.name}`, item.note);
+
+                tr.innerHTML = `
+                    <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${escapeHtml(item.name)}</td>
+                    <td class="cell-note">${escapeHtml(item.note)}</td>
+                    <td class="cell-note text-center">${linkCell}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openProcEditModal() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalProcContainer');
+            container.innerHTML = '';
+            globalData.proc.forEach(item => addDocModalRow('modalProcContainer', item.name, item.note, item.link));
+            document.getElementById('procModal').style.display = 'flex';
+        }
+
+        function closeProcEditModal() {
+            document.getElementById('procModal').style.display = 'none';
+        }
+
+        function saveProcTable() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalProcContainer');
+            const editRows = container.querySelectorAll('.edit-row');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const name = inputs[0].value.trim();
+                const note = inputs[1].value.trim();
+                const link = inputs[2].value.trim() || '#';
+                if (name) newData.push({ name, note, link });
+            });
+
+            globalData.proc = newData;
+            saveToGoogleSheet('proc', newData, closeProcEditModal, 'btnSaveProc');
+        }
+
+        function renderInsp(data) {
+            const tbody = document.querySelector('#inspTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row-border';
+                
+                let linkCell = '';
+                if (isGuestAccount()) {
+                    linkCell = `
+                        <div class="doc-popover-wrapper">
+                            <span class="view-link" onclick="alert('Báo cáo nội bộ');">Xem</span>
+                            <div class="doc-popover">
+                                <div class="doc-popover-title">${escapeHtml("🔍 " + item.name)}</div>
+                                <div class="doc-popover-body">
+                                    <p style="margin: 2px 0;"><strong>Chi tiết:</strong> ${escapeHtml(item.note)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    linkCell = createViewLinkWithPopover(item.link, `🔍 ${item.name}`, item.note);
+                }
+
+                tr.innerHTML = `
+                    <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${escapeHtml(item.name)}</td>
+                    <td class="cell-note">${escapeHtml(item.note)}</td>
+                    <td class="cell-note text-center">${linkCell}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function addInspModalRow(name = '', note = '', link = '') {
+            const container = document.getElementById('modalInspContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-insp';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Tên Hướng Dẫn" value="${escapeHtml(name)}">
+                <input type="text" placeholder="Ghi chú" value="${escapeHtml(note)}">
+                <input type="text" class="link-input" placeholder="Link hoặc chọn PDF" value="${escapeHtml(link)}">
+                <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 Tải PDF</button>
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function triggerFileInput(btn) {
+            const fileInput = btn.parentElement.querySelector('.pdf-file-input');
+            if (fileInput) fileInput.click();
+        }
+
+        function handlePdfUpload(fileInput) {
+            if (!checkAdminPermission()) return;
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            if (file.type !== 'application/pdf') {
+                alert('Vui lòng chọn tệp định dạng .PDF!');
+                return;
+            }
+
+            const parentRow = fileInput.parentElement;
+            const linkInput = parentRow.querySelector('.link-input');
+            const btnUpload = parentRow.querySelector('.btn-pdf-upload');
+
+            const originalBtnText = btnUpload.innerText;
+            btnUpload.innerText = "⏳ Đang tải...";
+            btnUpload.disabled = true;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Data = e.target.result;
+
+                fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'uploadPdf',
+                        fileName: file.name,
+                        mimeType: file.type,
+                        fileData: base64Data
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        linkInput.value = data.fileUrl;
+                        alert('Tải file lên Google Drive thành công!');
+                    } else {
+                        alert('Lỗi upload: ' + data.message);
+                    }
+                })
+                .catch(err => {
+                    alert('Lỗi kết nối khi tải file lên Drive!');
+                    console.error(err);
+                })
+                .finally(() => {
+                    btnUpload.innerText = originalBtnText;
+                    btnUpload.disabled = false;
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function openInspEditModal() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalInspContainer');
+            container.innerHTML = '';
+            globalData.insp.forEach(item => addInspModalRow(item.name, item.note, item.link));
+            document.getElementById('inspModal').style.display = 'flex';
+        }
+
+        function closeInspEditModal() {
+            document.getElementById('inspModal').style.display = 'none';
+        }
+
+        function saveInspTable() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalInspContainer');
+            const editRows = container.querySelectorAll('.edit-row-insp');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const name = inputs[0].value.trim();
+                const note = inputs[1].value.trim();
+                const link = inputs[2].value.trim() || '#';
+                if (name) newData.push({ name, note, link });
+            });
+
+            globalData.insp = newData;
+            saveToGoogleSheet('insp', newData, closeInspEditModal, 'btnSaveInsp');
+        }
+
+        /* 📢 HÀM TỰ ĐỘNG CẬP NHẬT CHỮ CHẠY VỀ LỊCH KIỂM HÀNG TUẦN HIỆN TẠI */
+        function updateMarqueeSchedule(data) {
+            const marqueeEl = document.getElementById('marqueeAuditSchedule');
+            if (!marqueeEl) return;
+
+            if (!data || data.length === 0) {
+                marqueeEl.innerHTML = "Không có lịch kiểm hàng / audit nào trong tuần hiện tại.";
+                return;
+            }
+
+            const now = new Date();
+            const currentDay = now.getDay();
+            const distanceToMonday = (currentDay === 0 ? -6 : 1 - currentDay);
+            
+            const monday = new Date(now);
+            monday.setDate(now.getDate() + distanceToMonday);
+            monday.setHours(0, 0, 0, 0);
+
+            const sunday = new Date(monday);
+            sunday.setDate(monday.getDate() + 6);
+            sunday.setHours(23, 59, 59, 999);
+
+            const thisWeekAudits = data.filter(item => {
+                if (!item.date) return false;
+                const itemDate = new Date(item.date);
+                return !isNaN(itemDate.getTime()) && itemDate >= monday && itemDate <= sunday;
+            });
+
+            if (thisWeekAudits.length === 0) {
+                marqueeEl.innerHTML = "Tuần này hiện chưa có lịch kiểm hàng / audit phát sinh.";
+            } else {
+                const marqueeItems = thisWeekAudits.map(item => {
+                    return ` ◆ ${formatDate(item.date)} -- ${escapeHtml(item.customer)}`;
+            });
+                marqueeEl.innerHTML = marqueeItems.join(' &nbsp;&nbsp;&nbsp;                &nbsp;&nbsp;&nbsp; ');
+            }
+        }
+
+        function renderAudit(data) {
+            const tbody = document.querySelector('#auditTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row-border';
+                
+                let typeColor = '#1a73e8';
+                if (item.type && item.type.toLowerCase().includes('audit')) typeColor = '#d93025';
+                if (item.type && item.type.toLowerCase().includes('pre')) typeColor = '#137333';
+
+                const info = `Khách hàng: ${item.customer} | Loại: ${item.type} | Nhà máy: ${item.factory}`;
+                
+                let docCell = '';
+                if (isGuestAccount()) {
+                    docCell = `
+                        <div class="doc-popover-wrapper">
+                            <span class="view-link" onclick="alert('Báo cáo nội bộ');">Xem</span>
+                            <div class="doc-popover">
+                                <div class="doc-popover-title">${escapeHtml("📂 Tài liệu Audit/Kiểm hàng")}</div>
+                                <div class="doc-popover-body">
+                                    <p style="margin: 2px 0;"><strong>Chi tiết:</strong> ${escapeHtml(info)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    docCell = createViewLinkWithPopover(item.docLink, `📂 Tài liệu Audit/Kiểm hàng`, info);
+                }
+
+                tr.innerHTML = `
+                    <td class="cell-text-bold">${escapeHtml(item.customer)}</td>
+                    <td class="cell-date">${escapeHtml(formatDate(item.date))}</td>
+                    <td class="cell-date" style="color: ${typeColor}; font-weight: 600;">${escapeHtml(item.type)}</td>
+                    <td class="cell-text-bold text-center">${escapeHtml(item.factory)}</td>
+                    <td class="cell-date text-center">${docCell}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            updateMarqueeSchedule(data);
+        }
+
+        function openEditModal() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalRowContainer');
+            container.innerHTML = '';
+            globalData.audit.forEach(item => addModalRow(item.customer, formatDate(item.date), item.type, item.factory, item.docLink));
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function addModalRow(customer = '', date = '', type = '', factory = '', docLink = '') {
+            const container = document.getElementById('modalRowContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-audit';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Khách hàng" value="${escapeHtml(customer)}">
+                <input type="text" placeholder="Ngày" value="${escapeHtml(date)}">
+                <input type="text" placeholder="Loại" value="${escapeHtml(type)}">
+                <input type="text" placeholder="Nhà máy" value="${escapeHtml(factory)}">
+                <input type="text" class="link-input" placeholder="Link hoặc upload PDF" value="${escapeHtml(docLink)}">
+                <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function saveAuditTable() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalRowContainer');
+            const editRows = container.querySelectorAll('.edit-row-audit');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const customer = inputs[0].value.trim();
+                const date = inputs[1].value.trim();
+                const type = inputs[2].value.trim();
+                const factory = inputs[3].value.trim();
+                const docLink = inputs[4].value.trim();
+
+                if (customer || date || type || factory || docLink) {
+                    newData.push({ customer, date, type, factory, docLink });
+                }
+            });
+
+            globalData.audit = newData;
+            saveToGoogleSheet('audit', newData, closeEditModal, 'btnSaveAudit');
+        }
+
+        /* 🔍 CẤU HÌNH TỔNG HỢP DỮ LIỆU & KHỞI TẠO AUTOCOMPLETE.JS */
+        function getAllSearchableData() {
+            const items = [];
+
+            (globalData.reports || []).forEach(r => {
+                if (r.title) {
+                    items.push({
+                        title: r.title,
+                        category: "Báo cáo",
+                        link: r.link
+                    });
+                }
+            });
+
+            (globalData.proc || []).forEach(p => {
+                if (p.name) {
+                    items.push({
+                        title: p.name,
+                        category: "Quy trình",
+                        link: p.link
+                    });
+                }
+            });
+
+            (globalData.insp || []).forEach(i => {
+                if (i.name) {
+                    items.push({
+                        title: i.name,
+                        category: "Tài liệu Audit",
+                        link: i.link
+                    });
+                }
+            });
+
+            return items;
+        }
+
+        function initAutoComplete() {
+            const config = {
+                selector: "#autoComplete",
+                placeHolder: "🔍 Tìm kiếm báo cáo, quy trình...",
+                data: {
+                    src: async () => getAllSearchableData(),
+                    key: ["title"]
+                },
+                resultsList: {
+                    element: (list, data) => {
+                        const results = document.getElementById("autoComplete_list");
+                        if (data.results.length === 0) {
+                            results.innerHTML = `<div class="autoComplete_result"><span class="search-item-title" style="color: #94a3b8;">Không tìm thấy kết quả phù hợp</span></div>`;
+                        }
+                    },
+                    noResults: true,
+                    maxResults: 15,
+                    tabSelect: true
+                },
+                resultItem: {
+                    element: (item, data) => {
+                        item.innerHTML = `
+                            <span class="search-item-title">${escapeHtml(data.value.title)}</span>
+                            <span class="search-item-category">${escapeHtml(data.value.category)}</span>
+                        `;
+                    },
+                    highlight: true
+                },
+                events: {
+                    input: {
+                        selection: (event) => {
+                            const selection = event.detail.selection.value;
+                            document.getElementById("autoComplete").value = selection.title;
+                            openDocument(selection.link);
+                        }
+                    }
+                }
+            };
+
+            const autoCompleteHeader = new autoComplete(config);
+
+            const configFooter = {
+                selector: "#autoCompleteFooter",
+                placeHolder: "🔍 Tìm kiếm nhanh...",
+                data: {
+                    src: async () => getAllSearchableData(),
+                    key: ["title"]
+                },
+                resultsList: {
+                    element: (list, data) => {
+                        const results = document.getElementById("autoCompleteFooter_list");
+                        if (data.results.length === 0 && results) {
+                            results.innerHTML = `<div class="autoComplete_result"><span class="search-item-title" style="color: #94a3b8;">Không tìm thấy kết quả phù hợp</span></div>`;
+                        }
+                    },
+                    noResults: true,
+                    maxResults: 10,
+                    tabSelect: true
+                },
+                resultItem: {
+                    element: (item, data) => {
+                        item.innerHTML = `
+                            <span class="search-item-title">${escapeHtml(data.value.title)}</span>
+                            <span class="search-item-category">${escapeHtml(data.value.category)}</span>
+                        `;
+                    },
+                    highlight: true
+                },
+                events: {
+                    input: {
+                        selection: (event) => {
+                            const selection = event.detail.selection.value;
+                            document.getElementById("autoCompleteFooter").value = selection.title;
+                            openDocument(selection.link);
+                        }
+                    }
+                }
+            };
+
+            const autoCompleteFooterInstance = new autoComplete(configFooter);
+        }
+
+        /* DỊCH NGÔN NGỮ */
+        function translatePage(lang, btn) {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            if (lang === 'vi') {
+                location.reload();
+                return;
+            }
+
+            const selectDropdown = document.querySelector(`select.goog-te-combo`);
+            if (selectDropdown) {
+                selectDropdown.value = lang;
+                selectDropdown.dispatchEvent(new Event('change'));
+            } else {
+                let googleTranslateScript = document.createElement('script');
+                googleTranslateScript.type = 'text/javascript';
+                googleTranslateScript.async = true;
+                googleTranslateScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                document.body.appendChild(googleTranslateScript);
+
+                window.googleTranslateElementInit = function() {
+                    new google.translate.TranslateElement({
+                        pageLanguage: 'vi',
+                        includedLanguages: 'en,ko,vi',
+                        autoDisplay: false
+                    }, 'google_translate_element');
+
+                    setTimeout(() => {
+                        const dropdown = document.querySelector(`select.goog-te-combo`);
+                        if (dropdown) {
+                            dropdown.value = lang;
+                            dropdown.dispatchEvent(new Event('change'));
+                        }
+                    }, 1000);
+                };
+            }
+        }
+
+        window.onload = function() {
+            initWeatherAndDate();
+            loadAllDataFromGoogleSheet();
+            setTimeout(initAutoComplete, 800);
+        };
+    </script>
+</body>
+</html>
