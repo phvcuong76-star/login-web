@@ -2515,30 +2515,21 @@
     }
 
     const now = new Date();
-    // Đặt lại giờ của 'now' về 00:00:00 để tính từ đầu ngày hôm nay trở đi
     const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-    const currentDay = now.getDay();
-    const distanceToMonday = (currentDay === 0 ? -6 : 1 - currentDay);
-
-    const monday = new Date(now);
-    monday.setDate(now.getDate() + distanceToMonday);
-    monday.setHours(0, 0, 0, 0);
-
-    const sunday = new Date(monday);
-    sunday.setDate(monday.getDate() + 6);
-    sunday.setHours(23, 59, 59, 999);
-
-    // Lọc các lịch từ đầu ngày hôm nay (todayStart) đến hết chủ nhật
+    // Lọc tất cả các lịch từ hôm nay trở về sau
     const upcomingAudits = data.filter(item => {
         if (!item.date) return false;
         const itemDate = new Date(item.date);
-        itemDate.setHours(0, 0, 0, 0); // Đưa về mốc 0h để so sánh chính xác ngày
-        return !isNaN(itemDate.getTime()) && itemDate >= todayStart && itemDate <= sunday;
+        itemDate.setHours(0, 0, 0, 0);
+        return !isNaN(itemDate.getTime()) && itemDate >= todayStart;
     });
 
+    // Sắp xếp các lịch theo thứ tự từ gần nhất đến xa dần
+    upcomingAudits.sort((a, b) => new Date(a.date) - new Date(b.date));
+
     if (upcomingAudits.length === 0) {
-        marqueeEl.innerHTML = "Từ thời điểm này trở đi trong tuần chưa có lịch kiểm hàng / audit phát sinh.";
+        marqueeEl.innerHTML = "Chưa có lịch kiểm hàng / audit sắp tới.";
     } else {
         const marqueeItems = upcomingAudits.map(item => {
             return `📅 ${formatDate(item.date)} -- ${escapeHtml(item.customer)}`;
