@@ -2527,10 +2527,12 @@
             sunday.setHours(23, 59, 59, 999);
 
             // Lọc các lịch từ thời điểm hiện tại (now) đến hết chủ nhật trong tuần
+            const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             const upcomingAudits = data.filter(item => {
             if (!item.date) return false;
             const itemDate = new Date(item.date);
-            return !isNaN(itemDate.getTime()) && itemDate >= now && itemDate <= sunday;
+            itemDate.setHours(0, 0, 0, 0);
+            return !isNaN(itemDate.getTime()) && itemDate >= todayStart && itemDate <= sunday;
             });
 
             if (upcomingAudits.length === 0) {
