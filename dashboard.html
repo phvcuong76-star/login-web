@@ -350,6 +350,7 @@
             border-radius: 16px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.06);
             margin-bottom: 0;
+            width: 100%;
         }
 
         .card-box-title {
@@ -1488,17 +1489,20 @@
                         <a href="https://drive.google.com/drive/folders/1exe9URBUGZ91blq-n4j7F4BBZSIOtsbX?usp=sharing" target="_blank" class="btn-org">Đào tạo & đánh giá QC</a>
                     </div>
                     <!-- THÊM KHUNG VIDEO YOUTUBE VÀO ĐÂY -->
-        <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; margin-top: 20px;">
-            <iframe src="https://www.youtube.com/embed/TyN4yaX9KHY" 
-                    title="AQL Special Inspection Levels" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen 
-                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 6px;">
-                </iframe>
+                    <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; margin-top: 20px;">
+                        <iframe src="https://www.youtube.com/embed/TyN4yaX9KHY" 
+                                title="AQL Special Inspection Levels" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen 
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 6px;">
+                        </iframe>
+                    </div>
                 </div>
-                </div>                  
-        <!-- KHỐI FOOTER THÔNG TIN -->
+            </div>
+        </div>                  
+
+        <!-- KHỐI FOOTER THÔNG TIN (ĐÃ ĐƯA RA NGOÀI .dashboard-grid ĐỂ TRẢI DÀI) -->
         <div class="footer-card-box">
             <div class="footer-top-row">
                 <div class="footer-header">
@@ -2513,37 +2517,37 @@
 
         /* 📢 HÀM TỰ ĐỘNG CẬP NHẬT CHỮ CHẠY VỀ LỊCH KIỂM HÀNG TUẦN HIỆN TẠI */
         function updateMarqueeSchedule(data) {
-    const marqueeEl = document.getElementById('marqueeAuditSchedule');
-    if (!marqueeEl) return;
+            const marqueeEl = document.getElementById('marqueeAuditSchedule');
+            if (!marqueeEl) return;
 
-    if (!data || data.length === 0) {
-        marqueeEl.innerHTML = "Không có lịch kiểm hàng / audit nào.";
-        return;
-    }
+            if (!data || data.length === 0) {
+                marqueeEl.innerHTML = "Không có lịch kiểm hàng / audit nào.";
+                return;
+            }
 
-    const now = new Date();
-    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const now = new Date();
+            const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-    // Lọc tất cả các lịch từ hôm nay trở về sau
-    const upcomingAudits = data.filter(item => {
-        if (!item.date) return false;
-        const itemDate = new Date(item.date);
-        itemDate.setHours(0, 0, 0, 0);
-        return !isNaN(itemDate.getTime()) && itemDate >= todayStart;
-    });
+            // Lọc tất cả các lịch từ hôm nay trở về sau
+            const upcomingAudits = data.filter(item => {
+                if (!item.date) return false;
+                const itemDate = new Date(item.date);
+                itemDate.setHours(0, 0, 0, 0);
+                return !isNaN(itemDate.getTime()) && itemDate >= todayStart;
+            });
 
-    // Sắp xếp các lịch theo thứ tự từ gần nhất đến xa dần
-    upcomingAudits.sort((a, b) => new Date(a.date) - new Date(b.date));
+            // Sắp xếp các lịch theo thứ tự từ gần nhất đến xa dần
+            upcomingAudits.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    if (upcomingAudits.length === 0) {
-        marqueeEl.innerHTML = "Chưa có lịch kiểm hàng / audit sắp tới.";
-    } else {
-        const marqueeItems = upcomingAudits.map(item => {
-            return `📅 ${formatDate(item.date)} -- ${escapeHtml(item.customer)}`;
-        });
-        marqueeEl.innerHTML = marqueeItems.join(' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ');
-    }
-}
+            if (upcomingAudits.length === 0) {
+                marqueeEl.innerHTML = "Chưa có lịch kiểm hàng / audit sắp tới.";
+            } else {
+                const marqueeItems = upcomingAudits.map(item => {
+                    return `📅 ${formatDate(item.date)} -- ${escapeHtml(item.customer)}`;
+                });
+                marqueeEl.innerHTML = marqueeItems.join(' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ');
+            }
+        }
 
         function renderAudit(data) {
             const tbody = document.querySelector('#auditTable tbody');
@@ -2728,9 +2732,9 @@
                 },
                 resultsList: {
                     element: (list, data) => {
-                        const results = document.getElementById("autoCompleteFooter_list");
+                        const results = document.querySelector(".footer-search-container ul");
                         if (data.results.length === 0 && results) {
-                            results.innerHTML = `<div class="autoComplete_result"><span class="search-item-title" style="color: #94a3b8;">Không tìm thấy kết quả phù hợp</span></div>`;
+                            results.innerHTML = `<div class="autoComplete_result"><span class="search-item-title" style="color: #94a3b8;">Không tìm thấy kết quả</span></div>`;
                         }
                     },
                     noResults: true,
@@ -2760,39 +2764,34 @@
             const autoCompleteFooterInstance = new autoComplete(configFooter);
         }
 
-        /* DỊCH NGÔN NGỮ */
-        function translatePage(lang, btn) {
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
+        /* 🌐 HÀM DỊCH NGÔN NGỮ TRANG BẰNG GOOGLE TRANSLATE API */
+        function translatePage(langCode, btnElement) {
+            const buttons = document.querySelectorAll('.lang-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
 
-            if (lang === 'vi') {
-                location.reload();
-                return;
-            }
-
-            const selectDropdown = document.querySelector(`select.goog-te-combo`);
-            if (selectDropdown) {
-                selectDropdown.value = lang;
-                selectDropdown.dispatchEvent(new Event('change'));
+            const selectEl = document.querySelector('.goog-te-combo');
+            if (selectEl) {
+                selectEl.value = langCode;
+                selectEl.dispatchEvent(new Event('change'));
             } else {
-                let googleTranslateScript = document.createElement('script');
-                googleTranslateScript.type = 'text/javascript';
-                googleTranslateScript.async = true;
-                googleTranslateScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-                document.body.appendChild(googleTranslateScript);
+                const addScript = document.createElement('script');
+                addScript.type = 'text/javascript';
+                addScript.src = `https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit`;
+                document.body.appendChild(addScript);
 
                 window.googleTranslateElementInit = function() {
                     new google.translate.TranslateElement({
                         pageLanguage: 'vi',
-                        includedLanguages: 'en,ko,vi',
+                        includedLanguages: 'vi,ko,en',
                         autoDisplay: false
                     }, 'google_translate_element');
 
                     setTimeout(() => {
-                        const dropdown = document.querySelector(`select.goog-te-combo`);
-                        if (dropdown) {
-                            dropdown.value = lang;
-                            dropdown.dispatchEvent(new Event('change'));
+                        const combo = document.querySelector('.goog-te-combo');
+                        if (combo) {
+                            combo.value = langCode;
+                            combo.dispatchEvent(new Event('change'));
                         }
                     }, 1000);
                 };
@@ -2802,7 +2801,7 @@
         window.onload = function() {
             initWeatherAndDate();
             loadAllDataFromGoogleSheet();
-            setTimeout(initAutoComplete, 800);
+            setTimeout(initAutoComplete, 500);
         };
     </script>
 </body>
