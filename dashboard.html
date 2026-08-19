@@ -422,21 +422,6 @@
             border: 0;
         }
 
-        /* STYLE CHO KHỐI VIDEO YOUTUBE */
-        .youtube-container {
-            position: relative;
-            width: 100%;
-            height: 295px;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #000;
-        }
-        .youtube-container iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
         .report-card-wrapper {
             position: relative;
             display: block;
@@ -1428,7 +1413,7 @@
                 </div>
 
                 <!-- KHỐI 6: THÔNG TIN VÀ NHÂN SỰ -->
-                <div class="card-box" style="margin-bottom: 20px;">
+                <div class="card-box" style="margin-bottom: 0;">
                     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
                     <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                         
@@ -1501,15 +1486,6 @@
 
                         <!-- Nút 6: Đào tạo & đánh giá QC -->
                         <a href="https://drive.google.com/drive/folders/1exe9URBUGZ91blq-n4j7F4BBZSIOtsbX?usp=sharing" target="_blank" class="btn-org">Đào tạo & đánh giá QC</a>
-                    </div>
-                </div>
-
-                <!-- KHỐI 7: XEM VIDEO YOUTUBE TRỰC TIẾP -->
-                <div class="card-box" style="margin-bottom: 0;">
-                    <h3 class="card-box-title">🎬 Video Trực Tuyến</h3>
-                    <div class="youtube-container">
-                        <!-- Thay đổi ID video YouTube tại thuộc tính src của iframe bên dưới bằng ID video thực tế của bạn -->
-                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
@@ -2774,13 +2750,52 @@
                 }
             };
 
-            const autoCompleteFooter = new autoComplete(configFooter);
+            const autoCompleteFooterInstance = new autoComplete(configFooter);
+        }
+
+        /* DỊCH NGÔN NGỮ */
+        function translatePage(lang, btn) {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            if (lang === 'vi') {
+                location.reload();
+                return;
+            }
+
+            const selectDropdown = document.querySelector(`select.goog-te-combo`);
+            if (selectDropdown) {
+                selectDropdown.value = lang;
+                selectDropdown.dispatchEvent(new Event('change'));
+            } else {
+                let googleTranslateScript = document.createElement('script');
+                googleTranslateScript.type = 'text/javascript';
+                googleTranslateScript.async = true;
+                googleTranslateScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                document.body.appendChild(googleTranslateScript);
+
+                window.googleTranslateElementInit = function() {
+                    new google.translate.TranslateElement({
+                        pageLanguage: 'vi',
+                        includedLanguages: 'en,ko,vi',
+                        autoDisplay: false
+                    }, 'google_translate_element');
+
+                    setTimeout(() => {
+                        const dropdown = document.querySelector(`select.goog-te-combo`);
+                        if (dropdown) {
+                            dropdown.value = lang;
+                            dropdown.dispatchEvent(new Event('change'));
+                        }
+                    }, 1000);
+                };
+            }
         }
 
         window.onload = function() {
             initWeatherAndDate();
             loadAllDataFromGoogleSheet();
-            initAutoComplete();
+            setTimeout(initAutoComplete, 800);
         };
     </script>
 </body>
