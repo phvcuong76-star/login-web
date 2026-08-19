@@ -350,7 +350,6 @@
             border-radius: 16px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.06);
             margin-bottom: 0;
-            width: 100%;
         }
 
         .card-box-title {
@@ -1487,7 +1486,7 @@
 
                         <!-- Nút 6: Đào tạo & đánh giá QC -->
                         <a href="https://drive.google.com/drive/folders/1exe9URBUGZ91blq-n4j7F4BBZSIOtsbX?usp=sharing" target="_blank" class="btn-org">Đào tạo & đánh giá QC</a>
-                    </div>
+                         </div>
                     <!-- THÊM KHUNG VIDEO YOUTUBE VÀO ĐÂY -->
                     <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; margin-top: 20px;">
                         <iframe src="https://www.youtube.com/embed/TyN4yaX9KHY" 
@@ -1500,9 +1499,9 @@
                     </div>
                 </div>
             </div>
-        </div>                  
+        </div>
 
-        <!-- KHỐI FOOTER THÔNG TIN (ĐÃ ĐƯA RA NGOÀI .dashboard-grid ĐỂ TRẢI DÀI) -->
+        <!-- KHỐI FOOTER THÔNG TIN -->
         <div class="footer-card-box">
             <div class="footer-top-row">
                 <div class="footer-header">
@@ -2517,37 +2516,37 @@
 
         /* 📢 HÀM TỰ ĐỘNG CẬP NHẬT CHỮ CHẠY VỀ LỊCH KIỂM HÀNG TUẦN HIỆN TẠI */
         function updateMarqueeSchedule(data) {
-            const marqueeEl = document.getElementById('marqueeAuditSchedule');
-            if (!marqueeEl) return;
+    const marqueeEl = document.getElementById('marqueeAuditSchedule');
+    if (!marqueeEl) return;
 
-            if (!data || data.length === 0) {
-                marqueeEl.innerHTML = "Không có lịch kiểm hàng / audit nào.";
-                return;
-            }
+    if (!data || data.length === 0) {
+        marqueeEl.innerHTML = "Không có lịch kiểm hàng / audit nào.";
+        return;
+    }
 
-            const now = new Date();
-            const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-            // Lọc tất cả các lịch từ hôm nay trở về sau
-            const upcomingAudits = data.filter(item => {
-                if (!item.date) return false;
-                const itemDate = new Date(item.date);
-                itemDate.setHours(0, 0, 0, 0);
-                return !isNaN(itemDate.getTime()) && itemDate >= todayStart;
-            });
+    // Lọc tất cả các lịch từ hôm nay trở về sau
+    const upcomingAudits = data.filter(item => {
+        if (!item.date) return false;
+        const itemDate = new Date(item.date);
+        itemDate.setHours(0, 0, 0, 0);
+        return !isNaN(itemDate.getTime()) && itemDate >= todayStart;
+    });
 
-            // Sắp xếp các lịch theo thứ tự từ gần nhất đến xa dần
-            upcomingAudits.sort((a, b) => new Date(a.date) - new Date(b.date));
+    // Sắp xếp các lịch theo thứ tự từ gần nhất đến xa dần
+    upcomingAudits.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-            if (upcomingAudits.length === 0) {
-                marqueeEl.innerHTML = "Chưa có lịch kiểm hàng / audit sắp tới.";
-            } else {
-                const marqueeItems = upcomingAudits.map(item => {
-                    return `📅 ${formatDate(item.date)} -- ${escapeHtml(item.customer)}`;
-                });
-                marqueeEl.innerHTML = marqueeItems.join(' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ');
-            }
-        }
+    if (upcomingAudits.length === 0) {
+        marqueeEl.innerHTML = "Chưa có lịch kiểm hàng / audit sắp tới.";
+    } else {
+        const marqueeItems = upcomingAudits.map(item => {
+            return `📅 ${formatDate(item.date)} -- ${escapeHtml(item.customer)}`;
+        });
+        marqueeEl.innerHTML = marqueeItems.join(' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ');
+    }
+}
 
         function renderAudit(data) {
             const tbody = document.querySelector('#auditTable tbody');
@@ -2732,9 +2731,9 @@
                 },
                 resultsList: {
                     element: (list, data) => {
-                        const results = document.querySelector(".footer-search-container ul");
+                        const results = document.getElementById("autoCompleteFooter_list");
                         if (data.results.length === 0 && results) {
-                            results.innerHTML = `<div class="autoComplete_result"><span class="search-item-title" style="color: #94a3b8;">Không tìm thấy kết quả</span></div>`;
+                            results.innerHTML = `<div class="autoComplete_result"><span class="search-item-title" style="color: #94a3b8;">Không tìm thấy kết quả phù hợp</span></div>`;
                         }
                     },
                     noResults: true,
@@ -2764,34 +2763,39 @@
             const autoCompleteFooterInstance = new autoComplete(configFooter);
         }
 
-        /* 🌐 HÀM DỊCH NGÔN NGỮ TRANG BẰNG GOOGLE TRANSLATE API */
-        function translatePage(langCode, btnElement) {
-            const buttons = document.querySelectorAll('.lang-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            if (btnElement) btnElement.classList.add('active');
+        /* DỊCH NGÔN NGỮ */
+        function translatePage(lang, btn) {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
 
-            const selectEl = document.querySelector('.goog-te-combo');
-            if (selectEl) {
-                selectEl.value = langCode;
-                selectEl.dispatchEvent(new Event('change'));
+            if (lang === 'vi') {
+                location.reload();
+                return;
+            }
+
+            const selectDropdown = document.querySelector(`select.goog-te-combo`);
+            if (selectDropdown) {
+                selectDropdown.value = lang;
+                selectDropdown.dispatchEvent(new Event('change'));
             } else {
-                const addScript = document.createElement('script');
-                addScript.type = 'text/javascript';
-                addScript.src = `https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit`;
-                document.body.appendChild(addScript);
+                let googleTranslateScript = document.createElement('script');
+                googleTranslateScript.type = 'text/javascript';
+                googleTranslateScript.async = true;
+                googleTranslateScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                document.body.appendChild(googleTranslateScript);
 
                 window.googleTranslateElementInit = function() {
                     new google.translate.TranslateElement({
                         pageLanguage: 'vi',
-                        includedLanguages: 'vi,ko,en',
+                        includedLanguages: 'en,ko,vi',
                         autoDisplay: false
                     }, 'google_translate_element');
 
                     setTimeout(() => {
-                        const combo = document.querySelector('.goog-te-combo');
-                        if (combo) {
-                            combo.value = langCode;
-                            combo.dispatchEvent(new Event('change'));
+                        const dropdown = document.querySelector(`select.goog-te-combo`);
+                        if (dropdown) {
+                            dropdown.value = lang;
+                            dropdown.dispatchEvent(new Event('change'));
                         }
                     }, 1000);
                 };
@@ -2801,7 +2805,7 @@
         window.onload = function() {
             initWeatherAndDate();
             loadAllDataFromGoogleSheet();
-            setTimeout(initAutoComplete, 500);
+            setTimeout(initAutoComplete, 800);
         };
     </script>
 </body>
