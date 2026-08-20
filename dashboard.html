@@ -1194,83 +1194,6 @@
         <div class="dashboard-grid">
             <!-- CỘT BÊN TRÁI -->
             <div>
-                <!-- KHỐI: THÔNG TIN VÀ NHÂN SỰ (ĐƯỢC CHUYỂN SANG TRÁI) -->
-                <div class="card-box" style="margin-bottom: 20px;">
-                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
-                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                        
-                        <!-- Nút 1: Công ty Hai Vina -->
-                        <div class="org-btn-wrapper">
-                            <button class="btn-org" onclick="openOrgChart('company')">Hai Vina</button>
-                            <div class="org-popover">
-                                <h4>👥 Tình hình nhân sự công ty</h4>
-                                <table class="org-table" style="margin-top: 0;">
-                                    <thead>
-                                        <tr>
-                                            <th>Văn phòng</th>
-                                            <th>Công nhân</th>
-                                            <th>QC kiểm hàng</th>
-                                            <th>Quản lý Hàn Quốc</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="companyPopoverBody">
-                                        <tr>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
-                            </div>
-                        </div>
-
-                        <!-- Nút 2: Số lượng QA Team -->
-                        <div class="org-btn-wrapper">
-                            <button class="btn-org" onclick="openOrgChart('qa')">Số lượng QA</button>
-                            <div class="org-popover">
-                                <h4>👥 Tình hình nhân sự Phòng chất lượng</h4>
-                                <table class="org-table" style="margin-top: 0;">
-                                    <thead>
-                                        <tr>
-                                            <th>Tổng số QA</th>
-                                            <th>QA leader</th>
-                                            <th>QA Officer</th>
-                                            <th>Inline QA</th>
-                                            <th>Pre-final QA</th>
-                                            <th>QA gia công</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="qaPopoverBody">
-                                        <tr>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
-                            </div>
-                        </div>
-
-                        <!-- Nút 3: Hiệu chuẩn -->
-                        <a href="https://drive.google.com/drive/folders/1-lPbuZOh32wb8FVnMTazLXP9KAnqb6Ui?usp=sharing" target="_blank" class="btn-org">Hiệu chuẩn</a>
-                                               
-                        <!-- Nút 4: ISO 9001 -->
-                        <a href="https://drive.google.com/file/d/1Ql0cVzt1TpoNCz6wMuzGyM4rV7e3_tgS/view?usp=sharing" target="_blank" class="btn-org">ISO 9001</a>
-
-                        <!-- Nút 5: Quản lý thiết bị -->
-                        <a href="https://drive.google.com/drive/folders/1uQKb1izSZuVCzLkpiBJk0Z0Q8mix9L_X?usp=sharing" target="_blank" class="btn-org">Quản lý thiết bị</a>
-
-                        <!-- Nút 6: Đào tạo & đánh giá QC -->
-                        <a href="https://drive.google.com/drive/folders/1exe9URBUGZ91blq-n4j7F4BBZSIOtsbX?usp=sharing" target="_blank" class="btn-org">Đào tạo & đánh giá QC</a>
-                    </div>
-                </div>
-
                 <!-- KHỐI 1: DANH SÁCH BÁO CÁO -->
                 <div class="card-box">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -1487,6 +1410,83 @@
                     <div class="map-container">
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.818167888874!2d106.2917!3d20.8784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31358d341076ee2b%3A0xc33a11029c546db9!2zQ29uZyB0eSBUSlNIIEhhaSBWaW5h!5e0!3m2!1svi!2svn!4v1700000000000!5m2!1svi!2svn" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
+                </div>
+
+                <!-- KHỐI 6: THÔNG TIN VÀ NHÂN SỰ -->
+                <div class="card-box" style="margin-bottom: 0;">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        
+                        <!-- Nút 1: Công ty Hai Vina -->
+                        <div class="org-btn-wrapper">
+                            <button class="btn-org" onclick="openOrgChart('company')">Hai Vina</button>
+                            <div class="org-popover">
+                                <h4>👥 Tình hình nhân sự công ty</h4>
+                                <table class="org-table" style="margin-top: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th>Văn phòng</th>
+                                            <th>Công nhân</th>
+                                            <th>QC kiểm hàng</th>
+                                            <th>Quản lý Hàn Quốc</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="companyPopoverBody">
+                                        <tr>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
+                            </div>
+                        </div>
+
+                        <!-- Nút 2: Số lượng QA Team -->
+                        <div class="org-btn-wrapper">
+                            <button class="btn-org" onclick="openOrgChart('qa')">Số lượng QA</button>
+                            <div class="org-popover">
+                                <h4>👥 Tình hình nhân sự Phòng chất lượng</h4>
+                                <table class="org-table" style="margin-top: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th>Tổng số QA</th>
+                                            <th>QA leader</th>
+                                            <th>QA Officer</th>
+                                            <th>Inline QA</th>
+                                            <th>Pre-final QA</th>
+                                            <th>QA gia công</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="qaPopoverBody">
+                                        <tr>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
+                            </div>
+                        </div>
+
+                        <!-- Nút 3: Hiệu chuẩn -->
+                        <a href="https://drive.google.com/drive/folders/1-lPbuZOh32wb8FVnMTazLXP9KAnqb6Ui?usp=sharing" target="_blank" class="btn-org">Hiệu chuẩn</a>
+                                               
+                        <!-- Nút 4: ISO 9001 -->
+                        <a href="https://drive.google.com/file/d/1Ql0cVzt1TpoNCz6wMuzGyM4rV7e3_tgS/view?usp=sharing" target="_blank" class="btn-org">ISO 9001</a>
+
+                        <!-- Nút 5: Quản lý thiết bị -->
+                        <a href="https://drive.google.com/drive/folders/1uQKb1izSZuVCzLkpiBJk0Z0Q8mix9L_X?usp=sharing" target="_blank" class="btn-org">Quản lý thiết bị</a>
+
+                        <!-- Nút 6: Đào tạo & đánh giá QC -->
+                        <a href="https://drive.google.com/drive/folders/1exe9URBUGZ91blq-n4j7F4BBZSIOtsbX?usp=sharing" target="_blank" class="btn-org">Đào tạo & đánh giá QC</a>
+                        </div>
                 </div>
 
                 <!-- KHỐI 7: XEM VIDEO YOUTUBE TRỰC TIẾP -->
