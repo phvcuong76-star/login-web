@@ -65,7 +65,7 @@
         .header-top-bar {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start; /* Đẩy các phần tử (logo, thời tiết, nút thoát) lên mép trên của khung */
             margin-bottom: 20px;
             flex-wrap: wrap;
             gap: 15px;
@@ -74,7 +74,9 @@
             background-image: url('https://lh3.googleusercontent.com/d/1yXOsCYQR8QTCOYcvmyY3_4ALITCf5xmR');
             background-size: cover;
             background-position: center;
-            padding: 35px; /* Thêm padding nếu muốn tạo khoảng cách đệm cho đẹp */
+            /* CỐ ĐỊNH CHIỀU CAO KHUNG ẢNH NỀN TO RỘNG TÙY Ý */
+            min-height: 120px; /* Bạn có thể tăng/giảm số 120px này để ảnh cao hơn hoặc thấp hơn */
+            padding: 12px 20px; /* Khoảng đệm nhẹ bên trong cho thoáng */
             border-radius: 8px;
         }
 
