@@ -1208,54 +1208,7 @@
             
             <!-- CỘT BÊN TRÁI -->
             <div>
-                <!-- KHỐI 1: DANH SÁCH BÁO CÁO -->
-                <div class="card-box">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 class="card-box-title" style="margin: 0;">📊 Danh Sách Báo Cáo</h3>
-                <a href="https://script.google.com/macros/s/AKfycbx-ZKLRLt0rpmH8NTpDUEMnSAk4ykFPIoaKWJanzWmYYezocqAnDRVvwxpul8JA1gUB/exec" target="_blank" style="color: #000000; font-size: 13px; font-weight: 600;text-decoration: none;display: inline-block; transition: transform 0.2s ease, color 0.2s ease;" onmouseover="this.style.transform='scale(1.05)'; this.style.color='#0056b3';" onmouseout="this.style.transform='scale(1)'; this.style.color='#000000';">➡️ Xem DashBoard</a>
-        </div>
-                    <div id="reportListContainer"></div>
-                    <div class="text-right">
-                        <button class="btn-update" onclick="openReportEditModal()">Cập nhật</button>
-                    </div>
-                </div>
-
-                <!-- KHỐI 2: TÀI LIỆU & HƯỚNG DẪN -->
-                <div class="card-box" style="background-color: #faf5ff; margin-bottom: 0;">
-                    <h3 class="card-box-title">📂 Tài Liệu & Hướng dẫn</h3>
-
-                    <!-- BẢNG 1: SỔ TAY QUY TRÌNH CÔNG VIỆC -->
-                    <div class="table-responsive" style="margin-bottom: 10px;">
-                        <table id="procTable">
-                            <thead>
-                                <tr class="doc-section-title">
-                                    <td colspan="3">📖 Sổ tay Quy trình công việc</td>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                    <div class="text-right" style="margin-bottom: 25px;">
-                        <button class="btn-update" onclick="openProcEditModal()">Cập nhật</button>
-                    </div>
-
-                    <!-- BẢNG 2: TÀI LIỆU AUDIT -->
-                    <div class="table-responsive" style="margin-bottom: 25px;">
-                        <table id="inspTable">
-                            <thead>
-                                <tr class="doc-section-title">
-                                    <td colspan="3">🔍 CHUẨN BỊ KHÁCH HÀNG ĐÁNH GIÁ</td>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                    <div class="text-right" style="margin-bottom: 5px;">
-                        <button class="btn-update" onclick="openInspEditModal()">Cập nhật</button>
-                    </div>
-                </div>
-                
- <!-- KHỐI 3: THÔNG TIN VÀ NHÂN SỰ -->
+<!-- KHỐI 3: THÔNG TIN VÀ NHÂN SỰ -->
 <div class="card-box" style="margin-top: 20px;">
     <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
     <div style="display: flex; gap: 12px; flex-wrap: wrap;">
@@ -1346,10 +1299,56 @@
         <a href="https://drive.google.com/file/d/1Du-M5JbHj3e2f3TsHq3c2oTbA0kpig6R/view?usp=sharing" target="_blank" class="btn-org">
             <i class="fas fa-folder-open"></i> QMS Profile
         </a>
-              
-    </div>
-</div>
-</div>
+        </div>
+      </div>
+                
+                <!-- KHỐI 1: DANH SÁCH BÁO CÁO -->
+                <div class="card-box">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 class="card-box-title" style="margin: 0;">📊 Danh Sách Báo Cáo</h3>
+                <a href="https://script.google.com/macros/s/AKfycbx-ZKLRLt0rpmH8NTpDUEMnSAk4ykFPIoaKWJanzWmYYezocqAnDRVvwxpul8JA1gUB/exec" target="_blank" style="color: #000000; font-size: 13px; font-weight: 600;text-decoration: none;display: inline-block; transition: transform 0.2s ease, color 0.2s ease;" onmouseover="this.style.transform='scale(1.05)'; this.style.color='#0056b3';" onmouseout="this.style.transform='scale(1)'; this.style.color='#000000';">➡️ Xem DashBoard</a>
+        </div>
+                    <div id="reportListContainer"></div>
+                    <div class="text-right">
+                        <button class="btn-update" onclick="openReportEditModal()">Cập nhật</button>
+                    </div>
+                </div>
+
+                <!-- KHỐI 2: TÀI LIỆU & HƯỚNG DẪN -->
+                <div class="card-box" style="background-color: #faf5ff; margin-bottom: 0;">
+                    <h3 class="card-box-title">📂 Tài Liệu & Hướng dẫn</h3>
+
+                    <!-- BẢNG 1: SỔ TAY QUY TRÌNH CÔNG VIỆC -->
+                    <div class="table-responsive" style="margin-bottom: 10px;">
+                        <table id="procTable">
+                            <thead>
+                                <tr class="doc-section-title">
+                                    <td colspan="3">📖 Sổ tay Quy trình công việc</td>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="text-right" style="margin-bottom: 25px;">
+                        <button class="btn-update" onclick="openProcEditModal()">Cập nhật</button>
+                    </div>
+
+                    <!-- BẢNG 2: TÀI LIỆU AUDIT -->
+                    <div class="table-responsive" style="margin-bottom: 25px;">
+                        <table id="inspTable">
+                            <thead>
+                                <tr class="doc-section-title">
+                                    <td colspan="3">🔍 CHUẨN BỊ KHÁCH HÀNG ĐÁNH GIÁ</td>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="text-right" style="margin-bottom: 5px;">
+                        <button class="btn-update" onclick="openInspEditModal()">Cập nhật</button>
+                      </div>
+                    </div>
+                </div>
           
             <!-- CỘT BÊN PHẢI -->
 
