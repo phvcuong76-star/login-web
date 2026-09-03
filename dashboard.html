@@ -20,9 +20,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.02.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
 
-    <!-- 📌 BỘ ICON FONTAWESOME -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         * {
             box-sizing: border-box;
@@ -166,7 +163,7 @@
             transition: background 0.2s;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
         .btn-logout:hover {
             background-color: #b91c1c;
@@ -1076,7 +1073,7 @@
             transition: background 0.2s, transform 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
         .btn-back-to-top:hover {
             background-color: #1557b0;
@@ -1174,7 +1171,7 @@
                 </div>
 
                 <!-- NÚT ĐĂNG XUẤT -->
-                <button class="btn-logout" onclick="handleLogout()"><i class="fas fa-right-from-bracket"></i> Thoát</button>
+                <button class="btn-logout" onclick="handleLogout()">🚪 Thoát</button>
             </div>
         </div>
 
@@ -1211,32 +1208,32 @@
                 <!-- KHỐI 1: DANH SÁCH BÁO CÁO -->
                 <div class="card-box">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 class="card-box-title" style="margin: 0;"><i class="fas fa-chart-bar"></i> Danh Sách Báo Cáo</h3>
-                <a href="https://script.google.com/macros/s/AKfycbx-ZKLRLt0rpmH8NTpDUEMnSAk4ykFPIoaKWJanzWmYYezocqAnDRVvwxpul8JA1gUB/exec" target="_blank" style="color: #000000; font-size: 13px; font-weight: 600;text-decoration: none;display: inline-block; transition: transform 0.2s ease, color 0.2s ease;" onmouseover="this.style.transform='scale(1.05)'; this.style.color='#0056b3';" onmouseout="this.style.transform='scale(1)'; this.style.color='#000000';"><i class="fas fa-arrow-right"></i> Xem DashBoard</a>
+                <h3 class="card-box-title" style="margin: 0;">📊 Danh Sách Báo Cáo</h3>
+                <a href="https://script.google.com/macros/s/AKfycbx-ZKLRLt0rpmH8NTpDUEMnSAk4ykFPIoaKWJanzWmYYezocqAnDRVvwxpul8JA1gUB/exec" target="_blank" style="color: #000000; font-size: 13px; font-weight: 600;text-decoration: none;display: inline-block; transition: transform 0.2s ease, color 0.2s ease;" onmouseover="this.style.transform='scale(1.05)'; this.style.color='#0056b3';" onmouseout="this.style.transform='scale(1)'; this.style.color='#000000';">➡️ Xem DashBoard</a>
         </div>
                     <div id="reportListContainer"></div>
                     <div class="text-right">
-                        <button class="btn-update" onclick="openReportEditModal()"><i class="fas fa-pen-to-square"></i> Cập nhật</button>
+                        <button class="btn-update" onclick="openReportEditModal()">Cập nhật</button>
                     </div>
                 </div>
 
                 <!-- KHỐI 2: TÀI LIỆU & HƯỚNG DẪN -->
                 <div class="card-box" style="background-color: #faf5ff; margin-bottom: 0;">
-                    <h3 class="card-box-title"><i class="fas fa-folder-open"></i> Tài Liệu & Hướng dẫn</h3>
+                    <h3 class="card-box-title">📂 Tài Liệu & Hướng dẫn</h3>
 
                     <!-- BẢNG 1: SỔ TAY QUY TRÌNH CÔNG VIỆC -->
                     <div class="table-responsive" style="margin-bottom: 10px;">
                         <table id="procTable">
                             <thead>
                                 <tr class="doc-section-title">
-                                    <td colspan="3"><i class="fas fa-book-open"></i> Sổ tay Quy trình công việc</td>
+                                    <td colspan="3">📖 Sổ tay Quy trình công việc</td>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
                     </div>
                     <div class="text-right" style="margin-bottom: 25px;">
-                        <button class="btn-update" onclick="openProcEditModal()"><i class="fas fa-pen-to-square"></i> Cập nhật</button>
+                        <button class="btn-update" onclick="openProcEditModal()">Cập nhật</button>
                     </div>
 
                     <!-- BẢNG 2: TÀI LIỆU AUDIT -->
@@ -1244,20 +1241,20 @@
                         <table id="inspTable">
                             <thead>
                                 <tr class="doc-section-title">
-                                    <td colspan="3"><i class="fas fa-magnifying-glass"></i> CHUẨN BỊ KHÁCH HÀNG ĐÁNH GIÁ</td>
+                                    <td colspan="3">🔍 CHUẨN BỊ KHÁCH HÀNG ĐÁNH GIÁ</td>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
                     </div>
                     <div class="text-right" style="margin-bottom: 5px;">
-                        <button class="btn-update" onclick="openInspEditModal()"><i class="fas fa-pen-to-square"></i> Cập nhật</button>
+                        <button class="btn-update" onclick="openInspEditModal()">Cập nhật</button>
                     </div>
                 </div>
                 
  <!-- KHỐI 3: THÔNG TIN VÀ NHÂN SỰ -->
 <div class="card-box" style="margin-top: 20px;">
-    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;"><i class="fas fa-users"></i> Thông tin và nhân sự</h3>
+    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">👥 Thông tin và nhân sự</h3>
     <div style="display: flex; gap: 12px; flex-wrap: wrap;">
         
         <!-- Nút 1: Công ty Hai Vina -->
@@ -1266,7 +1263,7 @@
                 <i class="fas fa-building"></i> Hai Vina
             </button>
             <div class="org-popover">
-                <h4><i class="fas fa-users"></i> Tình hình nhân sự công ty</h4>
+                <h4>👥 Tình hình nhân sự công ty</h4>
                 <table class="org-table" style="margin-top: 0;">
                     <thead>
                         <tr>
@@ -1285,7 +1282,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link"><i class="fas fa-circle-info"></i> Chi tiết</a>
+                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
             </div>
         </div>
 
@@ -1295,7 +1292,7 @@
                 <i class="fas fa-users-cog"></i> Số lượng QA
             </button>
             <div class="org-popover">
-                <h4><i class="fas fa-users"></i> Tình hình nhân sự Phòng chất lượng</h4>
+                <h4>👥 Tình hình nhân sự Phòng chất lượng</h4>
                 <table class="org-table" style="margin-top: 0;">
                     <thead>
                         <tr>
@@ -1318,7 +1315,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link"><i class="fas fa-circle-info"></i> Chi tiết</a>
+                <a href="https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421" target="_blank" class="btn-detail-link">Chi tiết</a>
             </div>
         </div>
 
@@ -1355,7 +1352,7 @@
 
             <!-- KHỐI 6: XEM VIDEO YOUTUBE TRỰC TIẾP -->
                 <div class="card-box" style="margin-bottom: 0; width: 640px; box-sizing: border-box; overflow: hidden;">
-                    <h3 class="card-box-title"><i class="fas fa-video"></i> Video hoạt động</h3>
+                    <h3 class="card-box-title">🎬 Video hoạt động</h3>
                     <div class="youtube-container" style="display: flex; gap: 10px; overflow-x: auto; scroll-behavior: smooth; box-sizing: border-box; padding-bottom: 8px;">
                         
                         <!-- Video thứ 4 -->
@@ -1402,7 +1399,7 @@
             <div>
                 <!-- KHỐI 1: LỊCH KIỂM HÀNG & AUDIT -->
                 <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
-                    <h3 class="card-box-title"><i class="fas fa-calendar-days"></i> Lịch Kiểm Hàng & Audit</h3>
+                    <h3 class="card-box-title">📅 Lịch Kiểm Hàng & Audit</h3>
                     <div class="table-responsive">
                         <div class="scrollable-table-wrapper">
                             <table id="auditTable">
@@ -1420,13 +1417,13 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <button class="btn-update" onclick="openEditModal()"><i class="fas fa-pen-to-square"></i> Cập nhật</button>
+                        <button class="btn-update" onclick="openEditModal()">Cập nhật</button>
                     </div>
                 </div>
 
                 <!-- KHỐI 2: LỊCH ĐÁNH GIÁ SOP & CÔNG TÁC -->
                 <div class="card-box" style="margin-bottom: 20px; background-color: #fffbe6;">
-                    <h3 class="card-box-title"><i class="fas fa-clipboard-list"></i> Lịch Đánh Giá SOP & Công tác</h3>
+                    <h3 class="card-box-title">📋 Lịch Đánh Giá SOP & Công tác</h3>
                     <div class="table-responsive">
                         <div class="sop-scrollable-table-wrapper">
                             <table id="sopTable">
@@ -1442,13 +1439,13 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <button class="btn-update" onclick="openSopEditModal()"><i class="fas fa-pen-to-square"></i> Cập nhật</button>
+                        <button class="btn-update" onclick="openSopEditModal()">Cập nhật</button>
                     </div>
                 </div>
 
                 <!-- KHỐI 3: KHÁCH HÀNG TIÊU BIỂU -->
                 <div class="card-box" style="margin-bottom: 20px;">
-                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;"><i class="fas fa-tags"></i> KHÁCH HÀNG</h3>
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">🏷️ KHÁCH HÀNG</h3>
                     <div class="standards-container">
                         <!-- STRAUSS -->
                         <a href="https://www.strauss.com/" target="_blank" class="standard-item" title="STRAUSS">
@@ -1520,7 +1517,7 @@
 
                 <!-- KHỐI 4: YÊU CẦU CHẤT LƯỢNG VÀ AN TOÀN -->
                 <div class="card-box" style="margin-bottom: 20px;">
-                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;"><i class="fas fa-shield-halved"></i> TIÊU CHUẨN</h3>
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333; font-size: 18px;">🏷️ TIÊU CHUẨN</h3>
                     <div class="standards-container">
                         <!-- ISO 9001 -->
                         <a href="https://www.iso.org/standards/popular/iso-9000-family" target="_blank" class="standard-item" title="ISO 9001">
@@ -1571,7 +1568,7 @@
 
                 <!-- KHỐI 5: VỊ TRÍ CÔNG TY -->
                 <div class="card-box" style="margin-bottom: 20px;">
-                    <h3 class="card-box-title"><i class="fas fa-location-dot"></i> Vị Trí Công Ty (Google Maps)</h3>
+                    <h3 class="card-box-title">📍 Vị Trí Công Ty (Google Maps)</h3>
                     <div class="map-container">
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.818167888874!2d106.2917!3d20.8784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31358d341076ee2b%3A0xc33a11029c546db9!2zQ29uZyB0eSBUSlNIIEhhaSBWaW5h!5e0!3m2!1svi!2svn!4v1700000000000!5m2!1svi!2svn" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
@@ -1593,7 +1590,7 @@
                     <h3>Trang thông tin</h3>
                 </div>
                 <div>
-                    <button class="btn-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});"><i class="fas fa-arrow-up"></i> Đầu trang</button>
+                    <button class="btn-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">⬆ Đầu trang</button>
                 </div>
             </div>
 
@@ -2484,10 +2481,413 @@
                         </div>
                     `;
                 } else {
-                    // ... các dòng render tiếp theo
+                    linkCell = createViewLinkWithPopover(item.link, `🔍 ${item.name}`, item.note);
                 }
+
+                tr.innerHTML = `
+                    <td class="cell-title"><span class="notranslate" translate="no">└─ </span>${escapeHtml(item.name)}</td>
+                    <td class="cell-note">${escapeHtml(item.note)}</td>
+                    <td class="cell-note text-center">${linkCell}</td>
+                `;
+                tbody.appendChild(tr);
             });
         }
+
+        function addInspModalRow(name = '', note = '', link = '') {
+            const container = document.getElementById('modalInspContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-insp';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Tên Hướng Dẫn" value="${escapeHtml(name)}">
+                <input type="text" placeholder="Ghi chú" value="${escapeHtml(note)}">
+                <input type="text" class="link-input" placeholder="Link hoặc chọn PDF" value="${escapeHtml(link)}">
+                <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 Tải PDF</button>
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function triggerFileInput(btn) {
+            const fileInput = btn.parentElement.querySelector('.pdf-file-input');
+            if (fileInput) fileInput.click();
+        }
+
+        function handlePdfUpload(fileInput) {
+            if (!checkAdminPermission()) return;
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            if (file.type !== 'application/pdf') {
+                alert('Vui lòng chọn tệp định dạng .PDF!');
+                return;
+            }
+
+            const parentRow = fileInput.parentElement;
+            const linkInput = parentRow.querySelector('.link-input');
+            const btnUpload = parentRow.querySelector('.btn-pdf-upload');
+
+            const originalBtnText = btnUpload.innerText;
+            btnUpload.innerText = "⏳ Đang tải...";
+            btnUpload.disabled = true;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Data = e.target.result;
+
+                fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'uploadPdf',
+                        fileName: file.name,
+                        mimeType: file.type,
+                        fileData: base64Data
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        linkInput.value = data.fileUrl;
+                        alert('Tải file lên Google Drive thành công!');
+                    } else {
+                        alert('Lỗi upload: ' + data.message);
+                    }
+                })
+                .catch(err => {
+                    alert('Lỗi kết nối khi tải file lên Drive!');
+                    console.error(err);
+                })
+                .finally(() => {
+                    btnUpload.innerText = originalBtnText;
+                    btnUpload.disabled = false;
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function openInspEditModal() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalInspContainer');
+            container.innerHTML = '';
+            globalData.insp.forEach(item => addInspModalRow(item.name, item.note, item.link));
+            document.getElementById('inspModal').style.display = 'flex';
+        }
+
+        function closeInspEditModal() {
+            document.getElementById('inspModal').style.display = 'none';
+        }
+
+        function saveInspTable() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalInspContainer');
+            const editRows = container.querySelectorAll('.edit-row-insp');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const name = inputs[0].value.trim();
+                const note = inputs[1].value.trim();
+                const link = inputs[2].value.trim() || '#';
+                if (name) newData.push({ name, note, link });
+            });
+
+            globalData.insp = newData;
+            saveToGoogleSheet('insp', newData, closeInspEditModal, 'btnSaveInsp');
+        }
+
+        /* 📢 HÀM TỰ ĐỘNG CẬP NHẬT CHỮ CHẠY VỀ LỊCH KIỂM HÀNG TUẦN HIỆN TẠI */
+        function updateMarqueeSchedule(data) {
+    const marqueeEl = document.getElementById('marqueeAuditSchedule');
+    if (!marqueeEl) return;
+
+    if (!data || data.length === 0) {
+        marqueeEl.innerHTML = "Không có lịch kiểm hàng / audit nào.";
+        return;
+    }
+
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    // Lọc tất cả các lịch từ hôm nay trở về sau
+    const upcomingAudits = data.filter(item => {
+        if (!item.date) return false;
+        const itemDate = new Date(item.date);
+        itemDate.setHours(0, 0, 0, 0);
+        return !isNaN(itemDate.getTime()) && itemDate >= todayStart;
+    });
+
+    // Sắp xếp các lịch theo thứ tự từ gần nhất đến xa dần
+    upcomingAudits.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    if (upcomingAudits.length === 0) {
+        marqueeEl.innerHTML = "Chưa có lịch kiểm hàng / audit sắp tới.";
+    } else {
+        const marqueeItems = upcomingAudits.map(item => {
+            return `📅 ${formatDate(item.date)} -- ${escapeHtml(item.customer)}`;
+        });
+        marqueeEl.innerHTML = marqueeItems.join(' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ');
+    }
+}
+
+        function renderAudit(data) {
+            const tbody = document.querySelector('#auditTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row-border';
+                
+                let typeColor = '#1a73e8';
+                if (item.type && item.type.toLowerCase().includes('audit')) typeColor = '#d93025';
+                if (item.type && item.type.toLowerCase().includes('pre')) typeColor = '#137333';
+
+                const info = `Khách hàng: ${item.customer} | Loại: ${item.type} | Nhà máy: ${item.factory}`;
+                
+                let docCell = '';
+                if (isGuestAccount()) {
+                    docCell = `
+                        <div class="doc-popover-wrapper">
+                            <span class="view-link" onclick="alert('Báo cáo nội bộ');">Xem</span>
+                            <div class="doc-popover">
+                                <div class="doc-popover-title">${escapeHtml("📂 Tài liệu Audit/Kiểm hàng")}</div>
+                                <div class="doc-popover-body">
+                                    <p style="margin: 2px 0;"><strong>Chi tiết:</strong> ${escapeHtml(info)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    docCell = createViewLinkWithPopover(item.docLink, `📂 Tài liệu Audit/Kiểm hàng`, info);
+                }
+
+                tr.innerHTML = `
+                    <td class="cell-text-bold">${escapeHtml(item.customer)}</td>
+                    <td class="cell-date">${escapeHtml(formatDate(item.date))}</td>
+                    <td class="cell-date" style="color: ${typeColor}; font-weight: 600;">${escapeHtml(item.type)}</td>
+                    <td class="cell-text-bold text-center">${escapeHtml(item.factory)}</td>
+                    <td class="cell-date text-center">${docCell}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            updateMarqueeSchedule(data);
+        }
+
+        function openEditModal() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalRowContainer');
+            container.innerHTML = '';
+            globalData.audit.forEach(item => addModalRow(item.customer, formatDate(item.date), item.type, item.factory, item.docLink));
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function addModalRow(customer = '', date = '', type = '', factory = '', docLink = '') {
+            const container = document.getElementById('modalRowContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'edit-row-audit';
+            rowDiv.innerHTML = `
+                <input type="text" placeholder="Khách hàng" value="${escapeHtml(customer)}">
+                <input type="text" placeholder="Ngày" value="${escapeHtml(date)}">
+                <input type="text" placeholder="Loại" value="${escapeHtml(type)}">
+                <input type="text" placeholder="Nhà máy" value="${escapeHtml(factory)}">
+                <input type="text" class="link-input" placeholder="Link hoặc upload PDF" value="${escapeHtml(docLink)}">
+                <input type="file" class="pdf-file-input" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this)">
+                <button type="button" class="btn-pdf-upload" onclick="triggerFileInput(this)">📄 PDF</button>
+                <button class="btn-delete-row" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(rowDiv);
+        }
+
+        function saveAuditTable() {
+            if (!checkAdminPermission()) return;
+            const container = document.getElementById('modalRowContainer');
+            const editRows = container.querySelectorAll('.edit-row-audit');
+            const newData = [];
+
+            editRows.forEach((row) => {
+                const inputs = row.querySelectorAll('input');
+                const customer = inputs[0].value.trim();
+                const date = inputs[1].value.trim();
+                const type = inputs[2].value.trim();
+                const factory = inputs[3].value.trim();
+                const docLink = inputs[4].value.trim();
+
+                if (customer || date || type || factory || docLink) {
+                    newData.push({ customer, date, type, factory, docLink });
+                }
+            });
+
+            globalData.audit = newData;
+            saveToGoogleSheet('audit', newData, closeEditModal, 'btnSaveAudit');
+        }
+
+        /* 🔍 CẤU HÌNH TỔNG HỢP DỮ LIỆU & KHỞI TẠO AUTOCOMPLETE.JS */
+        function getAllSearchableData() {
+            const items = [];
+
+            (globalData.reports || []).forEach(r => {
+                if (r.title) {
+                    items.push({
+                        title: r.title,
+                        category: "Báo cáo",
+                        link: r.link
+                    });
+                }
+            });
+
+            (globalData.proc || []).forEach(p => {
+                if (p.name) {
+                    items.push({
+                        title: p.name,
+                        category: "Quy trình",
+                        link: p.link
+                    });
+                }
+            });
+
+            (globalData.insp || []).forEach(i => {
+                if (i.name) {
+                    items.push({
+                        title: i.name,
+                        category: "Tài liệu Audit",
+                        link: i.link
+                    });
+                }
+            });
+
+            return items;
+        }
+
+        function initAutoComplete() {
+            const config = {
+                selector: "#autoComplete",
+                placeHolder: "🔍 Tìm kiếm báo cáo, quy trình...",
+                data: {
+                    src: async () => getAllSearchableData(),
+                    key: ["title"]
+                },
+                resultsList: {
+                    element: (list, data) => {
+                        const results = document.getElementById("autoComplete_list");
+                        if (data.results.length === 0) {
+                            results.innerHTML = `<div class="autoComplete_result"><span class="search-item-title" style="color: #94a3b8;">Không tìm thấy kết quả phù hợp</span></div>`;
+                        }
+                    },
+                    noResults: true,
+                    maxResults: 15,
+                    tabSelect: true
+                },
+                resultItem: {
+                    element: (item, data) => {
+                        item.innerHTML = `
+                            <span class="search-item-title">${escapeHtml(data.value.title)}</span>
+                            <span class="search-item-category">${escapeHtml(data.value.category)}</span>
+                        `;
+                    },
+                    highlight: true
+                },
+                events: {
+                    input: {
+                        selection: (event) => {
+                            const selection = event.detail.selection.value;
+                            document.getElementById("autoComplete").value = selection.title;
+                            openDocument(selection.link);
+                        }
+                    }
+                }
+            };
+
+            const autoCompleteHeader = new autoComplete(config);
+
+            const configFooter = {
+                selector: "#autoCompleteFooter",
+                placeHolder: "🔍 Tìm kiếm nhanh...",
+                data: {
+                    src: async () => getAllSearchableData(),
+                    key: ["title"]
+                },
+                resultsList: {
+                    element: (list, data) => {
+                        const results = document.getElementById("autoCompleteFooter_list");
+                        if (data.results.length === 0 && results) {
+                            results.innerHTML = `<div class="autoComplete_result"><span class="search-item-title" style="color: #94a3b8;">Không tìm thấy kết quả phù hợp</span></div>`;
+                        }
+                    },
+                    noResults: true,
+                    maxResults: 10,
+                    tabSelect: true
+                },
+                resultItem: {
+                    element: (item, data) => {
+                        item.innerHTML = `
+                            <span class="search-item-title">${escapeHtml(data.value.title)}</span>
+                            <span class="search-item-category">${escapeHtml(data.value.category)}</span>
+                        `;
+                    },
+                    highlight: true
+                },
+                events: {
+                    input: {
+                        selection: (event) => {
+                            const selection = event.detail.selection.value;
+                            document.getElementById("autoCompleteFooter").value = selection.title;
+                            openDocument(selection.link);
+                        }
+                    }
+                }
+            };
+
+            const autoCompleteFooterInstance = new autoComplete(configFooter);
+        }
+
+        /* DỊCH NGÔN NGỮ */
+        function translatePage(lang, btn) {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            if (lang === 'vi') {
+                location.reload();
+                return;
+            }
+
+            const selectDropdown = document.querySelector(`select.goog-te-combo`);
+            if (selectDropdown) {
+                selectDropdown.value = lang;
+                selectDropdown.dispatchEvent(new Event('change'));
+            } else {
+                let googleTranslateScript = document.createElement('script');
+                googleTranslateScript.type = 'text/javascript';
+                googleTranslateScript.async = true;
+                googleTranslateScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                document.body.appendChild(googleTranslateScript);
+
+                window.googleTranslateElementInit = function() {
+                    new google.translate.TranslateElement({
+                        pageLanguage: 'vi',
+                        includedLanguages: 'en,ko,vi',
+                        autoDisplay: false
+                    }, 'google_translate_element');
+
+                    setTimeout(() => {
+                        const dropdown = document.querySelector(`select.goog-te-combo`);
+                        if (dropdown) {
+                            dropdown.value = lang;
+                            dropdown.dispatchEvent(new Event('change'));
+                        }
+                    }, 1000);
+                };
+            }
+        }
+
+        window.onload = function() {
+            initWeatherAndDate();
+            loadAllDataFromGoogleSheet();
+            setTimeout(initAutoComplete, 800);
+        };
     </script>
 </body>
 </html>
