@@ -1123,6 +1123,76 @@
             .standards-container { gap: 8px; padding: 10px; }
             .standard-item img { height: 30px; }
         }
+         /* 📸 STYLE CHO KHỐI "CHIA SẺ ẢNH" MỚI BỔ SUNG */
+        .photo-upload-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .photo-dropzone {
+            border: 2px dashed #93c5fd;
+            background-color: #f8fafc;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .photo-dropzone:hover {
+            background-color: #eff6ff;
+        }
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 10px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .photo-item {
+            position: relative;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        .photo-item img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+        }
+        .photo-info {
+            padding: 4px 6px;
+            font-size: 11px;
+            color: #64748b;
+            background: #f8fafc;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .photo-delete-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(220, 38, 38, 0.8);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .photo-delete-btn:hover {
+            background: rgba(220, 38, 38, 1);
+        }
     </style>
 </head>
 <body>
@@ -1587,25 +1657,18 @@
                     </div>
                 </div>
 
-                <!-- 🆕 KHỐI MỚI: CHIA SẺ ẢNH -->
+                <!-- 📸 KHỐI 6 MỚI: CHIA SẺ ẢNH (BỔ SUNG BÊN DƯỚI VỊ TRÍ CÔNG TY) -->
                 <div class="card-box" style="margin-bottom: 20px;">
-                    <h3 class="card-box-title">🖼️ Chia Sẻ Ảnh</h3>
-                    <div style="border: 2px dashed #cbd5e1; border-radius: 12px; padding: 20px; text-align: center; background-color: #f8fafc;">
-                        <input type="file" id="imageUploadInput" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(event)">
-                        
-                        <div style="margin-bottom: 10px;">
-                            <i class="fas fa-cloud-upload-alt" style="font-size: 36px; color: #2563eb;"></i>
+                    <h3 class="card-box-title">📷 Chia Sẻ Ảnh</h3>
+                    <div class="photo-upload-container">
+                        <div class="photo-dropzone" onclick="document.getElementById('photoInputFile').click()">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 24px; color: #2563eb; margin-bottom: 4px;"></i>
+                            <p style="margin: 0; font-size: 13px; font-weight: 600; color: #1e293b;">Bấm vào đây để chọn hoặc tải ảnh lên</p>
+                            <p style="margin: 2px 0 0 0; font-size: 11px; color: #64748b;">(Hỗ trợ lưu tạm trên trình duyệt không sợ mất khi F5)</p>
+                            <input type="file" id="photoInputFile" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(this)">
                         </div>
-                        <p style="margin: 0 0 10px 0; font-size: 13px; color: #475569; font-weight: 500;">Kéo thả ảnh vào đây hoặc bấm nút bên dưới để tải ảnh lên</p>
-                        
-                        <button onclick="document.getElementById('imageUploadInput').click()" style="background-color: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
-                            <i class="fas fa-plus"></i> Chọn ảnh tải lên
-                        </button>
-                    </div>
-
-                    <!-- Khu vực hiển thị danh sách ảnh đã chọn/tải lên -->
-                    <div id="imagePreviewContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; margin-top: 15px;">
-                        <!-- Các ảnh tải lên sẽ hiển thị ở đây -->
+                        <div class="photo-gallery" id="photoGalleryContainer">
+                            <!-- Danh sách ảnh tải lên sẽ hiển thị ở đây động qua JS -->
                     </div>
                 </div>
 
@@ -1773,6 +1836,74 @@
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
+ // --- 📸 XỬ LÝ TÍNH NĂNG CHIA SẺ VÀ LƯU TRỮ ẢNH TẠM THỜI (LOCALSTORAGE) ---
+        document.addEventListener("DOMContentLoaded", function() {
+            initWeatherAndDate();
+            loadPhotosFromLocalStorage();
+        });
+
+        function handleImageUpload(input) {
+            if (input.files && input.files.length > 0) {
+                const galleryContainer = document.getElementById('photoGalleryContainer');
+                let savedPhotos = JSON.parse(localStorage.getItem('dashboard_shared_photos') || '[]');
+
+                Array.from(input.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const base64Data = e.target.result;
+                        const now = new Date();
+                        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} ${now.getDate()}/${now.getMonth() + 1}`;
+                        
+                        const photoObj = {
+                            id: Date.now() + Math.random(),
+                            url: base64Data,
+                            time: timeStr
+                        };
+
+                        savedPhotos.unshift(photoObj); // Đưa ảnh mới lên đầu
+                        localStorage.setItem('dashboard_shared_photos', JSON.stringify(savedPhotos));
+                        renderPhotos(savedPhotos);
+                    };
+                    reader.readAsDataURL(file);
+                });
+                input.value = ''; // Reset input
+            }
+        }
+
+        function loadPhotosFromLocalStorage() {
+            const savedPhotos = JSON.parse(localStorage.getItem('dashboard_shared_photos') || '[]');
+            renderPhotos(savedPhotos);
+        }
+
+        function renderPhotos(photos) {
+            const container = document.getElementById('photoGalleryContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (photos.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; font-size: 12px; color: #94a3b8; margin: 10px 0;">Chưa có ảnh nào được tải lên.</p>`;
+                return;
+            }
+
+            photos.forEach(photo => {
+                const div = document.createElement('div');
+                div.className = 'photo-item';
+                div.innerHTML = `
+                    <button class="photo-delete-btn" onclick="deletePhoto(${photo.id})" title="Xóa ảnh">×</button>
+                    <img src="${photo.url}" alt="Ảnh tải lên" onclick="window.open('${photo.url}', '_blank')" style="cursor: pointer;" title="Nhấp để xem lớn">
+                    <div class="photo-info">${escapeHtml(photo.time)}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function deletePhoto(id) {
+            let savedPhotos = JSON.parse(localStorage.getItem('dashboard_shared_photos') || '[]');
+            savedPhotos = savedPhotos.filter(p => p.id !== id);
+            localStorage.setItem('dashboard_shared_photos', JSON.stringify(savedPhotos));
+            renderPhotos(savedPhotos);
+        }
+        // --- CÁC HÀM HỆ THỐNG HIỆN TẠI ---
         const API_URL = "https://script.google.com/macros/s/AKfycbxz-KILTv4mVPUg9fWHRD5nn44Bug0YPHr3_zijSyWvfZlGuQxW4GLhKQ8Kf4jTLfLT/exec";
         const DETAIL_SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1xdWlwlK39FpfSgD9nQUZJ7dnuV43Xd7_iCI4msL7qdg/edit?gid=599962421#gid=599962421";
 
