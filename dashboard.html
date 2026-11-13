@@ -1230,7 +1230,43 @@
     background: #dc2626;
     transform: scale(1.1);
 }
+/* Khung chứa banner thứ hai nằm ở phía trên banner chính */
+    .floating-banner-wrapper-top {
+        position: fixed;
+        bottom: 375px;     /* Khoảng cách từ đáy lên: 20px (đáy) + 340px (chiều cao banner dưới) + 15px (khoảng hở) */
+        right: 20px;
+        width: 280px;      /* Cùng chiều rộng với banner dưới */
+        height: 140px;     /* Chiều cao của banner phụ */
+        z-index: 9999;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease;
+    }
 
+    /* Nút đóng cho banner phía trên */
+    .btn-close-banner-top {
+        position: absolute;
+        top: -8px;
+        left: -8px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #ef4444;
+        color: white;
+        border: 2px solid white;
+        font-size: 11px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 10000;
+    }
+    .btn-close-banner-top:hover {
+        background: #dc2626;
+        transform: scale(1.1);
+    }
 /* Ẩn trên màn hình điện thoại quá nhỏ */
 @media (max-width: 768px) {
     .floating-banner-wrapper {
