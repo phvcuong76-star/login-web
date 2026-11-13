@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner Thông Tin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: transparent;
+            overflow: hidden; /* Ẩn thanh cuộn thừa */
+        }
+        .info-banner-card {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 1px solid #bfdbfe;
+            border-radius: 16px;
+            padding: 16px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .info-banner-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .info-banner-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e40af;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-banner-badge {
+            background-color: #dc2626;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .info-slider-container {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 14px;
+            flex: 1;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .info-slide-item {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .info-slide-item.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .info-slide-heading {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+        .info-slide-desc {
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .info-slide-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #94a3b8;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 8px;
+        }
+        .info-dots {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .info-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .info-dot.active {
+            background-color: #2563eb;
+            width: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="info-banner-card">
+        <div class="info-banner-header">
+            <h3 class="info-banner-title">
+                <i class="fas fa-bullhorn" style="color: #2563eb;"></i> Bản Tin & Thông Báo
+            </h3>
+            <span class="info-banner-badge">Mới</span>
+        </div>
+
+        <div class="info-slider-container">
+            <!-- Slide 1 -->
+            <div class="info-slide-item active">
+                <h4 class="info-slide-heading">🎯 Đào tạo chất lượng định kỳ tháng 11</h4>
+                <p class="info-slide-desc">Tập trung rà soát tiêu chuẩn kiểm hàng Pre-final cho các chuyền GTGL và GNS.</p>
+                <div class="info-slide-footer">
+                    <span>📅 Cập nhật: Hôm nay</span>
+                    <span style="color: #2563eb; font-weight: 600;">Phòng QA</span>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="info-slide-item">
+                <h4 class="info-slide-heading">⭐ Cập nhật biểu mẫu AppSheet QA</h4>
+                <p class="info-slide-desc">Đã tối ưu hóa giao diện nhập liệu di động cho các kiểm tra viên tại nhà máy Laos.</p>
+                <div class="info-slide-footer">
+                    <span>📅 Cập nhật: Gần đây</span>
+                    <span style="color: #2563eb; font-weight: 600;">ISO Team</span>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="info-slide-item">
+                <h4 class="info-slide-heading">📋 Chuẩn bị đánh giá khách hàng lớn</h4>
+                <p class="info-slide-desc">Đề nghị các bộ phận kiểm tra lại hồ sơ 3D5S và hiệu chuẩn thiết bị đo lường.</p>
+                <div class="info-slide-footer">
+                    <span>📅 Cập nhật: Sắp tới</span>
+                    <span style="color: #dc2626; font-weight: 600;">Quan trọng</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-dots">
+            <span class="info-dot active" onclick="currentSlide(0)"></span>
+            <span class="info-dot" onclick="currentSlide(1)"></span>
+            <span class="info-dot" onclick="currentSlide(2)"></span>
+        </div>
+    </div>
+
+    <script>
+        let slideIndex = 0;
+        let slideInterval;
+
+        function showSlides() {
+            const slides = document.querySelectorAll('.info-slide-item');
+            const dots = document.querySelectorAll('.info-dot');
+            if (slides.length === 0) return;
+
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+
+            slideIndex++;
+            if (slideIndex > slides.length) slideIndex = 1;
+
+            slides[slideIndex - 1].classList.add('active');
+            dots[slideIndex - 1].classList.add('active');
+        }
+
+        function currentSlide(n) {
+            clearInterval(slideInterval);
+            slideIndex = n;
+            const slides = document.querySelectorAll('.info-slide-item');
+            const dots = document.querySelectorAll('.info-dot');
+
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+
+            slides[slideIndex].classList.add('active');
+            dots[slideIndex].classList.add('active');
+            slideInterval = setInterval(showSlides, 4000);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            slideInterval = setInterval(showSlides, 4000);
+        });
+    </script>
+</body>
+</html>
