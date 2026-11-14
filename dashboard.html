@@ -1203,7 +1203,13 @@
     z-index: 9999;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
+    /* 👇 THÊM HIỆU ỨNG TRƯỢT MƯỢT MÀ */
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 👇 TRẠNG THÁI KHI THU GỌN (ẨN PHẦN LỚN SANG BÊN PHẢI, CHỈ CHÌA RA MỘT CHÚT) */
+    .floating-banner-wrapper.minimized {
+        transform: translateX(255px); /* Dịch sang phải 255px, chỉ để lộ mép trái để bấm mở lại */
 }
 
 /* Nút thu gọn / đóng nhanh banner */
@@ -1240,7 +1246,13 @@
         z-index: 9999;
         border-radius: 16px;
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        transition: transform 0.3s ease;
+        /* 👇 THÊM HIỆU ỨNG TRƯỢT MƯỢT MÀ */
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 👇 TRẠNG THÁI KHI THU GỌN (ẨN PHẦN LỚN SANG BÊN PHẢI, CHỈ CHÌA RA MỘT CHÚT) */
+    .floating-banner-wrapper.minimized {
+        transform: translateX(255px); /* Dịch sang phải 255px, chỉ để lộ mép trái để bấm mở lại */
     }
 
     /* Nút đóng cho banner phía trên */
