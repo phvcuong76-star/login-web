@@ -1208,11 +1208,14 @@
     }
 
     /* 👇 TRẠNG THÁI KHI THU GỌN (ẨN PHẦN LỚN SANG BÊN PHẢI, CHỈ CHÌA RA MỘT CHÚT) */
+    /* Ẩn banner dưới sang phải */
     .floating-banner-wrapper.minimized {
-        transform: translateX(240px); /* Dịch sang phải để ẩn phần nội dung vào mép màn hình */
-}
+        transform: translateX(250px); /* Dịch sang phải để ẩn vào mép */
+    }
+
+    /* Ẩn banner trên sang phải */
     .floating-banner-wrapper-top.minimized {
-        transform: translateX(240px);
+        transform: translateX(250px);
     }
 /* Nút thu gọn / đóng nhanh banner */
 .btn-close-banner {
@@ -3162,6 +3165,7 @@
         } else {
             btnElement.innerText = '◀'; 
         }
+        } // <--- THÊM DẤU NGOẶC NÀY ĐỂ ĐÓNG HÀM
     </script>
     <!-- NHÚNG FILE BANNER THỨ HAI (NẰM PHÍA TRÊN) -->
 <div class="floating-banner-wrapper-top" id="floatingBannerTop">
