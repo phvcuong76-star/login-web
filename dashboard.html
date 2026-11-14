@@ -3151,15 +3151,26 @@
             loadAllDataFromGoogleSheet();
             setTimeout(initAutoComplete, 800);
         };
+        // 👇 THÊM HÀM TOGGLE BANNER VÀO ĐÂY (TRƯỚC THẺ ĐÓNG SCRIPT)
+    function toggleBanner(bannerId, btnElement) {
+        const banner = document.getElementById(bannerId);
+        banner.classList.toggle('minimized');
+        
+        // Đổi hướng mũi tên khi thu gọn hoặc mở rộng
+        if (banner.classList.contains('minimized')) {
+            btnElement.innerText = '▶'; 
+        } else {
+            btnElement.innerText = '◀'; 
+        }
     </script>
     <!-- NHÚNG FILE BANNER THỨ HAI (NẰM PHÍA TRÊN) -->
 <div class="floating-banner-wrapper-top" id="floatingBannerTop">
-    <button class="btn-close-banner-top" onclick="document.getElementById('floatingBannerTop').style.display='none'" title="Đóng thông báo">×</button>
+    <button class="btn-close-banner-top" onclick="toggleBanner('floatingBannerTop', this)" title="Thu gọn / Mở rộng">◀</button>
     <iframe src="banner2.html" style="width: 100%; height: 100%; border: none; border-radius: 16px;" scrolling="no"></iframe>
 </div>
     <!-- NHÚNG FILE BANNER LƠ LỬNG -->
     <div class="floating-banner-wrapper" id="floatingBanner">
-        <button class="btn-close-banner" onclick="document.getElementById('floatingBanner').style.display='none'" title="Đóng thông báo">×</button>
+        <button class="btn-close-banner" onclick="toggleBanner('floatingBanner', this)" title="Thu gọn / Mở rộng">◀</button>
         <iframe src="banner.html" style="width: 100%; height: 100%; border: none; border-radius: 16px;" scrolling="no"></iframe>
     </div>
 
