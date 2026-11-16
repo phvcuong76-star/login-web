@@ -3382,13 +3382,13 @@
 </script>
     
 <!-- 🎮 NHÚNG MINI GAME TỪ FILE GAME.HTML -->
-    <div class="mini-game-popup" id="qaMiniGamePopup" style="display: none; height: auto !important;">
+    <div class="mini-game-popup" id="qaMiniGamePopup" style="display: none;">
         <div class="mini-game-header" id="qaMiniGameHeader" title="Giữ chuột để kéo di chuyển">
             <span>🎮 Play & Relax - QA Zone</span>
             <button class="mini-game-close-x" onclick="closeMiniGame()" title="Đóng">✕</button>
         </div>
-        <!-- 👇 Cố định chính xác height: 280px và max-height: 280px để iframe không bị dãn dọc -->
-        <iframe id="qaGameIframe" src="game.html" style="width: 100%; height: 280px !important; max-height: 280px !important; border: none; display: block;" scrolling="no"></iframe>
+        <!-- 👇 Cắt ngắn height iframe xuống 175px để vừa khít vùng có hình ảnh game, bỏ phần trắng bên dưới -->
+        <iframe id="qaGameIframe" src="game.html" style="width: 100%; height: 175px !important; border: none; display: block;" scrolling="no"></iframe>
         <div class="mini-game-footer">
             <label>
                 <input type="checkbox" id="hideGame7Days"> Không mở lại trong 7 ngày
