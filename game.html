@@ -30,7 +30,7 @@
     </style>
 </head>
 <body>
-    <canvas id="qaMiniGameCanvas" width="310" height="390"></canvas>
+    <canvas id="qaMiniGameCanvas" width="310" height="280"></canvas>
 
     <script>
         const canvas = document.getElementById('qaMiniGameCanvas');
@@ -40,7 +40,7 @@
         let score = 0;
         let lives = 3;
         let level = 1;
-        let player = { x: 135, y: 315, w: 40, h: 30 };
+        let player = { x: 135, y: 205, w: 40, h: 30 };
         let items = [];
         let clouds = [{ x: 30, y: 55 }, { x: 210, y: 80 }];
 
@@ -99,11 +99,11 @@
 
             // Nền trời & thảm cỏ
             ctx.fillStyle = '#4da6ff';
-            ctx.fillRect(0, 0, canvas.width, 345);
+            ctx.fillRect(0, 0, canvas.width, 235);
             ctx.fillStyle = '#4ade80';
-            ctx.fillRect(0, 345, canvas.width, 12);
+            ctx.fillRect(0, 235, canvas.width, 10);
             ctx.fillStyle = '#3f6212';
-            ctx.fillRect(0, 357, canvas.width, 33);
+            ctx.fillRect(0, 245, canvas.width, 35);
 
             // Mây trôi
             ctx.fillStyle = '#ffffff';
@@ -142,10 +142,10 @@
 
                 // Trang trí mặt đất
                 ctx.font = '26px sans-serif';
-                ctx.fillText('👷', 45, 342);
-                ctx.fillText('🎁', 110, 342);
-                ctx.fillText('⭐', 180, 342);
-                ctx.fillText('🧰', 255, 342);
+                ctx.fillText('👷', 45, 232);
+                ctx.fillText('🎁', 110, 232);
+                ctx.fillText('⭐', 180, 232);
+                ctx.fillText('🧰', 255, 232);
             } else if (gameState === 'PLAYING') {
                 drawPixelText(`Điểm: ${score}`, canvas.width / 2, 52, 16, '#ffffff');
 
