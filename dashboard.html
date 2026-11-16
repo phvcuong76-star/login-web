@@ -3387,8 +3387,8 @@
             <span>🎮 Play & Relax - QA Zone</span>
             <button class="mini-game-close-x" onclick="closeMiniGame()" title="Đóng">✕</button>
         </div>
-        <!-- 👇 Cắt ngắn height iframe xuống 175px để vừa khít vùng có hình ảnh game, bỏ phần trắng bên dưới -->
-        <iframe id="qaGameIframe" src="game.html" style="width: 100%; height: 175px !important; border: none; display: block;" scrolling="no"></iframe>
+        <!-- 👇 Cố định chuẩn chiều cao iframe ở đây (ví dụ 335px là ôm trọn khít phần game và không bị dư trắng) -->
+        <iframe id="qaGameIframe" src="game.html" style="width: 100%; height: 335px !important; border: none; display: block;" scrolling="no"></iframe>
         <div class="mini-game-footer">
             <label>
                 <input type="checkbox" id="hideGame7Days"> Không mở lại trong 7 ngày
