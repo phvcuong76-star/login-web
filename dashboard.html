@@ -6,7 +6,7 @@
     <title>TRANG THÔNG TIN PHÒNG CHẤT LƯỢNG</title>
 
     <!-- 🛡️ BẢO VỆ TRANG: KIỂM TRA ĐĂNG NHẬP NGAY KHI TẢI HEAD -->
-    <script>
+    <script>NHÚNG MINI GAME
         (function() {
             const isLoggedIn = localStorage.getItem('isLoggedIn');
             if (!isLoggedIn || isLoggedIn !== 'true') {
@@ -3381,20 +3381,13 @@
     }
 </script>
     
-<!-- 🎮 NHÚNG MINI GAME TỪ FILE GAME.HTML -->
+<!-- 🎮 NHÚNG MINI GAME TỪ FILE GAME.HTML (Đã loại bỏ phần footer 7 ngày) -->
     <div class="mini-game-popup" id="qaMiniGamePopup" style="display: none;">
         <div class="mini-game-header" id="qaMiniGameHeader" title="Giữ chuột để kéo di chuyển">
             <span>🎮 Play & Relax - QA Zone</span>
             <button class="mini-game-close-x" onclick="closeMiniGame()" title="Đóng">✕</button>
         </div>
-        <!-- 👇 Cố định chuẩn chiều cao iframe ở đây (ví dụ 335px là ôm trọn khít phần game và không bị dư trắng) -->
         <iframe id="qaGameIframe" src="game.html" style="width: 100%; height: 175px !important; border: none; display: block;" scrolling="no"></iframe>
-        <div class="mini-game-footer">
-            <label>
-                <input type="checkbox" id="hideGame7Days"> Không mở lại trong 7 ngày
-            </label>
-            <button class="btn-game-close-bottom" onclick="closeMiniGame()">Đóng</button>
-        </div>
     </div>
     
     <!-- NHÚNG FILE BANNER THỨ HAI (NẰM PHÍA TRÊN) -->
@@ -3419,10 +3412,8 @@
         const iframe = document.getElementById('qaGameIframe');
         if (!popup || !header) return;
 
-        const hideUntil = localStorage.getItem('qa_minigame_hide_until');
-        if (!hideUntil || Date.now() > parseInt(hideUntil, 10)) {
-            popup.style.display = 'flex';
-        }
+        // Luôn hiển thị popup khi tải trang (đã bỏ cơ chế check localStorage 7 ngày)
+        popup.style.display = 'flex';
 
         let isDragging = false, offsetX = 0, offsetY = 0;
 
@@ -3456,11 +3447,6 @@
 
     function closeMiniGame() {
         const popup = document.getElementById('qaMiniGamePopup');
-        const checkbox = document.getElementById('hideGame7Days');
-        if (checkbox && checkbox.checked) {
-            const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
-            localStorage.setItem('qa_minigame_hide_until', (Date.now() + sevenDaysMs).toString());
-        }
         if (popup) popup.style.display = 'none';
     }
     </script>
