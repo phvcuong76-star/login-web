@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Game QA</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+        canvas {
+            border: 2px solid #1e293b;
+            background: linear-gradient(180deg, #38bdf8 0%, #bae6fd 85%, #4ade80 85%, #166534 100%);
+            display: block;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="qaMiniGameCanvas" width="310" height="390"></canvas>
+
+    <script>
+        const canvas = document.getElementById('qaMiniGameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let gameState = 'START'; // START | PLAYING | GAMEOVER
+        let score = 0;
+        let lives = 3;
+        let level = 1;
+        let player = { x: 135, y: 315, w: 40, h: 30 };
+        let items = [];
+        let clouds = [{ x: 30, y: 55 }, { x: 210, y: 80 }];
+
+        // Di chuyển nhân vật theo chuột hoặc chạm màn hình
+        canvas.addEventListener('mousemove', (e) => {
+            if (gameState !== 'PLAYING') return;
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            player.x = Math.max(5, Math.min(mouseX - player.w / 2, canvas.width - player.w - 5));
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            if (gameState !== 'PLAYING') return;
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const touchX = e.touches[0].clientX - rect.left;
+            player.x = Math.max(5, Math.min(touchX - player.w / 2, canvas.width - player.w - 5));
+        }, { passive: false });
+
+        // Bấm START hoặc chơi lại
+        canvas.addEventListener('click', () => {
+            if (gameState === 'START' || gameState === 'GAMEOVER') {
+                score = 0;
+                lives = 3;
+                level = 1;
+                items = [];
+                gameState = 'PLAYING';
+            }
+        });
+
+        function spawnItem() {
+            if (Math.random() < 0.03 + level * 0.005) {
+                const isBomb = Math.random() < 0.25; // 25% lỗi (bọ), 75% quà/hòm
+                items.push({
+                    x: Math.random() * (canvas.width - 30) + 5,
+                    y: -25,
+                    size: 24,
+                    speed: 2.2 + Math.random() * 1.5 + level * 0.3,
+                    type: isBomb ? 'BOMB' : (Math.random() < 0.3 ? 'CHEST' : 'GIFT')
+                });
+            }
+        }
+
+        function drawPixelText(text, x, y, size, fill, stroke = '#000000') {
+            ctx.font = `900 ${size}px "Segoe UI", Tahoma, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = stroke;
+            ctx.strokeText(text, x, y);
+            ctx.fillStyle = fill;
+            ctx.fillText(text, x, y);
+        }
+
+        function drawScene() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Nền trời & thảm cỏ
+            ctx.fillStyle = '#4da6ff';
+            ctx.fillRect(0, 0, canvas.width, 345);
+            ctx.fillStyle = '#4ade80';
+            ctx.fillRect(0, 345, canvas.width, 12);
+            ctx.fillStyle = '#3f6212';
+            ctx.fillRect(0, 357, canvas.width, 33);
+
+            // Mây trôi
+            ctx.fillStyle = '#ffffff';
+            clouds.forEach(c => {
+                ctx.fillRect(c.x, c.y, 44, 12);
+                ctx.fillRect(c.x + 10, c.y - 8, 24, 10);
+                c.x += 0.25;
+                if (c.x > canvas.width) c.x = -50;
+            });
+
+            // Thanh Lv & Máu trái tim
+            drawPixelText(`Lv ${level}`, 36, 26, 15, '#ffffff');
+            ctx.fillStyle = '#ef4444';
+            ctx.fillRect(210, 14, (lives / 3) * 85, 10);
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(210, 14, 85, 10);
+            ctx.fillStyle = '#dc2626';
+            ctx.font = '16px sans-serif';
+            ctx.fillText('❤️', 202, 24);
+
+            if (gameState === 'START') {
+                drawPixelText('Thư giãn cùng QA!', canvas.width / 2, 95, 16, '#fde047');
+                drawPixelText('Play the', canvas.width / 2, 148, 36, '#facc15');
+                drawPixelText('Quality', canvas.width / 2, 190, 36, '#f97316');
+
+                // Nút START
+                ctx.fillStyle = '#fef08a';
+                ctx.fillRect(95, 220, 120, 38);
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#000000';
+                ctx.strokeRect(95, 220, 120, 38);
+                ctx.fillStyle = '#000000';
+                ctx.font = '900 16px sans-serif';
+                ctx.fillText('START', canvas.width / 2, 245);
+
+                // Trang trí mặt đất
+                ctx.font = '26px sans-serif';
+                ctx.fillText('👷', 45, 342);
+                ctx.fillText('🎁', 110, 342);
+                ctx.fillText('⭐', 180, 342);
+                ctx.fillText('🧰', 255, 342);
+            } else if (gameState === 'PLAYING') {
+                drawPixelText(`Điểm: ${score}`, canvas.width / 2, 52, 16, '#ffffff');
+
+                // Nhân vật
+                ctx.font = '32px sans-serif';
+                ctx.fillText('👷', player.x + player.w / 2, player.y + 28);
+
+                spawnItem();
+                for (let i = items.length - 1; i >= 0; i--) {
+                    let it = items[i];
+                    it.y += it.speed;
+
+                    ctx.font = '24px sans-serif';
+                    const icon = it.type === 'BOMB' ? '🐞' : (it.type === 'CHEST' ? '🧰' : '🎁');
+                    ctx.fillText(icon, it.x + 12, it.y + 20);
+
+                    if (
+                        it.x < player.x + player.w &&
+                        it.x + it.size > player.x &&
+                        it.y < player.y + player.h &&
+                        it.y + it.size > player.y
+                    ) {
+                        if (it.type === 'BOMB') {
+                            lives--;
+                            if (lives <= 0) gameState = 'GAMEOVER';
+                        } else {
+                            score += (it.type === 'CHEST' ? 30 : 10);
+                            level = Math.floor(score / 100) + 1;
+                        }
+                        items.splice(i, 1);
+                        continue;
+                    }
+
+                    if (it.y > canvas.height) items.splice(i, 1);
+                }
+            } else if (gameState === 'GAMEOVER') {
+                drawPixelText('HẾT LƯỢT!', canvas.width / 2, 140, 28, '#ef4444');
+                drawPixelText(`Tổng điểm: ${score}`, canvas.width / 2, 180, 18, '#ffffff');
+
+                ctx.fillStyle = '#fef08a';
+                ctx.fillRect(85, 210, 140, 38);
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#000000';
+                ctx.strokeRect(85, 210, 140, 38);
+                ctx.fillStyle = '#000000';
+                ctx.font = '900 15px sans-serif';
+                ctx.fillText('CHƠI LẠI', canvas.width / 2, 234);
+            }
+
+            requestAnimationFrame(drawScene);
+        }
+
+        drawScene();
+    </script>
+</body>
+</html>
