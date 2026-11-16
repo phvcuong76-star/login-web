@@ -33,13 +33,16 @@
             margin-bottom: 10px;
         }
         .info-banner-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #1e40af;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        font-size: 13px;       /* Thu nhỏ cỡ chữ lại cho vừa vặn */
+        font-weight: 700;
+        color: #1e40af;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;     /* 👈 Ép tiêu đề nằm trên 1 dòng */
+        overflow: hidden;        /* Ẩn phần chữ tràn ra ngoài */
+        text-overflow: ellipsis; /* Hiển thị dấu ... nếu quá dài */
+    }
         .info-banner-badge {
             background-color: #dc2626;
             color: #fff;
