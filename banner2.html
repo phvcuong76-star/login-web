@@ -24,12 +24,15 @@
             align-items: center;
         }
         .promo-title {
-            font-size: 14px;
+            font-size: 13px;        /* 👈 Giảm cỡ chữ xuống một chút (ví dụ 12px hoặc 13px) */
             font-weight: 700;
             color: #b45309;
             display: flex;
             align-items: center;
             gap: 6px;
+            white-space: nowrap;   /* 👈 Ép toàn bộ tiêu đề đứng trên 1 dòng duy nhất */
+            overflow: hidden;      /* Ẩn phần thừa nếu quá dài */
+            text-overflow: ellipsis; /* Hiển thị dấu ... nếu văn bản quá dài */
         }
         .promo-badge {
             background-color: #2563eb;
