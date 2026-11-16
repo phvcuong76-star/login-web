@@ -1318,7 +1318,80 @@
 .banner-drag-handle:active {
     cursor: grabbing;
     background: #3b82f6;
-}       
+}    
+/* 🎮 KHUNG POPUP MINI GAME LƠ LỬNG */
+.mini-game-popup {
+    position: fixed;
+    top: 110px;
+    left: 60px;
+    width: 334px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+    z-index: 10005;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    overflow: hidden;
+    user-select: none;
+}
+.mini-game-header {
+    background-color: #00b5ad;
+    color: #ffffff;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: grab;
+    font-size: 14px;
+    font-weight: 600;
+}
+.mini-game-header:active {
+    cursor: grabbing;
+}
+.mini-game-close-x {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.85;
+}
+.mini-game-close-x:hover {
+    opacity: 1;
+}
+.mini-game-footer {
+    padding: 8px 12px;
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #475569;
+}
+.mini-game-footer label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    margin: 0;
+}
+.btn-game-close-bottom {
+    background-color: #94a3b8;
+    color: #ffffff;
+    border: none;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-game-close-bottom:hover {
+    background-color: #64748b;
+}        
     </style>
 </head>
 <body>
@@ -3253,6 +3326,75 @@
     });
     </script>
 
+    <script>
+    // 🎮 KÉO THẢ & ẨN/HIỆN POPUP GAME
+    (function initMiniGamePopup() {
+        const popup = document.getElementById('qaMiniGamePopup');
+        const header = document.getElementById('qaMiniGameHeader');
+        const iframe = document.getElementById('qaGameIframe');
+        if (!popup || !header) return;
+
+        const hideUntil = localStorage.getItem('qa_minigame_hide_until');
+        if (!hideUntil || Date.now() > parseInt(hideUntil, 10)) {
+            popup.style.display = 'flex';
+        }
+
+        let isDragging = false, offsetX = 0, offsetY = 0;
+
+        header.addEventListener('mousedown', (e) => {
+            if (e.target.classList.contains('mini-game-close-x')) return;
+            isDragging = true;
+            const rect = popup.getBoundingClientRect();
+            popup.style.left = rect.left + 'px';
+            popup.style.top = rect.top + 'px';
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+            if (iframe) iframe.style.pointerEvents = 'none';
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            let x = Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - popup.offsetWidth));
+            let y = Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - popup.offsetHeight));
+            popup.style.left = x + 'px';
+            popup.style.top = y + 'px';
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                if (iframe) iframe.style.pointerEvents = 'auto';
+            }
+        });
+    })();
+
+    function closeMiniGame() {
+        const popup = document.getElementById('qaMiniGamePopup');
+        const checkbox = document.getElementById('hideGame7Days');
+        if (checkbox && checkbox.checked) {
+            const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+            localStorage.setItem('qa_minigame_hide_until', (Date.now() + sevenDaysMs).toString());
+        }
+        if (popup) popup.style.display = 'none';
+    }
+</script>
+    
+<!-- 🎮 NHÚNG MINI GAME TỪ FILE GAME.HTML -->
+    <div class="mini-game-popup" id="qaMiniGamePopup" style="display: none;">
+        <div class="mini-game-header" id="qaMiniGameHeader" title="Giữ chuột để kéo di chuyển">
+            <span>🎮 Play & Relax - QA Zone</span>
+            <button class="mini-game-close-x" onclick="closeMiniGame()" title="Đóng">✕</button>
+        </div>
+        <iframe id="qaGameIframe" src="game.html" style="width: 100%; height: 410px; border: none; display: block;" scrolling="no"></iframe>
+        <div class="mini-game-footer">
+            <label>
+                <input type="checkbox" id="hideGame7Days"> Không mở lại trong 7 ngày
+            </label>
+            <button class="btn-game-close-bottom" onclick="closeMiniGame()">Đóng</button>
+        </div>
+    </div>
+    
     <!-- NHÚNG FILE BANNER THỨ HAI (NẰM PHÍA TRÊN) -->
     <div class="floating-banner-wrapper-top" id="floatingBannerTop">
         <div class="banner-drag-handle" title="Giữ chuột để kéo di chuyển"></div>
