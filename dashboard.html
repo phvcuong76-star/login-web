@@ -1291,6 +1291,34 @@
         height: 200px;
     }
 }
+ /* Thanh nắm kéo ở đỉnh banner để dùng chuột di chuyển */
+.banner-drag-handle {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 12px;
+    background: #94a3b8;
+    border-radius: 6px 6px 0 0;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+.banner-drag-handle::after {
+    content: "⋮⋮";
+    color: white;
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 1px;
+}
+.banner-drag-handle:active {
+    cursor: grabbing;
+    background: #3b82f6;
+}       
     </style>
 </head>
 <body>
@@ -3166,14 +3194,72 @@
             btnElement.innerText = '◀'; 
         }
         } // <--- THÊM DẤU NGOẶC NÀY ĐỂ ĐÓNG HÀM
+        
+        // 👇 HÀM KÍCH HOẠT KÉO THẢ DI CHUYỂN BANNER BẰNG CHUỘT
+    function makeBannerDraggable(bannerId) {
+        const banner = document.getElementById(bannerId);
+        if (!banner) return;
+        const handle = banner.querySelector('.banner-drag-handle');
+        const iframe = banner.querySelector('iframe');
+
+        let isDragging = false;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        handle.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            const rect = banner.getBoundingClientRect();
+            
+            // Chuyển sang định vị theo top/left để kéo mượt mà
+            banner.style.bottom = 'auto';
+            banner.style.right = 'auto';
+            banner.style.left = rect.left + 'px';
+            banner.style.top = rect.top + 'px';
+            banner.style.transition = 'none'; // Tắt hiệu ứng trễ khi đang kéo
+
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+
+            // Tạm khóa tương tác chuột vào iframe để không bị giật/mất dấu chuột khi kéo nhanh
+            if (iframe) iframe.style.pointerEvents = 'none';
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (!isDragging) return;
+            let newLeft = e.clientX - offsetX;
+            let newTop = e.clientY - offsetY;
+
+            // Giới hạn không cho kéo văng ra khỏi màn hình
+            newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - banner.offsetWidth));
+            newTop = Math.max(0, Math.min(newTop, window.innerHeight - banner.offsetHeight));
+
+            banner.style.left = newLeft + 'px';
+            banner.style.top = newTop + 'px';
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (isDragging) {
+                isDragging = false;
+                banner.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'; // Bật lại hiệu ứng trượt thu gọn
+                if (iframe) iframe.style.pointerEvents = 'auto';
+            }
+        });
+    }
+
+    // Kích hoạt kéo thả cho cả 2 banner
+    makeBannerDraggable('floatingBannerTop');
+    makeBannerDraggable('floatingBanner');
     </script>
-    <!-- NHÚNG FILE BANNER THỨ HAI (NẰM PHÍA TRÊN) -->
-<div class="floating-banner-wrapper-top" id="floatingBannerTop">
-    <button class="btn-close-banner-top" onclick="toggleBanner('floatingBannerTop', this)" title="Thu gọn / Mở rộng">◀</button>
-    <iframe src="banner2.html" style="width: 100%; height: 100%; border: none; border-radius: 16px;" scrolling="no"></iframe>
-</div>
+   <!-- NHÚNG FILE BANNER THỨ HAI (NẰM PHÍA TRÊN) -->
+    <div class="floating-banner-wrapper-top" id="floatingBannerTop">
+        <div class="banner-drag-handle" title="Giữ chuột để kéo di chuyển"></div> <!-- 👈 Thêm vào dòng 3254 -->
+        <button class="btn-close-banner-top" onclick="toggleBanner('floatingBannerTop', this)" title="Thu gọn / Mở rộng">◀</button>
+        <iframe src="banner2.html" style="width: 100%; height: 100%; border: none; border-radius: 16px;" scrolling="no"></iframe>
+    </div>
+
     <!-- NHÚNG FILE BANNER LƠ LỬNG -->
     <div class="floating-banner-wrapper" id="floatingBanner">
+        <div class="banner-drag-handle" title="Giữ chuột để kéo di chuyển"></div> <!-- 👈 Thêm vào dòng 3259 -->
         <button class="btn-close-banner" onclick="toggleBanner('floatingBanner', this)" title="Thu gọn / Mở rộng">◀</button>
         <iframe src="banner.html" style="width: 100%; height: 100%; border: none; border-radius: 16px;" scrolling="no"></iframe>
     </div>
