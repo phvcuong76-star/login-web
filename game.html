@@ -11,16 +11,16 @@
             padding: 0;
             user-select: none;
         }
+        /* 👇 Ép body và html ôm sát canvas, không cho chiếm full màn hình gây khoảng trắng */
         body, html {
             width: 100%;
-            height: 100%;
+            height: 175px;
             overflow: hidden;
-            background: #f8fafc;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: #4da6ff;
         }
         canvas {
+            width: 100%;
+            height: 175px;
             border: none;
             background: linear-gradient(180deg, #38bdf8 0%, #bae6fd 85%, #4ade80 85%, #166534 100%);
             display: block;
@@ -29,7 +29,6 @@
     </style>
 </head>
 <body>
-    <!-- 👇 Đã thu gọn height của canvas xuống 175px để vừa khít tuyệt đối với iframe -->
     <canvas id="qaMiniGameCanvas" width="260" height="175"></canvas>
 
     <script>
@@ -44,7 +43,6 @@
         let items = [];
         let clouds = [{ x: 20, y: 35 }, { x: 170, y: 50 }];
 
-        // Di chuyển nhân vật theo chuột hoặc chạm màn hình
         canvas.addEventListener('mousemove', (e) => {
             if (gameState !== 'PLAYING') return;
             const rect = canvas.getBoundingClientRect();
@@ -60,7 +58,6 @@
             player.x = Math.max(5, Math.min(touchX - player.w / 2, canvas.width - player.w - 5));
         }, { passive: false });
 
-        // Bấm START hoặc chơi lại
         canvas.addEventListener('click', () => {
             if (gameState === 'START' || gameState === 'GAMEOVER') {
                 score = 0;
@@ -97,7 +94,6 @@
         function drawScene() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Nền trời & thảm cỏ thu gọn
             ctx.fillStyle = '#4da6ff';
             ctx.fillRect(0, 0, canvas.width, 145);
             ctx.fillStyle = '#4ade80';
@@ -105,7 +101,6 @@
             ctx.fillStyle = '#3f6212';
             ctx.fillRect(0, 153, canvas.width, 22);
 
-            // Mây trôi
             ctx.fillStyle = '#ffffff';
             clouds.forEach(c => {
                 ctx.fillRect(c.x, c.y, 36, 10);
@@ -114,7 +109,6 @@
                 if (c.x > canvas.width) c.x = -40;
             });
 
-            // Thanh Lv & Máu trái tim
             drawPixelText(`Lv ${level}`, 30, 20, 13, '#ffffff');
             ctx.fillStyle = '#ef4444';
             ctx.fillRect(170, 11, (lives / 3) * 70, 9);
@@ -129,7 +123,6 @@
                 drawPixelText('Thư giãn cùng QA!', canvas.width / 2, 60, 13, '#fde047');
                 drawPixelText('Play the Quality', canvas.width / 2, 92, 18, '#facc15');
 
-                // Nút START
                 ctx.fillStyle = '#fef08a';
                 ctx.fillRect(75, 112, 110, 30);
                 ctx.lineWidth = 2;
@@ -139,7 +132,6 @@
                 ctx.font = '900 14px sans-serif';
                 ctx.fillText('START', canvas.width / 2, 132);
 
-                // Trang trí mặt đất
                 ctx.font = '20px sans-serif';
                 ctx.fillText('👷', 35, 155);
                 ctx.fillText('🎁', 90, 155);
@@ -148,7 +140,6 @@
             } else if (gameState === 'PLAYING') {
                 drawPixelText(`Điểm: ${score}`, canvas.width / 2, 38, 14, '#ffffff');
 
-                // Nhân vật
                 ctx.font = '26px sans-serif';
                 ctx.fillText('👷', player.x + player.w / 2, player.y + 22);
 
