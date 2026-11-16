@@ -3381,13 +3381,14 @@
     }
 </script>
     
-<!-- 🎮 NHÚNG MINI GAME TỪ FILE GAME.HTML (Đã loại bỏ phần footer 7 ngày) -->
-    <div class="mini-game-popup" id="qaMiniGamePopup" style="display: none;">
+<!-- 🎮 NHÚNG MINI GAME TỪ FILE GAME.HTML (Đã fix triệt để khoảng trắng) -->
+    <div class="mini-game-popup" id="qaMiniGamePopup" style="display: none; height: auto !important;">
         <div class="mini-game-header" id="qaMiniGameHeader" title="Giữ chuột để kéo di chuyển">
             <span>🎮 Play & Relax - QA Zone</span>
             <button class="mini-game-close-x" onclick="closeMiniGame()" title="Đóng">✕</button>
         </div>
-        <iframe id="qaGameIframe" src="game.html" style="width: 100%; height: 175px !important; border: none; display: block;" scrolling="no"></iframe>
+        <!-- 👇 Cố định chuẩn chiều cao iframe đúng 175px để ôm khít canvas -->
+        <iframe id="qaGameIframe" src="game.html" style="width: 100%; height: 175px !important; max-height: 175px !important; border: none; display: block;" scrolling="no"></iframe>
     </div>
     
     <!-- NHÚNG FILE BANNER THỨ HAI (NẰM PHÍA TRÊN) -->
